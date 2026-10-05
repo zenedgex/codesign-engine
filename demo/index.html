@@ -168,7 +168,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 22px; font-size: 13px; 
   <h2>The same steps on your machine</h2>
   <div class="panel run">
     <p class="soft">Install the engine (Python 3.12 or later, macOS or Linux). No Docker or EDA tools needed for these steps.</p>
-    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.1.1/codesign_engine-0.1.1-py3-none-any.whl
+    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.1.2/codesign_engine-0.1.2-py3-none-any.whl
 codesign-engine info</code>
     <p class="soft">Compile one GEMM through MLIR to the accelerator's command stream, and see its estimated cycles and area. Change the accelerator with flags.</p>
     <code>codesign-engine compile --m 64 --k 128 --n 128 --show-ir
