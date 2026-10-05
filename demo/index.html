@@ -165,14 +165,19 @@ footer { border-top: 1px solid var(--rule); padding-top: 22px; font-size: 13px; 
 <!-- 5. run it -->
 <div class="step" id="run">
   <p class="eyebrow">5 · Run it yourself</p>
-  <h2>The same steps from the SDK</h2>
+  <h2>The same steps on your machine</h2>
   <div class="panel run">
-    <p class="soft">With the repository and its Docker toolchain installed:</p>
-    <code>uv run python -c "from compiler.mlir_lower import *; from generator.config import ArchConfig
-import numpy as np; a=ArchConfig(); w=np.ones((128,128),int); x=np.ones((64,128),int)
-p=compile_gemm(a, CompilerConfig(m_tile=64, loop_order='mnk'), x, w); print(p.counts())"</code>
-    <code>make sim          # every compiled program on the RTL, checked against NumPy
-uv run python -m harness.evaluate --default --upto T3   # T0 → T3 for the default design</code>
+    <p class="soft">Install the engine (Python 3.12 or later, macOS or Linux). No Docker or EDA tools needed for these steps.</p>
+    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.1.1/codesign_engine-0.1.1-py3-none-any.whl
+codesign-engine info</code>
+    <p class="soft">Compile one GEMM through MLIR to the accelerator's command stream, and see its estimated cycles and area. Change the accelerator with flags.</p>
+    <code>codesign-engine compile --m 64 --k 128 --n 128 --show-ir
+codesign-engine compile --m 64 --k 128 --n 128 --rows 8 --cols 8 --dataflow os --precision 16 --spad-kb 64 --banks 4</code>
+    <p class="soft">Find the best compiler setting for an accelerator, list the Pareto front of all 1,272 buildable designs, and run the search loop.</p>
+    <code>codesign-engine best-compiler --rows 32 --cols 32 --dataflow ws
+codesign-engine explore --clock-ps 800
+codesign-engine search --method planner --budget 20</code>
+    <p class="soft">RTL simulation, synthesis and place-and-route run in a design-partner pilot, on your EDA flow. Contact <span class="mono" style="user-select:all;color:var(--ink)">contact@soctai.com</span>.</p>
   </div>
 </div>
 
