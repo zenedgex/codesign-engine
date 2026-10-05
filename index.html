@@ -165,6 +165,61 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
   .value + .value, .metric + .metric { padding-left: 0; border-left: none; border-top: 1px solid var(--line) }
   .stage + .stage { border-left: none; border-top: 1px solid var(--line) }
 }
+
+/* positioning */
+.position { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center }
+.position > * { min-width: 0 }
+.diagram { background: var(--slab); border: 1px solid var(--line); border-radius: 6px; padding: 22px }
+.diagram svg { width: 100%; height: auto; display: block }
+.nots { display: flex; flex-wrap: wrap; gap: 10px }
+.nots span { font: 500 13px/1 var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 9px 13px; background: var(--slab) }
+.nots span b { color: var(--faint); font-weight: 500 }
+
+/* funnel */
+.budget { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 48px; align-items: center; background: var(--slab); border: 1px solid var(--line); border-radius: 6px; padding: 34px }
+.budget > * { min-width: 0 }
+.funnel { display: flex; flex-direction: column; gap: 8px }
+.frow { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; align-items: center }
+.frow .tier { font: 500 12.5px/1.3 var(--mono); color: var(--muted) }
+.frow .barwrap { display: flex; justify-content: center }
+.frow .bar { height: 34px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font: 600 14px/1 var(--mono); font-variant-numeric: tabular-nums; color: #17110B; background: linear-gradient(90deg, var(--copper), var(--amber)) }
+.frow:nth-child(odd) .bar { opacity: .92 }
+.funnel .cap { font: 400 12px/1.4 var(--mono); color: var(--faint); margin-top: 6px }
+
+/* moats */
+.moats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden }
+.moat { background: var(--slab); padding: 32px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
+.moat .n { font: 500 12px/1 var(--mono); letter-spacing: .14em; color: var(--amber) }
+.moat p { color: var(--muted); font-size: 15.5px }
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font: 400 12.5px/1 var(--mono); color: var(--text) }
+.chain span { border: 1px solid var(--line); background: var(--slab-2); border-radius: 3px; padding: 7px 9px }
+.chain i { font-style: normal; color: var(--copper) }
+.learned { display: flex; flex-direction: column; gap: 6px; font: 400 12.5px/1.4 var(--mono); color: var(--muted); border-left: 2px solid var(--copper); padding-left: 12px }
+.learned b { color: var(--text); font-weight: 500 }
+
+/* benchmark */
+.pill { font: 500 11.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 7px 10px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap }
+.pill.run { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 45%, transparent) }
+.bench { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 28px }
+.bench > * { min-width: 0 }
+.bench .panel { background: var(--slab); border: 1px solid var(--line); border-radius: 6px; padding: 28px; display: flex; flex-direction: column; gap: 16px }
+.bench table { border-collapse: collapse; width: 100%; font-size: 14.5px }
+.bench th, .bench td { text-align: left; padding: 11px 10px 11px 0; border-bottom: 1px solid var(--line); vertical-align: top }
+.bench th { font: 500 11px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint) }
+.bench td.st { white-space: nowrap }
+.bench tr.us td { color: var(--text); font-weight: 600 }
+.bench .scroll { overflow-x: auto }
+.versus { display: flex; flex-direction: column; gap: 10px }
+.versus div { display: flex; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 4px; background: var(--slab-2); font-size: 15px }
+.versus div.joint { border-color: color-mix(in srgb, var(--amber) 55%, transparent) }
+.versus em { font-style: normal; font: 500 12px/1.4 var(--mono); color: var(--faint) }
+.headline-metric { font: 700 clamp(22px, 2.4vw, 30px)/1.15 var(--display); font-stretch: 110% }
+
+@media (max-width: 960px) {
+  .position, .budget, .bench { grid-template-columns: minmax(0, 1fr); gap: 28px }
+  .moats { grid-template-columns: minmax(0, 1fr) }
+  .frow { grid-template-columns: 110px minmax(0, 1fr) }
+}
 @media (prefers-reduced-motion: reduce) { .btn .arr { transition: none } }
 </style>
 </head>
@@ -174,16 +229,16 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
 <header class="bar">
   <div class="wrap">
     <div class="mark"><svg viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="2" fill="none" stroke="#E3894E" stroke-width="1.5"/><path d="M6 6h4v4H6zM12 6h4v4h-4zM6 12h4v4H6z" fill="#3A4350"/><path d="M12 12h4v4h-4z" fill="#F4BC72"/></svg>Co-Design Engine</div>
-    <nav aria-label="Sections"><a href="#value">Value</a><a href="#how">How it works</a><a href="#platform">Platform</a><a href="#pilot">Pilot</a><a class="go demo-link" href="#">Live demo →</a></nav>
+    <nav aria-label="Sections"><a href="#value">Value</a><a href="#how">How it works</a><a href="#intelligence">Intelligence</a><a href="#benchmark">Benchmark</a><a href="#pilot">Pilot</a><a class="go demo-link" href="#">Live demo →</a></nav>
   </div>
 </header>
 
 <div class="hero">
   <canvas id="die" aria-hidden="true"></canvas>
   <div class="hero-copy">
-    <p class="kicker">AI accelerator co-design</p>
+    <p class="kicker">AI design exploration for specialized silicon</p>
     <h1>Design the chip and its compiler <em>as one.</em></h1>
-    <p class="lede">Tell the engine your models and your power, area and latency budget. It searches architecture, compiler mapping and physical implementation together, proves each choice on your own EDA flow, and hands you the design worth taping out, with a compiler that already runs on it.</p>
+    <p class="lede"><b style="color:var(--text);font-weight:600">Don't optimize a chip. Discover the chip your workload actually needs.</b> The engine searches hardware architecture, compiler mapping and physical implementation together, against your workloads and constraints. Every candidate is measured on your EDA flow, and every design it recommends comes with a compiler mapping that runs on it.</p>
     <div class="cta">
       <a class="btn primary" href="#pilot">Start a design-partner pilot <span class="arr">→</span></a>
       <a class="btn line demo-link" href="#">See the live demo</a>
@@ -194,34 +249,75 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
 
 <div class="wrap">
 
+  <section id="position">
+    <div class="position">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <p class="label">What it is</p>
+        <h2>The AI design exploration engine for <em>specialized silicon.</em></h2>
+        <p style="color:var(--muted);font-size:18px">It sits between your workload and your design flow, and decides what is worth building. Your architects, compiler engineers and EDA tools stay in charge of building it.</p>
+        <div class="nots"><span><b>not</b> an EDA replacement</span><span><b>not</b> an RTL generator</span><span><b>not</b> an LLM wrapper</span></div>
+      </div>
+      <div class="diagram"><svg id="where" viewBox="0 0 560 330" role="img" aria-label="The engine sits between the workload and the architecture, compiler and EDA layers, and returns the best design"></svg></div>
+    </div>
+  </section>
+
   <section id="value">
     <p class="label">Why teams use it</p>
     <div class="statement">
       <h2>The decisions that set a chip's performance are made first, with the least evidence.</h2>
       <div class="body">
         <p>Array size, dataflow, precision and memory get fixed early, often from spreadsheets and intuition. The compiler team learns months later what the hardware can actually do. Every change to either side means another round of synthesis and place-and-route.</p>
-        <p>The engine turns that into one measured loop, so architecture and software are decided together, on evidence, before the expensive commitments.</p>
+        <p>The engine turns that into one measured loop, so hardware and software are decided together, on evidence, before the expensive commitments.</p>
       </div>
     </div>
     <div class="values">
       <div class="value"><span class="from">From months of iteration</span><span class="to">Decide in <em>weeks</em></span><p>Explore thousands of architecture and compiler combinations automatically, instead of a handful by hand.</p></div>
-      <div class="value"><span class="from">From compiler bring-up after tape-out</span><span class="to">Compiler on <em>day one</em></span><p>Every recommended design comes with the MLIR mapping that runs your workloads on it, generated and checked against a reference.</p></div>
-      <div class="value"><span class="from">From brute-force EDA runs</span><span class="to">Compute where it <em>counts</em></span><p>Cheap estimates and simulation filter candidates first; place-and-route time goes only to designs that can improve your trade-off.</p></div>
-      <div class="value"><span class="from">From one-off studies</span><span class="to">Learning that <em>compounds</em></span><p>Every run, including failures, trains the planner. Your next accelerator starts from what your last one taught it.</p></div>
+      <div class="value"><span class="from">From compiler bring-up later</span><span class="to">Compiler on <em>day one</em></span><p>Every recommended design comes with the MLIR mapping that runs your workloads on it, generated and checked against a reference.</p></div>
+      <div class="value"><span class="from">From brute-force EDA runs</span><span class="to">Compute where it <em>counts</em></span><p>The engine decides which candidates deserve expensive synthesis and place-and-route, and which can be ruled out in milliseconds.</p></div>
+      <div class="value"><span class="from">From one-off studies</span><span class="to">Learning that <em>compounds</em></span><p>Every run, including failures, becomes design experience. Your next accelerator starts from what your last one taught it.</p></div>
     </div>
   </section>
 
   <section id="how">
     <p class="label">How it works</p>
     <div class="statement">
-      <h2>One loop from workload to a design worth building.</h2>
+      <h2>One loop from workload to the designs worth taking to implementation.</h2>
       <div class="body"><p>You bring workloads and constraints. The engine proposes candidates, compiles your models onto each, measures them at increasing fidelity, and learns from every result, good or failed.</p></div>
     </div>
     <div class="loop">
       <div class="stage"><span class="k">01 · DEFINE</span><h3>Workloads and budget</h3><p>Model layers or tensor shapes, plus your area, power, latency and process targets.</p><span class="out">in: ONNX / MLIR shapes, PPA budget</span></div>
       <div class="stage"><span class="k">02 · EXPLORE</span><h3>Architecture × compiler</h3><p>The planner proposes hardware and finds the best compiler mapping for each candidate.</p><span class="out">over a space of 1M+ combinations</span></div>
       <div class="stage"><span class="k">03 · PROVE</span><h3>Measured, not guessed</h3><p>Analytical estimates, RTL simulation, synthesis, then place-and-route on your flow, cheapest first.</p><span class="out">every result checked, every failure kept</span></div>
-      <div class="stage"><span class="k">04 · DELIVER</span><h3>Pareto front + compiler</h3><p>Recommended designs with RTL parameters, compiler mapping and the evidence behind each one.</p><span class="out">out: designs, mappings, run history</span></div>
+      <div class="stage"><span class="k">04 · DELIVER</span><h3>Pareto front + compiler</h3><p>The designs worth implementing, each with RTL parameters, compiler mapping and the evidence behind it.</p><span class="out">out: designs, mappings, run history</span></div>
+    </div>
+    <div class="budget">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p class="label" style="color:var(--amber)">Adaptive EDA budgeting</p>
+        <h3 style="font-size:28px;line-height:1.15">The engine decides which candidate deserves expensive EDA time.</h3>
+        <p style="color:var(--muted)">Each tier costs orders of magnitude more than the one before it. Instead of a fixed filter, the planner chooses where to spend: a candidate moves to the next tier only when it is likely to improve your trade-off, and every result updates that judgement.</p>
+      </div>
+      <div class="funnel" id="funnel">
+        <div class="frow"><span class="tier">Candidates</span><div class="barwrap"><div class="bar" style="width:100%">10,000</div></div></div>
+        <div class="frow"><span class="tier">Analytical estimate · ms</span><div class="barwrap"><div class="bar" style="width:76%">1,000</div></div></div>
+        <div class="frow"><span class="tier">RTL simulation · s</span><div class="barwrap"><div class="bar" style="width:52%">100</div></div></div>
+        <div class="frow"><span class="tier">Synthesis · min</span><div class="barwrap"><div class="bar" style="width:34%">20</div></div></div>
+        <div class="frow"><span class="tier">Place &amp; route · hours</span><div class="barwrap"><div class="bar" style="width:20%">5</div></div></div>
+        <p class="cap">Illustrative. The actual split is decided per project, from your budget and what the engine learns.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="intelligence">
+    <p class="label">Design intelligence</p>
+    <div class="statement">
+      <h2>It learns why a design choice moves power, performance and area.</h2>
+      <div class="body"><p>A generic optimizer learns which settings scored well. The engine works across the layers of the stack, runs controlled experiments on its own generators, and keeps every result. That is what makes its next recommendation better than the last.</p></div>
+    </div>
+    <div class="moats">
+      <div class="moat"><span class="n">01 · WORKLOAD → HARDWARE</span><h3>What your models actually need</h3><div class="chain"><span>model</span><i>→</i><span>operators</span><i>→</i><span>tensor shapes</span><i>→</i><span>memory behaviour</span><i>→</i><span>compute intensity</span><i>→</i><span>hardware needs</span></div><p>Sizing starts from the work, not from last year's chip.</p></div>
+      <div class="moat"><span class="n">02 · HARDWARE → COMPILER</span><h3>A mapping for every candidate</h3><div class="chain"><span>architecture</span><i>→</i><span>primitives</span><i>→</i><span>memory hierarchy</span><i>→</i><span>parallelism</span><i>→</i><span>MLIR mapping</span></div><p>Each design is judged by how well your workloads really run on it, not by its peak numbers.</p></div>
+      <div class="moat"><span class="n">03 · COMPILER ↔ PHYSICAL</span><h3>Hardware is only as good as its mappings</h3><div class="chain"><span>tiling</span><i>→</i><span>data movement</span><i>→</i><span>buffer need</span><i>→</i><span>SRAM size</span><i>→</i><span>area &amp; power</span></div><p>A large scratchpad is worth its area only if the compiler can use it. Choosing hardware and mapping together avoids paying for silicon the software never touches.</p></div>
+      <div class="moat"><span class="n">04 · EDA EXPERIENCE</span><h3>Every run becomes design knowledge</h3><div class="chain"><span>architecture</span><i>+</i><span>compiler</span><i>+</i><span>RTL</span><i>+</i><span>synthesis</span><i>+</i><span>P&amp;R</span><i>→</i><span>PPA &amp; failures</span></div><div class="learned"><span>The kind of rule it learns:</span><span><b>large array + aggressive clock</b> → timing and routing risk</span><span><b>large SRAM, small tiles</b> → area spent for nothing</span><span><b>too little buffer</b> → mappings that do not fit</span></div></div>
     </div>
   </section>
 
@@ -229,20 +325,52 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
     <p class="label">The platform</p>
     <h2>Four parts that work as one.</h2>
     <div class="platform">
-      <div class="mod"><span class="tagline">Architecture explorer</span><h3>Searches the hardware space with the compiler in the loop</h3><p>Array shape, dataflow, precision, memory hierarchy, banking and implementation settings, each judged by how well your workloads actually map onto it.</p><ul><li>systolic arrays</li><li>weight / output stationary</li><li>INT8 · INT16</li><li>SRAM macros</li></ul></div>
+      <div class="mod"><span class="tagline">Architecture explorer</span><h3>Searches the hardware space with the compiler in the loop</h3><p>Array shape, dataflow, precision, memory hierarchy, banking and implementation settings, each judged by how well your workloads map onto it.</p><ul><li>systolic arrays</li><li>weight / output stationary</li><li>INT8 · INT16</li><li>SRAM macros</li></ul></div>
       <div class="mod"><span class="tagline">Compiler generator</span><h3>An MLIR path for every candidate design</h3><p>Tiling, loop order and memory allocation are chosen per architecture, lowered from standard MLIR to the accelerator's own command stream, and verified bit-exact on its RTL.</p><ul><li>linalg</li><li>transform dialect</li><li>IREE</li><li>command ISA</li></ul></div>
-      <div class="mod"><span class="tagline">Evaluation fabric</span><h3>Four fidelity tiers on your EDA flow</h3><p>From millisecond estimates to routed layouts. Runs on-prem or in your cloud account, against open tools or your existing synthesis and place-and-route scripts.</p><ul><li>analytical model</li><li>Verilator</li><li>Yosys · OpenROAD</li><li>your commercial flow</li></ul></div>
-      <div class="mod"><span class="tagline">Learning planner</span><h3>Spends expensive runs where they matter</h3><p>Models where designs fail and why, from timing margins to routing, and picks the next run to move your Pareto front. It improves with every design history it sees.</p><ul><li>multi-fidelity</li><li>failure-aware</li><li>design history</li></ul></div>
+      <div class="mod"><span class="tagline">Evaluation fabric</span><h3>Four fidelity tiers with adaptive budgeting</h3><p>From millisecond estimates to routed layouts, on-prem or in your cloud account, against open tools or your existing synthesis and place-and-route scripts.</p><ul><li>analytical model</li><li>Verilator</li><li>Yosys · OpenROAD</li><li>your commercial flow</li></ul></div>
+      <div class="mod"><span class="tagline">Design intelligence</span><h3>Picks the next best experiment</h3><p>Models where designs fail and why, from timing margins to routing, and chooses the run most likely to move your Pareto front. It improves with every design history it sees.</p><ul><li>multi-fidelity</li><li>failure-aware</li><li>design history</li></ul></div>
     </div>
   </section>
 
   <section id="who">
     <p class="label">Who it is for</p>
     <div class="who">
-      <div><h3>AI-chip startups</h3><p>Pick the architecture for your first or next chip with evidence, and arrive at tape-out with a compiler that already works.</p></div>
-      <div><h3>Edge SoC teams</h3><p>Size an NPU for a tight power and area budget, against the exact models your product will run.</p></div>
-      <div><h3>IP vendors</h3><p>Offer customers accelerator variants tuned to their workloads, each with its software stack.</p></div>
-      <div><h3>Silicon teams at scale</h3><p>Re-evaluate design choices as models change, without restarting compiler work each time.</p></div>
+      <div><span class="label" style="color:var(--amber)">First</span><h3>AI accelerator startups</h3><p>"What should our next chip look like?" Answered with evidence, without a large architecture, compiler and EDA organisation.</p></div>
+      <div><span class="label">Then</span><h3>Teams building custom silicon</h3><p>Robotics, automotive, edge AI, industrial vision, datacenter inference, networking and storage: a specific workload that deserves specialized hardware.</p></div>
+      <div><span class="label">Next</span><h3>Semiconductor companies</h3><p>An architecture exploration platform across product lines, re-run as models change.</p></div>
+      <div><span class="label">With</span><h3>EDA platforms</h3><p>The design exploration engine underneath existing flows, as a partner rather than a replacement.</p></div>
+    </div>
+  </section>
+
+  <section id="benchmark">
+    <p class="label">The benchmark we are running</p>
+    <div class="statement">
+      <h2>One number that matters: <em>PPA gained per expensive EDA run.</em></h2>
+      <div class="body"><p>Same workloads, same flow, same budget for every method. The protocol is fixed before any search runs, and results are reported on workloads held out from tuning, including where the engine does not win.</p></div>
+    </div>
+    <div class="bench">
+      <div class="panel">
+        <div class="scroll"><table>
+          <thead><tr><th>Method</th><th>What it represents</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Hand-picked 16×16</td><td>The human baseline</td><td class="st"><span class="pill run">In progress</span></td></tr>
+            <tr><td>Random search</td><td>The control</td><td class="st"><span class="pill run">In progress</span></td></tr>
+            <tr><td>Bayesian optimisation</td><td>The standard optimizer</td><td class="st"><span class="pill run">In progress</span></td></tr>
+            <tr><td>Genetic algorithm</td><td>The standard in design-space exploration</td><td class="st"><span class="pill run">Planned</span></td></tr>
+            <tr class="us"><td>Co-Design Engine</td><td>Adaptive budgeting + design intelligence</td><td class="st"><span class="pill run">In progress</span></td></tr>
+          </tbody>
+        </table></div>
+        <p style="color:var(--faint);font-size:14px">Measured for each: best performance and performance per watt, area, power, latency, number of place-and-route runs, and time to the best design.</p>
+      </div>
+      <div class="panel">
+        <span class="headline-metric">The thesis test</span>
+        <p style="color:var(--muted);font-size:15.5px">Hardware and compiler should not be optimized separately. We test it directly.</p>
+        <div class="versus">
+          <div><span>Architecture only</span><em>compiler fixed</em></div>
+          <div><span>Compiler only</span><em>hardware fixed</em></div>
+          <div class="joint"><span>Joint co-design</span><em>both together</em></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -252,14 +380,14 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
     <div class="road">
       <div class="now"><span class="when">Today · technical preview</span><h3>GEMM accelerators, open flow</h3><ul><li>Parameterised systolic-array generator</li><li>MLIR compiler path to the command stream</li><li>Four-tier evaluation on Yosys and OpenROAD</li></ul></div>
       <div><span class="when">Next · with design partners</span><h3>Your workloads, your flow</h3><ul><li>Attention and convolution workloads</li><li>Commercial synthesis and place-and-route</li><li>Power from simulated switching activity</li></ul></div>
-      <div><span class="when">Then · the platform</span><h3>Any dataflow accelerator</h3><ul><li>Bring your own RTL generator</li><li>Planner trained across design histories</li><li>Compiler bring-up in weeks for new chips</li></ul></div>
+      <div><span class="when">Then · the platform</span><h3>Any dataflow accelerator</h3><ul><li>Bring your own RTL generator</li><li>Design intelligence trained across design histories</li><li>Compiler bring-up in weeks for new chips</li></ul></div>
     </div>
   </section>
 
   <section id="proof">
     <p class="label">Built on measured results</p>
     <div class="proof" id="proof-metrics"></div>
-    <p class="fine">Measured on our technical preview: generated RTL in Verilator, OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. The claim we are testing next, under a pre-registered protocol, is that the planner matches the best designs found by random search and Bayesian optimisation with about five times fewer place-and-route runs.</p>
+    <p class="fine">Measured on our technical preview: generated RTL in Verilator, OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Benchmark results will be published here when the protocol completes.</p>
   </section>
 
   <section id="pilot">
@@ -267,15 +395,15 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
     <h2>Eight to twelve weeks. One accelerator family. <em>A success metric agreed up front.</em></h2>
     <div class="pilot">
       <div><h3>You bring</h3><ul><li>Target workloads; tensor shapes are enough</li><li>Your PPA budget and process node</li><li>Access to your synthesis and place-and-route scripts, on your machines</li></ul></div>
-      <div><h3>You get</h3><ul><li>A Pareto front of architecture and compiler choices on your flow</li><li>A compiler mapping for each recommended design</li><li>Every run, failures included, in an experiment store you keep</li></ul></div>
+      <div><h3>You get</h3><ul><li>The designs worth taking to implementation, on your flow</li><li>A compiler mapping for each recommended design</li><li>Every run, failures included, in an experiment store you keep</li></ul></div>
       <div><h3>How it runs</h3><ul><li>On-prem or in your own cloud account</li><li>Your designs and workloads never leave it</li><li>Weekly results against standard search methods</li></ul></div>
     </div>
   </section>
 
   <div class="band">
     <div style="display:flex;flex-direction:column;gap:14px">
-      <h2 style="font-size:clamp(28px,3.2vw,42px)">Let's design your next accelerator together.</h2>
-      <p style="color:var(--muted)">Tell us about your workloads and constraints. We will set up a pilot on your flow, or walk you through the live demo first.</p>
+      <h2 style="font-size:clamp(28px,3.2vw,42px)">Give us your workload and constraints.</h2>
+      <p style="color:var(--muted)">We will explore the architecture and compiler space with you and show what is actually worth implementing. Or start with the live demo.</p>
     </div>
     <div class="actions">
       <div class="mail"><code id="mail">contact@soctai.com</code><button type="button" id="copy">Copy</button></div>
@@ -348,6 +476,28 @@ footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line);
   requestAnimationFrame(frame);
   if (reduce) addEventListener('resize', () => requestAnimationFrame(frame));
   document.getElementById('die-cap').textContent = 'A 16×16 accelerator from the engine, drawn to scale from its SRAM macros and logic estimate. The wavefront is the array’s skewed dataflow.';
+
+
+  // ---------------------------------------------------------------- where it sits
+  (function () {
+    const sv = document.getElementById('where'), NS = 'http://www.w3.org/2000/svg';
+    const el = (t, a, x) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (x != null) e.textContent = x; sv.appendChild(e); return e; };
+    const mono = 'Geist Mono, monospace', disp = 'Archivo, Arial, sans-serif';
+    const defs = el('defs', {}); const g = document.createElementNS(NS, 'linearGradient'); g.setAttribute('id', 'eng'); g.setAttribute('x1', '0'); g.setAttribute('x2', '1');
+    for (const [o, c] of [['0', '#E3894E'], ['1', '#F4BC72']]) { const st = document.createElementNS(NS, 'stop'); st.setAttribute('offset', o); st.setAttribute('stop-color', c); g.appendChild(st); }
+    defs.appendChild(g);
+    const box = (x, y, w, h, label, sub, hot) => { el('rect', { x, y, width: w, height: h, rx: 4, fill: hot ? 'url(#eng)' : '#161B22', stroke: hot ? 'none' : '#2A333F' }); el('text', { x: x + w / 2, y: y + h / 2 + (sub ? -2 : 5), 'text-anchor': 'middle', fill: hot ? '#17110B' : '#ECEEF1', 'font-family': disp, 'font-size': 15, 'font-weight': 650 }, label); if (sub) el('text', { x: x + w / 2, y: y + h / 2 + 16, 'text-anchor': 'middle', fill: hot ? '#3A2410' : '#9AA3AF', 'font-family': mono, 'font-size': 11 }, sub); };
+    const line = (x1, y1, x2, y2) => el('line', { x1, y1, x2, y2, stroke: '#5F6874', 'stroke-width': 1.4 });
+    box(205, 8, 150, 44, 'Workload', 'models · constraints');
+    line(280, 52, 280, 84);
+    box(170, 84, 220, 56, 'Co-Design Engine', 'decides what to build', true);
+    line(280, 140, 280, 160); line(95, 160, 465, 160); line(95, 160, 95, 182); line(280, 160, 280, 182); line(465, 160, 465, 182);
+    box(20, 182, 150, 50, 'Architecture', 'array · memory'); box(205, 182, 150, 50, 'Compiler', 'MLIR mapping'); box(390, 182, 150, 50, 'EDA', 'synth · P&R');
+    line(95, 232, 95, 254); line(280, 232, 280, 254); line(465, 232, 465, 254); line(95, 254, 465, 254); line(280, 254, 280, 274);
+    box(185, 274, 190, 46, 'Best design', 'worth implementing');
+    el('path', { d: 'M 540 205 C 556 205 556 112 392 112', fill: 'none', stroke: '#E3894E', 'stroke-width': 1.4, 'stroke-dasharray': '4 4' });
+    el('text', { x: 548, y: 158, 'text-anchor': 'end', fill: '#E3894E', 'font-family': mono, 'font-size': 11, transform: 'rotate(90 548 158)' }, 'measured PPA');
+  })();
 
   if (!DATA) return;
   // ---------------------------------------------------------------- proof
