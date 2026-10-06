@@ -500,11 +500,11 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     </div>
     <div class="actions">
       <a class="btn primary" data-to="demo" href="#">Open the live demo <span class="arr">→</span></a>
-      <div class="mail"><code id="mail">contact@soctai.com</code><button type="button" id="copy">Copy</button></div>
+      <div class="mail"><code id="mail">hello@zenedgex.in</code><button type="button" id="copy">Copy</button></div>
     </div>
   </div>
 
-  <footer><span>CodeSign Engine · Technology · 2026</span><span>contact@soctai.com</span></footer>
+  <footer><span>CodeSign Engine · Technology · 2026</span><span>hello@zenedgex.in</span></footer>
 </div>
 
 <script>
@@ -520,7 +520,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
   // ---------------------------------------------------------------- copy contact
   document.getElementById('copy').addEventListener('click', async (e) => {
     const b = e.currentTarget;
-    try { await navigator.clipboard.writeText('contact@soctai.com'); b.textContent = 'Copied'; }
+    try { await navigator.clipboard.writeText('hello@zenedgex.in'); b.textContent = 'Copied'; }
     catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('mail')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected'; }
     setTimeout(() => { b.textContent = 'Copy'; }, 1800);
   });

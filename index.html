@@ -363,7 +363,7 @@ footer a:hover { color: var(--text) }
       <p class="muted">Bring your workload, requirements and design constraints. We'll show you what CodeSign can discover.</p>
     </div>
     <div class="actions">
-      <div class="mail"><code id="mail">contact@soctai.com</code><button type="button" id="copy">Copy</button></div>
+      <div class="mail"><code id="mail">hello@zenedgex.in</code><button type="button" id="copy">Copy</button></div>
       <a class="btn primary" href="#contact" id="start">Start a design exploration <span class="arr">→</span></a>
       <a class="btn line" data-to="demo" href="#">See the live demo</a>
     </div>
@@ -371,7 +371,7 @@ footer a:hover { color: var(--text) }
 
   <footer>
     <span>CodeSign Engine · AI-powered chip design exploration · 2026</span>
-    <nav aria-label="Footer"><a href="#product">Product</a><a href="#solutions">Solutions</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">contact@soctai.com</a></nav>
+    <nav aria-label="Footer"><a href="#product">Product</a><a href="#solutions">Solutions</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">hello@zenedgex.in</a></nav>
   </footer>
 </div>
 
@@ -389,7 +389,7 @@ footer a:hover { color: var(--text) }
   const selectMail = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('mail')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
   document.getElementById('copy').addEventListener('click', async e => {
     const b = e.currentTarget;
-    try { await navigator.clipboard.writeText('contact@soctai.com'); b.textContent = 'Copied'; } catch { selectMail(); b.textContent = 'Selected'; }
+    try { await navigator.clipboard.writeText('hello@zenedgex.in'); b.textContent = 'Copied'; } catch { selectMail(); b.textContent = 'Selected'; }
     setTimeout(() => { b.textContent = 'Copy'; }, 1800);
   });
   document.getElementById('start').addEventListener('click', e => { e.preventDefault(); selectMail(); document.getElementById('mail').scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); });

@@ -4,7 +4,7 @@ Design an AI accelerator and its compiler as one.
 
 - Website: https://zenedgex.in/
 - Live demo: https://zenedgex.in/demo/
-- Contact: contact@soctai.com
+- Contact: hello@zenedgex.in
 
 ## Try the engine
 
