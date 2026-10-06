@@ -180,7 +180,7 @@ footer { border-top: 1px solid var(--rule); padding-top: 22px; font-size: 13px; 
   <h2>The same steps on your machine</h2>
   <div class="panel run">
     <p class="soft">Install the engine (Python 3.12 or later, macOS or Linux). No Docker or EDA tools needed for these steps.</p>
-    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.1.2/codesign_engine-0.1.2-py3-none-any.whl
+    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.2.0/codesign_engine-0.2.0-py3-none-any.whl
 codesign-engine info</code>
     <p class="soft">Compile one GEMM through MLIR to the accelerator's command stream, and see its estimated cycles and area. Change the accelerator with flags.</p>
     <code>codesign-engine compile --m 64 --k 128 --n 128 --show-ir
@@ -189,7 +189,10 @@ codesign-engine compile --m 64 --k 128 --n 128 --rows 8 --cols 8 --dataflow os -
     <code>codesign-engine best-compiler --rows 32 --cols 32 --dataflow ws
 codesign-engine explore --clock-ps 800
 codesign-engine search --method planner --budget 20</code>
-    <p class="soft">RTL simulation, synthesis and place-and-route run in a design-partner pilot, on your EDA flow. Contact <span class="mono" style="user-select:all;color:var(--ink)">hello@zenedgex.in</span>.</p>
+    <p class="soft">Get a design for your own workloads. Write a spec with your GEMM shapes and your area, power and latency budgets; the engine searches every architecture and compiler setting, recommends the best design that fits, and exports a design package: RTL with the parameters fixed, constraints, compiler output per workload, test vectors and a testbench. Every exported program is checked against NumPy before the export reports success.</p>
+    <code>codesign-engine spec-example &gt; spec.json
+codesign-engine design --spec spec.json --export out/</code>
+    <p class="soft">Budgets and rankings use T0 estimates (cycles, area, and energy from per-operation coefficients). RTL simulation, synthesis and place-and-route run in a design-partner pilot, on your EDA flow. Contact <span class="mono" style="user-select:all;color:var(--ink)">hello@zenedgex.in</span>.</p>
   </div>
 </div>
 
