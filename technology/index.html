@@ -6,6 +6,14 @@
 <meta name="description" content="How CodeSign Engine works: architecture, compiler and implementation searched together, measured on real EDA flows, with design intelligence that learns from every run.">
 <meta property="og:title" content="CodeSign Engine Technology">
 <meta property="og:description" content="How CodeSign Engine works: architecture, compiler and implementation searched together, measured on real EDA flows, with design intelligence that learns from every run.">
+<meta property="og:image" content="https://zenedgex.in/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zenedgex.in/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>CodeSign Engine Technology</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +65,7 @@ em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, va
 .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; margin-inline: -20px; padding: 14px 20px; background: color-mix(in srgb, var(--void) 78%, transparent); backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid var(--line) }
 .bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap }
 .mark { display: flex; align-items: center; gap: 10px; font: 700 14.5px/1 var(--display); font-stretch: 120%; letter-spacing: .05em; text-transform: uppercase; color: var(--text); text-decoration: none }
-.mark svg { width: 22px; height: 22px }
+.mark svg { width: 24px; height: 24px }
 .bar nav { display: flex; gap: 24px; flex-wrap: wrap; font-size: 14px; align-items: center }
 .bar nav a { color: var(--muted); text-decoration: none; transition: color .2s }
 .bar nav a:hover, .bar nav a.on { color: var(--text) }
@@ -307,7 +315,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
 
 <header class="bar">
   <div class="wrap">
-    <a class="mark" data-to="home" href="#"><svg viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="2" fill="none" stroke="#E3894E" stroke-width="1.5"/><path d="M6 6h4v4H6zM12 6h4v4h-4zM6 12h4v4H6z" fill="#3A4350"/><path d="M12 12h4v4h-4z" fill="#F4BC72"/></svg>CodeSign Engine</a>
+    <a class="mark" data-to="home" href="#"><svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>CodeSign Engine</a>
     <nav aria-label="Main"><a data-to="home" href="#">Product</a><a data-to="home" data-hash="#solutions" href="#">Solutions</a><a class="on" href="#top">Technology</a><a data-to="home" data-hash="#results" href="#">Results</a><a data-to="demo" href="#">Live demo</a><a class="go" data-to="home" data-hash="#contact" href="#">Talk to us →</a></nav>
   </div>
   <div class="progress" id="progress" aria-hidden="true"></div>
