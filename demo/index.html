@@ -23,9 +23,9 @@
 /* Layout: the product page's dark world, as a tool. Steps in task order (explore, compile, compare
    compiler settings, check the estimate), each a slab with its controls on top. */
 :root {
-  --paper: #0A0C0F; --panel: #11151A; --panel-2: #161B22; --ink: #ECEEF1; --ink-soft: #9AA3AF;
-  --faint: #5F6874; --rule: #222932; --copper: #E3894E; --amber: #F4BC72; --via: #86A7D8;
-  --dim: #39424E; --hl: #2A1E15;
+  --paper: #05070D; --panel: #0A0F18; --panel-2: #0F1522; --ink: #E8F1FF; --ink-soft: #8FA0BC;
+  --faint: #5B6B86; --rule: #172133; --copper: #5BE4FF; --amber: #A08CFF; --via: #F4BC72;
+  --dim: #2A3A52; --hl: #0E2433;
   --display: 'Archivo', 'Arial Black', Arial, sans-serif;
   --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
@@ -60,7 +60,7 @@ p { margin: 0; max-width: 70ch }
 .group > span { font: 500 11.5px/1 var(--mono); color: var(--faint); letter-spacing: .12em; text-transform: uppercase; margin-right: 6px }
 .chip { font: 500 13.5px/1 var(--body); padding: 9px 13px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel-2); color: var(--ink-soft); cursor: pointer }
 .chip:hover { color: var(--ink) }
-.chip[aria-pressed="true"] { background: linear-gradient(92deg, var(--copper), var(--amber)); color: #17110B; border-color: transparent }
+.chip[aria-pressed="true"] { background: linear-gradient(92deg, var(--copper), var(--amber)); color: #03141B; border-color: transparent }
 
 .explore { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 24px }
 .explore > * { min-width: 0 }
@@ -84,7 +84,7 @@ p { margin: 0; max-width: 70ch }
 .pipe button[aria-selected="true"] { background: var(--hl); box-shadow: inset 0 -2px 0 var(--amber) }
 .pipe b { font: 650 15px/1.2 var(--display); font-stretch: 108% }
 .pipe small { font: 400 12px/1.3 var(--mono); color: var(--faint) }
-pre { margin: 0; background: #07090B; border: 1px solid var(--rule); border-radius: 6px; padding: 18px; overflow: auto; max-height: 440px; font: 400 12.5px/1.6 var(--mono); color: #C9D1DB }
+pre { margin: 0; background: #04060B; border: 1px solid var(--rule); border-radius: 6px; padding: 18px; overflow: auto; max-height: 440px; font: 400 12.5px/1.6 var(--mono); color: #C7D6EC }
 table { border-collapse: collapse; width: 100%; font-size: 14px }
 th, td { padding: 10px 12px; border-bottom: 1px solid var(--rule); text-align: left; white-space: nowrap }
 th { font: 500 11px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint) }
@@ -96,14 +96,18 @@ td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family:
 .heat .h { font: 500 11px/1.2 var(--mono); color: var(--faint); text-align: center; padding: 6px 2px; letter-spacing: .06em }
 
 .run { display: flex; flex-direction: column; gap: 12px }
-.run code { background: #07090B; border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; font: 400 13px/1.6 var(--mono); display: block; overflow-x: auto; white-space: pre; color: #C9D1DB }
+.run code { background: #04060B; border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; font: 400 13px/1.6 var(--mono); display: block; overflow-x: auto; white-space: pre; color: #C7D6EC }
 .dnav { display: flex; gap: 22px; align-items: center; font-size: 14px; flex-wrap: wrap }
 .dnav a { color: var(--ink-soft); text-decoration: none }
 .dnav a:hover { color: var(--ink) }
-.dnav a.go { color: #17110B; background: linear-gradient(92deg, var(--copper), var(--amber)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
+.dnav a.go { color: #03141B; background: linear-gradient(92deg, var(--copper), var(--amber)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
 footer { border-top: 1px solid var(--rule); padding-top: 22px; font-size: 13px; color: var(--faint) }
 
 @media (max-width: 900px) { .explore { grid-template-columns: minmax(0, 1fr) } .pipe { grid-template-columns: repeat(2, minmax(0, 1fr)) } .pipe button:nth-child(3) { border-left: none } .pipe button:nth-child(n+3) { border-top: 1px solid var(--rule) } }
+
+body { background: radial-gradient(1200px 700px at 8% -10%, rgba(160, 140, 255, .10), transparent 60%), radial-gradient(1000px 800px at 105% 20%, rgba(91, 228, 255, .07), transparent 60%), var(--paper); background-attachment: fixed }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50; background: repeating-linear-gradient(0deg, rgba(232, 241, 255, .018) 0 1px, transparent 1px 3px); mix-blend-mode: screen }
+.panel { box-shadow: inset 0 1px 0 rgba(91, 228, 255, .06) }
 </style>
 </head>
 <body>
@@ -325,7 +329,7 @@ codesign-engine search --method planner --budget 20</code>
         if (!r || r[sw.metric] == null) { cell('c', 'no fit', { background: 'transparent', border: '1px dashed var(--rule)', color: 'var(--ink-soft)' }); continue; }
         const f = hi > lo ? (Math.log(r[sw.metric]) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)) : 0;
         const best = r[sw.metric] === lo;
-        cell('c', (r[sw.metric] / 1000).toFixed(0) + 'k' + (best ? ' best' : ''), { background: `color-mix(in srgb, var(--amber) ${Math.round(10 + f * 78)}%, var(--panel-2))`, color: f > 0.55 ? '#17110B' : 'var(--ink)', fontWeight: best ? '600' : '500' });
+        cell('c', (r[sw.metric] / 1000).toFixed(0) + 'k' + (best ? ' best' : ''), { background: `color-mix(in srgb, var(--amber) ${Math.round(10 + f * 78)}%, var(--panel-2))`, color: f > 0.55 ? '#03141B' : 'var(--ink)', fontWeight: best ? '600' : '500' });
       }
     }
     const ok = rows.filter(r => r[sw.metric] != null).length;
