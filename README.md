@@ -2,8 +2,8 @@
 
 Design an AI accelerator and its compiler as one.
 
-- Website: https://zenedgex.github.io/codesign-engine/ (zenedgex.in coming soon)
-- Live demo: https://zenedgex.github.io/codesign-engine/demo/
+- Website: https://zenedgex.in/
+- Live demo: https://zenedgex.in/demo/
 - Contact: contact@soctai.com
 
 ## Try the engine
