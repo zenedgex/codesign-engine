@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Sutra: a digital in-memory-compute AI accelerator IP for edge vision with a RISC-V control core, generated and verified for your model.">
-<meta property="og:title" content="Sutra: in-memory compute AI accelerator IP">
+<meta property="og:title" content="Sutra NPU IP: in-memory compute, 29 GOPS to 118 TOPS">
 <meta property="og:description" content="Sutra: a digital in-memory-compute AI accelerator IP for edge vision with a RISC-V control core, generated and verified for your model.">
 <meta property="og:image" content="https://zenedgex.in/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -15,7 +15,7 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Sutra: in-memory compute AI accelerator IP</title>
+<title>Sutra NPU IP: in-memory compute, 29 GOPS to 118 TOPS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap">
@@ -96,6 +96,9 @@ td:first-child { color: var(--text); white-space: nowrap }
 .metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
 .metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
 .metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
+.jump { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px }
+.jump a { font: 500 13px/1 var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 13px; background: var(--slab) }
+.jump a:hover { color: var(--text); border-color: var(--amber) }
 .fine { font-size: 14px; color: var(--faint); max-width: 96ch }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab) }
 .steps > div { padding: 26px 22px; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); min-width: 0 }
@@ -151,13 +154,21 @@ footer a { color: var(--muted); text-decoration: none }
 <div class="wrap" id="top">
   <div class="hero">
     <div class="copy">
-      <p class="kicker">Accelerator IP · designed by Atelier</p>
-      <h1>Sutra. <em>Compute in memory.</em> RISC-V in control.</h1>
-      <p class="sub">A digital in-memory-compute AI accelerator for edge vision. The weights stay where the math happens, a RISC-V core runs the network, and every configuration is generated and verified for your workload by Atelier.</p>
+      <p class="kicker">NPU IP · designed by Atelier</p>
+      <h1>Sutra NPU. <em>29 GOPS to 118 TOPS.</em></h1>
+      <p class="sub">A digital in-memory-compute neural processing unit with a RISC-V control core. The weights stay where the math happens, engines scale from one to eight, and every configuration is generated and verified for your workload by Atelier.</p>
       <p class="chip"><b>Evaluation preview</b> · verified on a full YOLOv8n frame · floorplanned on ASAP7 7&nbsp;nm</p>
       <div class="cta"><a class="btn primary" href="#contact">Evaluate Sutra <span>→</span></a><a class="btn line" href="#evidence">See the evidence</a></div>
     </div>
     <div class="tiles" id="tiles" aria-hidden="true"></div>
+  </div>
+
+  <nav class="jump" aria-label="On this page"><a href="#what">Overview</a><a href="#specs">Specifications</a><a href="#software">Software</a><a href="#evidence">Performance</a><a href="#applications">Applications</a><a href="#deliver">Deliverables</a><a href="#resources">Resources</a></nav>
+  <div class="proof" id="keys" style="margin-top:12px">
+    <div class="metric"><b>128&ndash;8,192</b><span>INT8 multiply-accumulates per cycle in one engine</span></div>
+    <div class="metric"><b>1&ndash;8</b><span>engines from one command stream, one frame each</span></div>
+    <div class="metric"><b>118 TOPS</b><span>peak with eight 128&times;64 engines at the 900&nbsp;MHz design clock</span></div>
+    <div class="metric"><b>Bit-exact</b><span>fully digital: results equal the integer reference</span></div>
   </div>
 
   <section id="what">
@@ -242,22 +253,59 @@ footer a { color: var(--muted); text-decoration: none }
     </div>
   </section>
 
-  <section id="configs">
+  <section id="specs">
     <div class="head">
-      <div class="stack"><p class="label">Configurations</p><h2>Sized to <em>your workload.</em></h2></div>
-      <div class="body"><p>Sutra is a generator, not a fixed core. Atelier picks the configuration that meets your requirements and generates its RTL.</p></div>
+      <div class="stack"><p class="label">Specifications</p><h2>Sutra <em>at a glance.</em></h2></div>
+      <div class="body"><p>Every value below is a generator range: Atelier picks the point in it that meets your requirements.</p></div>
     </div>
     <div class="tbl"><table>
-      <thead><tr><th>Parameter</th><th>Range</th><th>What it trades</th></tr></thead>
+      <thead><tr><th>Item</th><th>Sutra NPU</th></tr></thead>
       <tbody>
-        <tr><td>Array (rows &times; columns)</td><td>16–128 &times; 8–64</td><td>Rows: reduction per access. Columns: outputs per cycle.</td></tr>
-        <tr><td>Input bits per cycle</td><td>1, 2, 4, 8</td><td>Area of the adder trees against cycles per input.</td></tr>
-        <tr><td>Compute memory</td><td>up to 4 MB per engine</td><td>Holds the network's weights on chip.</td></tr>
-        <tr><td>Activation memory</td><td>up to 24 MB, 1–16 banks</td><td>Feature maps between layers; banks set bandwidth.</td></tr>
-        <tr><td>Engines</td><td>1, 2, 4, 8</td><td>Frames in flight, so frames per second.</td></tr>
-        <tr><td>Control</td><td>CV32E40P, RV32IMC</td><td>Runs the network program.</td></tr>
+        <tr><td>Compute per engine</td><td>Digital in-memory-compute array, 16&ndash;128 rows &times; 8&ndash;64 columns: 128 to 8,192 INT8 multiply-accumulates per cycle</td></tr>
+        <tr><td>Peak performance</td><td>29 GOPS to 14.7 TOPS per engine; up to 118 TOPS with eight engines (INT8, 900&nbsp;MHz)</td></tr>
+        <tr><td>Engines</td><td>1, 2, 4 or 8 in lockstep, one frame each (RTL verified with 2 and 4)</td></tr>
+        <tr><td>Data types</td><td>INT8 weights and activations, 32-bit accumulation, per-channel fixed-point requantization</td></tr>
+        <tr><td>Input precision per cycle</td><td>1, 2, 4 or 8 bits (bit-serial): array area against cycles</td></tr>
+        <tr><td>On-chip memory</td><td>Compute memory up to 4&nbsp;MB per engine (weights resident); activation memory up to 24&nbsp;MB, 1&ndash;16 banks</td></tr>
+        <tr><td>Operations on chip</td><td>Convolution (any kernel, stride, padding), matrix multiply, residual add, max-pool, upsample, activation tables (SiLU and others); concat and split by layout</td></tr>
+        <tr><td>Not yet on chip</td><td>Softmax and normalization layers (run on the host); floating point</td></tr>
+        <tr><td>Control</td><td>RISC-V CV32E40P (RV32IMC) with 256&nbsp;KB RAM and a C runtime</td></tr>
+        <tr><td>Host interface</td><td>Valid/ready ports for commands, configuration, image in and results out; a standard bus wrapper is planned</td></tr>
+        <tr><td>Clock and process</td><td>900&nbsp;MHz design clock from pre-route timing on the ASAP7 7&nbsp;nm predictive kit; ports to your foundry's kit and memory compilers</td></tr>
+        <tr><td>Delivered as</td><td>SystemVerilog RTL, compiler and runtime, testbenches, physical-design kit, memory list</td></tr>
       </tbody>
     </table></div>
+  </section>
+
+
+  <section id="software">
+    <div class="head">
+      <div class="stack"><p class="label">Software</p><h2>Atelier is <em>Sutra's toolkit.</em></h2></div>
+      <div class="body"><p>One tool takes a trained network to a sized Sutra and the program it runs, and checks the result before you see it. Models from PyTorch or TensorFlow come in through ONNX.</p></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><span class="k">01 / IMPORT</span><h3>Quantized ONNX</h3><p>INT8 models in ONNX QDQ form, as ONNX Runtime and common export tools write them. Each layer becomes integer operations with its scales and zero points.</p></div>
+      <div class="card"><span class="k">02 / SIZE</span><h3>Design search</h3><p>Set frame rate, area, power and latency. Atelier searches array, memories and engines together with the compiler mapping and picks the configuration that meets them.</p></div>
+      <div class="card"><span class="k">03 / COMPILE</span><h3>Commands, not kernels</h3><p>Every layer becomes Sutra commands: tiles and loop order chosen per layer, activations fused into the post-ops, buffers placed in on-chip memory.</p></div>
+      <div class="card"><span class="k">04 / VERIFY</span><h3>Bit-exact by construction</h3><p>The compiled network runs on the instruction-set model and must equal the integer reference on every output before anything is exported.</p></div>
+      <div class="card"><span class="k">05 / RUN</span><h3>RISC-V runtime</h3><p>A program image for the control core's C runtime, which streams the commands to every engine.</p></div>
+      <div class="card"><span class="k">06 / IMPLEMENT</span><h3>Physical-design kit</h3><p>OpenROAD-flow-scripts configuration, constraints and memory list for each design, to synthesize, floorplan and time it yourself.</p></div>
+    </div>
+  </section>
+
+  <section id="applications">
+    <div class="head">
+      <div class="stack"><p class="label">Applications</p><h2>Vision AI <em>at the edge.</em></h2></div>
+      <div class="body"><p>Where the network must run on the device, within a power and area budget.</p></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><span class="k">SMART CAMERAS</span><h3>Video analytics</h3><p>Object detection on every frame, one stream per engine, from always-on to multi-stream.</p></div>
+      <div class="card"><span class="k">INDUSTRY</span><h3>Inspection and robotics</h3><p>Defect detection and robot vision on the line, with deterministic, bit-exact results.</p></div>
+      <div class="card"><span class="k">DRONES</span><h3>Mobile platforms</h3><p>Detection and tracking where every watt and every gram counts.</p></div>
+      <div class="card"><span class="k">SENSORS</span><h3>Battery-powered IoT</h3><p>Small single-engine configurations for always-on sensing at under a tenth of a watt.</p></div>
+      <div class="card"><span class="k">RETAIL &amp; BUILDINGS</span><h3>Occupancy and safety</h3><p>People counting and zone monitoring without sending video off the device.</p></div>
+      <div class="card"><span class="k">CUSTOM SILICON</span><h3>Your network</h3><p>Bring your own model and targets; Atelier sizes Sutra for it.</p></div>
+    </div>
   </section>
 
   <section id="evidence">
@@ -305,6 +353,18 @@ footer a { color: var(--muted); text-decoration: none }
       <div><span class="st done">Done</span><h3>ASAP7 implementation</h3><p>Every block synthesized and floorplanned on ASAP7 7&nbsp;nm with its memory macros, with timing reports and a reproducible flow kit.</p></div>
       <div><span class="st now">Next</span><h3>Your foundry</h3><p>Port to your process design kit and memory compilers, then place-and-route and signoff in your flow.</p></div>
       <div><span class="st now">Next</span><h3>Your numbers</h3><p>Frame rate, power and area for your configuration on your process, measured, not modelled.</p></div>
+    </div>
+  </section>
+
+  <section id="resources">
+    <div class="head">
+      <div class="stack"><p class="label">Resources</p><h2>Look <em>closer.</em></h2></div>
+      <div class="body"><p>Try the design search, read how it works, or install the toolkit.</p></div>
+    </div>
+    <div class="grid3">
+      <a class="card" data-to="demo" href="#" style="text-decoration:none;color:inherit"><span class="k">LIVE DEMO</span><h3>Set requirements, get the chip</h3><p>Pick frame rate, area and power and see which Sutra Atelier chooses for YOLOv8n.</p></a>
+      <a class="card" data-to="tech" href="#" style="text-decoration:none;color:inherit"><span class="k">TECHNOLOGY</span><h3>How Atelier works</h3><p>Architecture and compiler searched together, and the checks behind every number.</p></a>
+      <a class="card" href="https://github.com/zenedgex/codesign-engine/releases/latest" style="text-decoration:none;color:inherit"><span class="k">DOWNLOAD</span><h3>Atelier technical preview</h3><p>Install with pip, design for YOLOv8n, export a package with its flow kit.</p></a>
     </div>
   </section>
 
