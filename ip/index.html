@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sutra: a digital in-memory-compute AI accelerator IP for edge vision with a RISC-V control core, generated and verified for your model.">
+<meta property="og:title" content="Sutra: in-memory compute AI accelerator IP">
+<meta property="og:description" content="Sutra: a digital in-memory-compute AI accelerator IP for edge vision with a RISC-V control core, generated and verified for your model.">
+<meta property="og:image" content="https://zenedgex.in/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zenedgex.in/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Sutra: in-memory compute AI accelerator IP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Sutra IP page: the same dark world as the rest of the site (copper-to-amber accent). Hero,
+   what it is, the block diagram, features, how it scales, verified evidence, what is delivered,
+   status, contact. Every figure is a measured one; performance waits for timing closure. */
+:root {
+  --void: #08090C; --slab: #0F1217; --slab-2: #151920; --slab-3: #1B2029;
+  --line: #20262F; --line-2: #2B333F;
+  --text: #EDEFF2; --muted: #9AA3AF; --faint: #626B78;
+  --copper: #E3894E; --amber: #F4BC72; --ok: #7FC8A9;
+  --display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box }
+html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
+body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased }
+.wrap { max-width: 1200px; margin-inline: auto }
+a { color: var(--amber); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 3px }
+h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
+h1 { font-size: clamp(46px, 7vw, 100px); line-height: .94; font-weight: 770; font-stretch: 112%; letter-spacing: -.028em }
+h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.03; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
+h3 { font-size: 20px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
+p { margin: 0; max-width: 64ch }
+h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--copper), var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent }
+.label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
+.label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
+
+.bar { position: sticky; top: 0; z-index: 20; margin-inline: -20px; padding: 14px 20px; background: color-mix(in srgb, var(--void) 78%, transparent); backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid var(--line) }
+.bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap }
+.mark { display: flex; align-items: center; gap: 10px; font: 700 15px/1 var(--display); font-stretch: 116%; letter-spacing: .02em; color: var(--text); text-decoration: none }
+.mark svg { width: 24px; height: 24px }
+.bar nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; align-items: center }
+.bar nav a { color: var(--muted); text-decoration: none }
+.bar nav a:hover, .bar nav a.on { color: var(--text) }
+.bar nav a.go { color: #17110B; background: linear-gradient(92deg, var(--copper), var(--amber)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: center; padding-block: 110px 40px }
+.hero > * { min-width: 0 }
+.copy { display: flex; flex-direction: column; gap: 26px }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--amber); display: flex; align-items: center; gap: 12px }
+.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--copper), var(--amber)) }
+.sub { font: 500 clamp(18px, 1.7vw, 22px)/1.45 var(--body); max-width: 46ch }
+.chip { align-self: flex-start; font: 500 12.5px/1.3 var(--mono); color: var(--muted); border: 1px solid var(--line-2); background: var(--slab); padding: 9px 12px; border-radius: 999px }
+.chip b { color: var(--amber); font-weight: 500 }
+.cta { display: flex; gap: 14px; flex-wrap: wrap }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 4px; font: 600 15px/1 var(--body); text-decoration: none }
+.btn.primary { background: linear-gradient(92deg, var(--copper), var(--amber)); color: #17110B; box-shadow: 0 10px 40px -12px rgba(227, 137, 78, .55) }
+.btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
+.tiles { aspect-ratio: 1; max-width: 520px; width: 100%; justify-self: end; display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: radial-gradient(90% 90% at 70% 20%, rgba(227,137,78,.16), transparent 60%), var(--slab) }
+.tiles i { border-radius: 4px; border: 1px solid var(--line-2); background: var(--slab-2); animation: pulse 3.2s var(--ease) infinite; animation-delay: calc(var(--d) * 70ms) }
+@keyframes pulse { 0%, 100% { background: var(--slab-2); border-color: var(--line-2) } 12% { background: rgba(244,188,114,.55); border-color: var(--amber) } 30% { background: rgba(227,137,78,.18); border-color: rgba(227,137,78,.5) } }
+
+section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40px }
+.head { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: end }
+.head > * { min-width: 0 }
+.head .body { color: var(--muted); font-size: 18px; display: flex; flex-direction: column; gap: 14px }
+.stack { display: flex; flex-direction: column; gap: 20px }
+.visual { background: radial-gradient(110% 90% at 50% 10%, var(--slab-2), var(--slab)); border: 1px solid var(--line); border-radius: 12px; padding: 22px }
+.visual svg { width: 100%; height: auto; display: block }
+.visual svg text { font-family: var(--mono) }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.card { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.card p { color: var(--muted); font-size: 15.5px }
+.card .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--amber) }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px }
+th { text-align: left; font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); padding: 0 16px 14px 0 }
+td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--muted); vertical-align: top }
+td:first-child { color: var(--text); white-space: nowrap }
+.tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
+.proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
+.metric { padding: 30px 22px 30px 0; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
+.metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
+.metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
+.fine { font-size: 14px; color: var(--faint); max-width: 96ch }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab) }
+.steps > div { padding: 26px 22px; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); min-width: 0 }
+.steps > div:first-child { border-left: none }
+.steps p { color: var(--muted); font-size: 15px }
+.st { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; padding: 6px 8px; border-radius: 4px; align-self: flex-start }
+.st.done { color: #08090C; background: var(--ok) }
+.st.now { color: #17110B; background: var(--amber) }
+.st.next { color: var(--muted); border: 1px solid var(--line-2) }
+.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--copper) 28%, transparent), transparent 60%), var(--slab) }
+.close > * { min-width: 0 }
+.mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
+footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
+footer nav { display: flex; gap: 20px; flex-wrap: wrap }
+footer a { color: var(--muted); text-decoration: none }
+
+@media (max-width: 960px) {
+  .hero, .head, .close { grid-template-columns: minmax(0, 1fr); gap: 32px }
+  .hero { padding-block: 64px 0 }
+  .tiles { justify-self: start; max-width: 420px }
+  .grid3 { grid-template-columns: minmax(0, 1fr) }
+  .proof, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .metric:nth-child(3) { padding-left: 0; border-left: none }
+  .metric:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .steps > div:nth-child(3) { border-left: none }
+  .steps > div:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .close { padding: 36px 26px }
+  section { padding-block: 88px 0 }
+}
+@media (max-width: 560px) {
+  .proof, .steps { grid-template-columns: minmax(0, 1fr) }
+  .metric + .metric, .steps > div + div { padding-left: 0; border-left: none; border-top: 1px solid var(--line) }
+  .steps > div + div { padding-left: 22px }
+}
+@media (prefers-reduced-motion: reduce) { .tiles i { animation: none } }
+</style>
+</head>
+<body>
+
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
+    <nav aria-label="Main"><a class="on" href="#top">Sutra IP</a><a data-to="home" href="#">Atelier</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Evaluate Sutra →</a></nav>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+  <div class="hero">
+    <div class="copy">
+      <p class="kicker">Accelerator IP</p>
+      <h1>Sutra. <em>Compute in memory.</em> RISC-V in control.</h1>
+      <p class="sub">A digital in-memory-compute AI accelerator for edge vision. The weights stay where the math happens, a RISC-V core runs the network, and every configuration is generated and verified for your model.</p>
+      <p class="chip"><b>Evaluation preview</b> · verified on a full YOLOv8n frame · floorplanned on ASAP7 7&nbsp;nm</p>
+      <div class="cta"><a class="btn primary" href="#contact">Evaluate Sutra <span>→</span></a><a class="btn line" href="#evidence">See the evidence</a></div>
+    </div>
+    <div class="tiles" id="tiles" aria-hidden="true"></div>
+  </div>
+
+  <section id="what">
+    <div class="head">
+      <div class="stack"><p class="label">What it is</p><h2>Compute where the <em>weights live.</em></h2></div>
+      <div class="body"><p>In most accelerators, moving weights from memory costs more energy than the arithmetic. Sutra keeps each layer's weights in compute memory next to adder trees, so a whole weight tile meets an input vector in one access.</p><p>It is fully digital: results are deterministic and bit-exact with the integer model, with no analog noise or calibration.</p></div>
+    </div>
+    <div class="visual"><svg viewBox="0 0 1000 470" role="img" aria-label="Sutra block diagram: a RISC-V control core issues one command stream to several in-memory-compute engines; each engine has compute memory with adder trees and a post-processing unit; a shared activation memory with an element-wise unit feeds them">
+      <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E3894E"/></marker></defs>
+      <rect x="20" y="40" width="190" height="150" rx="10" fill="#151920" stroke="url(#g1)" stroke-width="1.5"/>
+      <text x="40" y="75" fill="#F4BC72" font-size="13" letter-spacing="2">CONTROL</text>
+      <text x="40" y="105" fill="#EDEFF2" font-size="17">RISC-V core</text>
+      <text x="40" y="128" fill="#9AA3AF" font-size="13">CV32E40P, RV32IMC</text>
+      <text x="40" y="150" fill="#9AA3AF" font-size="13">runs the network</text>
+      <text x="40" y="172" fill="#9AA3AF" font-size="13">program</text>
+      <rect x="20" y="250" width="190" height="180" rx="10" fill="#151920" stroke="#2B333F"/>
+      <text x="40" y="285" fill="#F4BC72" font-size="13" letter-spacing="2">HOST PORT</text>
+      <text x="40" y="315" fill="#EDEFF2" font-size="17">Image in,</text>
+      <text x="40" y="338" fill="#EDEFF2" font-size="17">detections out</text>
+      <text x="40" y="368" fill="#9AA3AF" font-size="13">commands, config,</text>
+      <text x="40" y="390" fill="#9AA3AF" font-size="13">weights at boot</text>
+      <line x1="210" y1="115" x2="262" y2="115" stroke="#E3894E" stroke-width="2" marker-end="url(#ar)"/>
+      <text x="216" y="104" fill="#626B78" font-size="11">commands</text>
+      <rect x="268" y="20" width="470" height="300" rx="12" fill="none" stroke="#2B333F" stroke-dasharray="5 6"/>
+      <text x="288" y="46" fill="#626B78" font-size="12" letter-spacing="2">ENGINES 1–8 · ONE FRAME EACH, ONE COMMAND STREAM</text>
+      <g>
+        <rect x="290" y="66" width="426" height="236" rx="10" fill="#151920" stroke="url(#g1)" stroke-width="1.5"/>
+        <text x="310" y="96" fill="#F4BC72" font-size="13" letter-spacing="2">IN-MEMORY-COMPUTE ENGINE</text>
+        <rect x="310" y="112" width="250" height="120" rx="8" fill="#1B2029" stroke="#2B333F"/>
+        <text x="326" y="138" fill="#EDEFF2" font-size="15">Compute memory</text>
+        <text x="326" y="160" fill="#9AA3AF" font-size="12">weights resident; R x C per read</text>
+        <g fill="#E3894E" opacity=".75">
+          <rect x="326" y="174" width="18" height="12" rx="2"/><rect x="350" y="174" width="18" height="12" rx="2"/><rect x="374" y="174" width="18" height="12" rx="2"/><rect x="398" y="174" width="18" height="12" rx="2"/><rect x="422" y="174" width="18" height="12" rx="2"/><rect x="446" y="174" width="18" height="12" rx="2"/><rect x="470" y="174" width="18" height="12" rx="2"/><rect x="494" y="174" width="18" height="12" rx="2"/><rect x="518" y="174" width="18" height="12" rx="2"/>
+          <rect x="326" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="350" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="374" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="398" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="422" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="446" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="470" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="494" y="194" width="18" height="12" rx="2" opacity=".5"/><rect x="518" y="194" width="18" height="12" rx="2" opacity=".5"/>
+        </g>
+        <text x="326" y="224" fill="#626B78" font-size="11">adder trees, bit-serial inputs</text>
+        <rect x="576" y="112" width="124" height="120" rx="8" fill="#1B2029" stroke="#2B333F"/>
+        <text x="590" y="138" fill="#EDEFF2" font-size="15">Post-ops</text>
+        <text x="590" y="162" fill="#9AA3AF" font-size="12">bias, requant,</text>
+        <text x="590" y="180" fill="#9AA3AF" font-size="12">saturate,</text>
+        <text x="590" y="198" fill="#9AA3AF" font-size="12">activation table</text>
+        <line x1="560" y1="172" x2="572" y2="172" stroke="#E3894E" stroke-width="2" marker-end="url(#ar)"/>
+        <rect x="310" y="248" width="390" height="38" rx="8" fill="#1B2029" stroke="#2B333F"/>
+        <text x="326" y="272" fill="#9AA3AF" font-size="12">input scratchpad · accumulators</text>
+      </g>
+      <rect x="268" y="350" width="470" height="100" rx="12" fill="#151920" stroke="url(#g1)" stroke-width="1.5"/>
+      <text x="288" y="378" fill="#F4BC72" font-size="13" letter-spacing="2">ACTIVATION MEMORY + ELEMENT-WISE UNIT</text>
+      <text x="288" y="404" fill="#EDEFF2" font-size="15">Banked on-chip feature maps, up to 24 MB</text>
+      <text x="288" y="428" fill="#9AA3AF" font-size="12">add · max-pool · upsample · activation · DMA</text>
+      <line x1="500" y1="346" x2="500" y2="306" stroke="#E3894E" stroke-width="2" marker-end="url(#ar)"/>
+      <line x1="560" y1="306" x2="560" y2="346" stroke="#E3894E" stroke-width="2" marker-end="url(#ar)"/>
+      <line x1="210" y1="360" x2="262" y2="390" stroke="#E3894E" stroke-width="2" marker-end="url(#ar)"/>
+      <rect x="790" y="40" width="190" height="390" rx="10" fill="#151920" stroke="#2B333F"/>
+      <text x="810" y="75" fill="#F4BC72" font-size="13" letter-spacing="2">GENERATED FOR</text>
+      <text x="810" y="105" fill="#EDEFF2" font-size="17">your model</text>
+      <text x="810" y="140" fill="#9AA3AF" font-size="13">array R x C</text>
+      <text x="810" y="164" fill="#9AA3AF" font-size="13">input bits / cycle</text>
+      <text x="810" y="188" fill="#9AA3AF" font-size="13">compute memory</text>
+      <text x="810" y="212" fill="#9AA3AF" font-size="13">activation memory</text>
+      <text x="810" y="236" fill="#9AA3AF" font-size="13">number of engines</text>
+      <text x="810" y="280" fill="#626B78" font-size="12">chosen by</text>
+      <text x="810" y="302" fill="#EDEFF2" font-size="15">Atelier</text>
+      <text x="810" y="324" fill="#626B78" font-size="12">against your FPS, area,</text>
+      <text x="810" y="344" fill="#626B78" font-size="12">power and latency</text>
+      <line x1="786" y1="170" x2="742" y2="170" stroke="#626B78" stroke-width="1.5" stroke-dasharray="4 5"/>
+    </svg></div>
+  </section>
+
+  <section id="features">
+    <div class="head">
+      <div class="stack"><p class="label">Built for vision networks</p><h2>The whole network <em>on chip.</em></h2></div>
+      <div class="body"><p>Convolutions, residual adds, pooling and upsampling run on Sutra; the RISC-V core sequences them. When the network fits on chip, as YOLOv8n does, feature maps stay in activation memory between layers and a frame needs no off-chip round trips once the weights are loaded.</p></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><span class="k">01 / RESIDENT WEIGHTS</span><h3>Weights loaded once</h3><p>All of a network's weights live in compute memory across frames. Each frame moves only the image in and the detections out.</p></div>
+      <div class="card"><span class="k">02 / SCALE OUT</span><h3>One to eight engines</h3><p>Engines run one frame each in lockstep from a single command stream, so throughput scales with engines and the control program stays the same.</p></div>
+      <div class="card"><span class="k">03 / INTEGER EXACT</span><h3>INT8, bit-exact</h3><p>Per-channel fixed-point requantization, zero points, saturation and an activation table (SiLU for YOLO) in hardware: outputs match the integer reference bit for bit.</p></div>
+      <div class="card"><span class="k">04 / ELEMENT-WISE UNIT</span><h3>The layers between convolutions</h3><p>Residual adds with rescaling, k&times;k and separable max-pool, nearest upsampling and activations, computed next to the activation memory.</p></div>
+      <div class="card"><span class="k">05 / RISC-V CONTROL</span><h3>A standard core runs it</h3><p>An open CV32E40P (RV32IMC) core runs the network program from its own memory, with C firmware. No proprietary sequencer to learn.</p></div>
+      <div class="card"><span class="k">06 / BIT-SERIAL INPUTS</span><h3>Precision for area</h3><p>Inputs stream 1, 2, 4 or 8 bits per cycle: fewer bits per cycle for a smaller array, more for a faster one, chosen per design.</p></div>
+    </div>
+  </section>
+
+  <section id="configs">
+    <div class="head">
+      <div class="stack"><p class="label">Configurations</p><h2>Sized to <em>your model.</em></h2></div>
+      <div class="body"><p>Sutra is a generator, not a fixed core. Atelier picks the configuration that meets your requirements and generates its RTL.</p></div>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Parameter</th><th>Range</th><th>What it trades</th></tr></thead>
+      <tbody>
+        <tr><td>Array (rows &times; columns)</td><td>16–128 &times; 8–64</td><td>Rows: reduction per access. Columns: outputs per cycle.</td></tr>
+        <tr><td>Input bits per cycle</td><td>1, 2, 4, 8</td><td>Area of the adder trees against cycles per input.</td></tr>
+        <tr><td>Compute memory</td><td>up to 4 MB per engine</td><td>Holds the network's weights on chip.</td></tr>
+        <tr><td>Activation memory</td><td>up to 24 MB, 1–16 banks</td><td>Feature maps between layers; banks set bandwidth.</td></tr>
+        <tr><td>Engines</td><td>1, 2, 4, 8</td><td>Frames in flight, so frames per second.</td></tr>
+        <tr><td>Control</td><td>CV32E40P, RV32IMC</td><td>Runs the network program.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="evidence">
+    <div class="head">
+      <div class="stack"><p class="label">Evidence</p><h2>YOLOv8n, <em>verified end to end.</em></h2></div>
+      <div class="body"><p>Checked on real images, then a whole 640&times;640 frame run on the generated RTL.</p></div>
+    </div>
+    <div class="proof">
+      <div class="metric"><b>0.364</b><span>COCO mAP50-95 with Sutra's integer arithmetic, all 5,000 val2017 images (floating-point model: 0.371)</span></div>
+      <div class="metric"><b>6 / 6</b><span>detection outputs of a full frame on the RTL, bit-identical to the integer reference</span></div>
+      <div class="metric"><b>0.05%</b><span>cycle estimate against RTL simulation over that frame, 3.26 million cycles</span></div>
+      <div class="metric"><b>4 / 4</b><span>blocks synthesized and floorplanned on ASAP7 7&nbsp;nm with their memory macros, with timing reports: RISC-V core, compute engine, post-processing, activation unit</span></div>
+    </div>
+    <p class="fine">Model: Ultralytics YOLOv8n, INT8. Hardware: one 64&times;64 engine with the RISC-V control core, simulated in Verilator. Implementation: synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
+  </section>
+
+  <section id="deliver">
+    <div class="head">
+      <div class="stack"><p class="label">What you get</p><h2>RTL that arrives <em>with its proof.</em></h2></div>
+      <div class="body"><p>Each Sutra configuration is delivered as a package your RTL, software and physical-design teams can each pick up.</p></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><span class="k">RTL</span><h3>SystemVerilog</h3><p>The engines, memories, element-wise unit and top with your configuration's parameters, plus a memory list for your foundry's memory compiler.</p></div>
+      <div class="card"><span class="k">SOFTWARE</span><h3>Compiler and runtime</h3><p>From a quantized ONNX model to the command program, and the RISC-V runtime that runs it.</p></div>
+      <div class="card"><span class="k">VERIFICATION</span><h3>Testbenches and references</h3><p>cocotb testbenches, the integer reference model and whole-frame checks that compare the RTL bit for bit.</p></div>
+      <div class="card"><span class="k">PHYSICAL DESIGN</span><h3>Flow kit</h3><p>OpenROAD-flow-scripts configuration, constraints and memory macros: synthesize, floorplan and time each block yourself.</p></div>
+      <div class="card"><span class="k">ESTIMATES</span><h3>Labelled, never mixed</h3><p>Every figure says how it was obtained: estimated, simulated, synthesized or routed.</p></div>
+      <div class="card"><span class="k">CUSTOMIZATION</span><h3>Your network next</h3><p>Bring your model and requirements; Atelier re-sizes Sutra for it and the same checks run again.</p></div>
+    </div>
+  </section>
+
+  <section id="status">
+    <div class="head">
+      <div class="stack"><p class="label">Status</p><h2>Where Sutra <em>stands today.</em></h2></div>
+      <div class="body"><p>Verified in simulation, implemented on ASAP7, ready to take to your process.</p></div>
+    </div>
+    <div class="steps">
+      <div><span class="st done">Done</span><h3>Function</h3><p>Full YOLOv8n frame bit-exact on the RTL; COCO accuracy measured; RISC-V control verified in simulation.</p></div>
+      <div><span class="st done">Done</span><h3>ASAP7 implementation</h3><p>Every block synthesized and floorplanned on ASAP7 7&nbsp;nm with its memory macros, with timing reports and a reproducible flow kit.</p></div>
+      <div><span class="st now">Next</span><h3>Your foundry</h3><p>Port to your process design kit and memory compilers, then place-and-route and signoff in your flow.</p></div>
+      <div><span class="st now">Next</span><h3>Your numbers</h3><p>Frame rate, power and area for your configuration on your process, measured, not modelled.</p></div>
+    </div>
+  </section>
+
+  <div class="close" id="contact">
+    <div class="stack">
+      <p class="label">Evaluate Sutra</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Run your model on <em>Sutra.</em></h2>
+      <p style="color:var(--muted)">Tell us your network and your frame-rate, area and power targets. We size Sutra for it and share the package and the evidence for that configuration.</p>
+    </div>
+    <div class="mail"><code>hello@zenedgex.in</code></div>
+  </div>
+
+  <footer>
+    <span>© 2026 ZenEdgeX · Sutra and Atelier are technical previews</span>
+    <nav aria-label="Footer"><a data-to="site" href="#">ZenEdgeX</a><a data-to="home" href="#">Atelier</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a></nav>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const LINKS = { site: '../', ip: '../ip/', home: '../engine/', tech: '../technology/', demo: '../demo/' };
+  document.querySelectorAll('[data-to]').forEach(a => { a.href = LINKS[a.dataset.to]; });
+  const t = document.getElementById('tiles');
+  for (let i = 0; i < 64; i++) { const el = document.createElement('i'); el.style.setProperty('--d', (i % 8) + Math.floor(i / 8)); t.appendChild(el); }
+})();
+</script>
+
+</body>
+</html>
