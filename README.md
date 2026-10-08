@@ -1,9 +1,9 @@
-# ZenEdgeX
+# ZenEdgeX Atelier
 
-AI accelerators, designed for your model.
+The best chip for your workload.
 
-- **Sutra**: a digital in-memory-compute AI accelerator IP with a RISC-V control core: https://zenedgex.in/ip/
-- **Atelier** (formerly CodeSign Engine): the design engine that sizes Sutra for your network: https://zenedgex.in/engine/
+- **Atelier** (formerly CodeSign Engine): designs AI accelerators around your workload and your area, power and performance targets: https://zenedgex.in/engine/
+- **Sutra**, the proof: a digital in-memory-compute accelerator IP with a RISC-V control core, designed by Atelier for YOLOv8n: https://zenedgex.in/ip/
 - Live demo: https://zenedgex.in/demo/
 - Contact: hello@zenedgex.in
 

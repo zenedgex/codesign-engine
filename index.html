@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="ZenEdgeX: Sutra, an in-memory-compute AI accelerator IP with a RISC-V control core, and Atelier, which sizes it for your model and verifies it.">
-<meta property="og:title" content="ZenEdgeX: AI accelerators, designed for your model">
-<meta property="og:description" content="ZenEdgeX: Sutra, an in-memory-compute AI accelerator IP with a RISC-V control core, and Atelier, which sizes it for your model and verifies it.">
+<meta name="description" content="ZenEdgeX Atelier designs the best AI accelerator for your workload and your area, power and performance targets. Proof: Sutra, an in-memory-compute accelerator IP it designed.">
+<meta property="og:title" content="ZenEdgeX Atelier: the best AI chip for your workload">
+<meta property="og:description" content="ZenEdgeX Atelier designs the best AI accelerator for your workload and your area, power and performance targets. Proof: Sutra, an in-memory-compute accelerator IP it designed.">
 <meta property="og:image" content="https://zenedgex.in/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -15,13 +15,13 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>ZenEdgeX: AI accelerators, designed for your model</title>
+<title>ZenEdgeX Atelier: the best AI chip for your workload</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap">
 <style>
 /* Company home: two offerings, kept apart and then joined. Hero; Sutra (the accelerator IP) and
-   Atelier (the design engine) side by side; how the engine sizes Sutra for a model;
+   Atelier (the design engine, the product) first, Sutra (the IP it designed, the proof) second; how it sizes Sutra for a workload;
    the verified evidence; contact. Same dark world and copper-to-amber accent as the rest. */
 :root {
   --void: #08090C; --slab: #0F1217; --slab-2: #151920; --slab-3: #1B2029;
@@ -84,6 +84,8 @@ h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--copp
 .offer .go { margin-top: auto; padding-top: 8px; font: 600 15px/1 var(--body); color: var(--text) }
 .offer .go span { color: var(--amber) }
 .offer.sw .go span { color: var(--sky) }
+.proofline { font-size: 15.5px; color: var(--muted); max-width: 70ch; border-left: 2px solid var(--amber); padding-left: 14px }
+.proofline b { color: var(--amber); font-weight: 500 }
 .offer .fig { height: 120px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; margin-bottom: 4px }
 .offer .fig i { border-radius: 3px; background: var(--slab-3); border: 1px solid var(--line-2) }
 .offer.ip .fig i:nth-child(5n+2), .offer.ip .fig i:nth-child(7n) { background: rgba(244,188,114,.5); border-color: var(--amber) }
@@ -122,6 +124,12 @@ section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40
 .wlc p { color: var(--muted); font-size: 15.5px }
 .wlc b { color: var(--text); font-weight: 500 }
 @media (max-width: 960px) { .wl { grid-template-columns: minmax(0, 1fr) } }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px }
+th { text-align: left; font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); padding: 0 16px 14px 0 }
+td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--muted); vertical-align: top }
+td:first-child { color: var(--text); white-space: nowrap }
+.tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
 footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
 footer nav { display: flex; gap: 20px; flex-wrap: wrap }
 footer a { color: var(--muted); text-decoration: none }
@@ -149,22 +157,36 @@ footer a { color: var(--muted); text-decoration: none }
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
-    <nav aria-label="Main"><a data-to="ip" href="#">Sutra IP</a><a data-to="home" href="#">Atelier</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Talk to us →</a></nav>
+    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra IP</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Talk to us →</a></nav>
   </div>
 </header>
 
 <div class="wrap" id="top">
   <div class="hero">
-    <p class="kicker">Edge AI silicon</p>
-    <h1>AI accelerators, <em>designed for your model.</em></h1>
-    <p class="sub">ZenEdgeX makes Sutra, an in-memory-compute AI accelerator IP with a RISC-V control core, and Atelier, the design engine that sizes it for your network and proves it before you build it.</p>
-    <div class="cta"><a class="btn primary" data-to="ip" href="#">Explore Sutra IP <span>→</span></a><a class="btn line" data-to="home" href="#">See Atelier</a></div>
+    <p class="kicker">AI chip design engine</p>
+    <h1>The best chip for <em>your workload.</em></h1>
+    <p class="sub">Atelier designs AI accelerators around your workload, from GEMMs and convolutions to whole networks, and your area, power and performance targets. Architecture and compiler are searched together, and every design is verified before you see it.</p>
+    <p class="proofline"><b>Proof:</b> Sutra, an in-memory-compute accelerator IP with a RISC-V control core, designed by Atelier for YOLOv8n, bit-exact on RTL and floorplanned on ASAP7 7&nbsp;nm.</p>
+    <div class="cta"><a class="btn primary" data-to="home" href="#">Explore Atelier <span>→</span></a><a class="btn line" data-to="ip" href="#">See Sutra, built by Atelier</a></div>
   </div>
 
   <div class="offers">
+    <a class="offer sw" data-to="home" href="#">
+      <div class="fig" aria-hidden="true"></div>
+      <span class="tag">The product · design engine</span>
+      <h2>Atelier</h2>
+      <p>Searches accelerator architecture and compiler mapping together, against your requirements.</p>
+      <ul>
+        <li>From your workload and its FPS, area, power and latency targets</li>
+        <li>Chooses engines, array and memories; generates the RTL</li>
+        <li>Checks every design on the reference model before export</li>
+        <li>Fast estimates, labelled, then simulation and EDA to confirm</li>
+      </ul>
+      <span class="go">Atelier <span>→</span></span>
+    </a>
     <a class="offer ip" data-to="ip" href="#">
       <div class="fig" aria-hidden="true"></div>
-      <span class="tag">Silicon IP</span>
+      <span class="tag">The proof · silicon IP built by Atelier</span>
       <h2>Sutra</h2>
       <p>Digital in-memory-compute AI accelerator for edge vision, controlled by a RISC-V core.</p>
       <ul>
@@ -175,28 +197,15 @@ footer a { color: var(--muted); text-decoration: none }
       </ul>
       <span class="go">Sutra IP <span>→</span></span>
     </a>
-    <a class="offer sw" data-to="home" href="#">
-      <div class="fig" aria-hidden="true"></div>
-      <span class="tag">Design software</span>
-      <h2>Atelier</h2>
-      <p>Searches accelerator architecture and compiler mapping together, against your requirements.</p>
-      <ul>
-        <li>From a quantized model and FPS, area, power and latency targets</li>
-        <li>Chooses engines, array and memories; generates the RTL</li>
-        <li>Checks every design on the reference model before export</li>
-        <li>Fast estimates, labelled, then simulation and EDA to confirm</li>
-      </ul>
-      <span class="go">Atelier <span>→</span></span>
-    </a>
   </div>
 
   <section id="together">
     <div class="head">
-      <div class="stack"><p class="label">How they fit</p><h2>The engine sizes Sutra <em>for your network.</em></h2></div>
-      <div class="body"><p>Sutra is a generator, not a fixed core. Atelier takes your model and your targets, searches the configurations, and hands you the one that meets them, with its evidence.</p></div>
+      <div class="stack"><p class="label">How it works</p><h2>Atelier sizes Sutra <em>for your workload.</em></h2></div>
+      <div class="body"><p>Sutra is a generator, not a fixed core. Atelier takes your workload and your targets, searches the configurations, and hands you the one that meets them, with its evidence.</p></div>
     </div>
     <div class="flow">
-      <div class="fbox"><span class="t">You bring</span><ul><li>Quantized model (ONNX)</li><li>Frame rate</li><li>Area and power</li><li>Latency</li></ul></div>
+      <div class="fbox"><span class="t">You bring</span><ul><li>Your workload (ONNX, GEMMs)</li><li>Frame rate</li><li>Area and power</li><li>Latency</li></ul></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="fbox mid"><span class="t">Atelier</span><span class="name">Search and verify</span><ul><li>Architecture and compiler together</li><li>Reference-model check</li><li>RTL simulation and timing</li></ul></div>
       <div class="arrow" aria-hidden="true">→</div>
@@ -207,7 +216,7 @@ footer a { color: var(--muted); text-decoration: none }
 
   <section id="workloads">
     <div class="head">
-      <div class="stack"><p class="label">Results by workload</p><h2>The best chip for <em>your targets.</em></h2></div>
+      <div class="stack"><p class="label">Results by workload</p><h2>Proven on <em>real workloads.</em></h2></div>
       <div class="body"><p>Give us the workload and the area, power and performance it must meet. Atelier searches architecture and compiler together and returns the design that meets every requirement, ranked by what you care about most, with the evidence for it.</p></div>
     </div>
     <div class="wl">
@@ -220,7 +229,7 @@ footer a { color: var(--muted); text-decoration: none }
   <section id="evidence">
     <div class="head">
       <div class="stack"><p class="label">Evidence</p><h2>YOLOv8n, <em>verified end to end.</em></h2></div>
-      <div class="body"><p>A real detector, from its quantized model to Sutra's generated RTL and its ASAP7 floorplan.</p></div>
+      <div class="body"><p>A real detector, from the quantized network to Sutra's generated RTL and its ASAP7 floorplan.</p></div>
     </div>
     <div class="proof">
       <div class="metric"><b>0.364</b><span>COCO mAP50-95 with Sutra's integer arithmetic, all 5,000 val2017 images (floating-point model: 0.371)</span></div>
@@ -229,20 +238,26 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="metric"><b>4 / 4</b><span>blocks synthesized and floorplanned on ASAP7 7&nbsp;nm with their memory macros, with timing reports: RISC-V core, compute engine, post-processing, activation unit</span></div>
     </div>
     <p class="fine">One 64&times;64 Sutra engine with its RISC-V control core, simulated in Verilator. Implementation: OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
+    <div class="stack" style="gap:16px;margin-top:24px">
+      <h3>YOLOv8n configurations, sized by Atelier</h3>
+      <p class="fine" style="margin-top:-6px">The smallest Sutra configuration for each frame-rate target, and the fastest. Atelier estimates for 640&times;640 INT8 at a 1&nbsp;GHz target clock: frame rate from the cycle model (within 0.05% of RTL simulation over a full frame), area from ASAP7 synthesis and memory-macro models, power from the energy model. Memory: compute memory per engine + activation memory; b/cycle: input bits per cycle. Try your own targets in the <a data-to="demo" href="#">live demo</a>.</p>
+      <!--YOLO-DESIGNS--><div class="tbl"><table><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">ms / frame</th><th class="n">mm²</th><th class="n">W</th><th class="n">FPS / W</th></tr></thead><tbody><tr><td>1 × 32×64, 4 b/cycle, 4 + 3 MB</td><td class="n">118</td><td class="n">8.51</td><td class="n">3.5</td><td class="n">0.15</td><td class="n">771</td></tr><tr><td>1 × 64×64, 8 b/cycle, 4 + 3 MB</td><td class="n">301</td><td class="n">3.32</td><td class="n">3.7</td><td class="n">0.29</td><td class="n">1,053</td></tr><tr><td>4 × 64×64, 4 b/cycle, 4 + 12 MB</td><td class="n">695</td><td class="n">5.76</td><td class="n">13.9</td><td class="n">0.85</td><td class="n">818</td></tr><tr><td>4 × 64×64, 8 b/cycle, 4 + 12 MB</td><td class="n">814</td><td class="n">4.91</td><td class="n">14.5</td><td class="n">1.02</td><td class="n">798</td></tr></tbody></table></div><!--/YOLO-DESIGNS-->
+    </div>
+
   </section>
 
   <div class="close" id="contact">
     <div class="stack">
       <p class="label">Talk to us</p>
-      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring a model. <em>We'll size the chip.</em></h2>
-      <p style="color:var(--muted)">Evaluation licenses for Sutra and design-partner pilots for Atelier.</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring a workload. <em>We'll design the chip.</em></h2>
+      <p style="color:var(--muted)">Design-partner pilots for Atelier, and evaluation licenses for Sutra.</p>
     </div>
     <div class="mail"><code>hello@zenedgex.in</code></div>
   </div>
 
   <footer>
     <span>© 2026 ZenEdgeX · Sutra and Atelier are technical previews</span>
-    <nav aria-label="Footer"><a data-to="ip" href="#">Sutra IP</a><a data-to="home" href="#">Atelier</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">hello@zenedgex.in</a></nav>
+    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra IP</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">hello@zenedgex.in</a></nav>
   </footer>
 </div>
 

@@ -108,6 +108,7 @@ td:first-child { color: var(--text); white-space: nowrap }
 .close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--copper) 28%, transparent), transparent 60%), var(--slab) }
 .close > * { min-width: 0 }
 .mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
 footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
 footer nav { display: flex; gap: 20px; flex-wrap: wrap }
 footer a { color: var(--muted); text-decoration: none }
@@ -139,16 +140,16 @@ footer a { color: var(--muted); text-decoration: none }
 <header class="bar">
   <div class="wrap">
     <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
-    <nav aria-label="Main"><a class="on" href="#top">Sutra IP</a><a data-to="home" href="#">Atelier</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Evaluate Sutra →</a></nav>
+    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a class="on" href="#top">Sutra IP</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Evaluate Sutra →</a></nav>
   </div>
 </header>
 
 <div class="wrap" id="top">
   <div class="hero">
     <div class="copy">
-      <p class="kicker">Accelerator IP</p>
+      <p class="kicker">Accelerator IP · designed by Atelier</p>
       <h1>Sutra. <em>Compute in memory.</em> RISC-V in control.</h1>
-      <p class="sub">A digital in-memory-compute AI accelerator for edge vision. The weights stay where the math happens, a RISC-V core runs the network, and every configuration is generated and verified for your model.</p>
+      <p class="sub">A digital in-memory-compute AI accelerator for edge vision. The weights stay where the math happens, a RISC-V core runs the network, and every configuration is generated and verified for your workload by Atelier.</p>
       <p class="chip"><b>Evaluation preview</b> · verified on a full YOLOv8n frame · floorplanned on ASAP7 7&nbsp;nm</p>
       <div class="cta"><a class="btn primary" href="#contact">Evaluate Sutra <span>→</span></a><a class="btn line" href="#evidence">See the evidence</a></div>
     </div>
@@ -208,7 +209,7 @@ footer a { color: var(--muted); text-decoration: none }
       <line x1="210" y1="360" x2="262" y2="390" stroke="#E3894E" stroke-width="2" marker-end="url(#ar)"/>
       <rect x="790" y="40" width="190" height="390" rx="10" fill="#151920" stroke="#2B333F"/>
       <text x="810" y="75" fill="#F4BC72" font-size="13" letter-spacing="2">GENERATED FOR</text>
-      <text x="810" y="105" fill="#EDEFF2" font-size="17">your model</text>
+      <text x="810" y="105" fill="#EDEFF2" font-size="17">your workload</text>
       <text x="810" y="140" fill="#9AA3AF" font-size="13">array R x C</text>
       <text x="810" y="164" fill="#9AA3AF" font-size="13">input bits / cycle</text>
       <text x="810" y="188" fill="#9AA3AF" font-size="13">compute memory</text>
@@ -239,7 +240,7 @@ footer a { color: var(--muted); text-decoration: none }
 
   <section id="configs">
     <div class="head">
-      <div class="stack"><p class="label">Configurations</p><h2>Sized to <em>your model.</em></h2></div>
+      <div class="stack"><p class="label">Configurations</p><h2>Sized to <em>your workload.</em></h2></div>
       <div class="body"><p>Sutra is a generator, not a fixed core. Atelier picks the configuration that meets your requirements and generates its RTL.</p></div>
     </div>
     <div class="tbl"><table>
@@ -267,6 +268,12 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="metric"><b>4 / 4</b><span>blocks synthesized and floorplanned on ASAP7 7&nbsp;nm with their memory macros, with timing reports: RISC-V core, compute engine, post-processing, activation unit</span></div>
     </div>
     <p class="fine">Model: Ultralytics YOLOv8n, INT8. Hardware: one 64&times;64 engine with the RISC-V control core, simulated in Verilator. Implementation: synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
+    <div class="stack" style="gap:16px;margin-top:24px">
+      <h3>YOLOv8n configurations, sized by Atelier</h3>
+      <p class="fine" style="margin-top:-6px">The smallest Sutra configuration for each frame-rate target, and the fastest. Atelier estimates for 640&times;640 INT8 at a 1&nbsp;GHz target clock: frame rate from the cycle model (within 0.05% of RTL simulation over a full frame), area from ASAP7 synthesis and memory-macro models, power from the energy model. Memory: compute memory per engine + activation memory; b/cycle: input bits per cycle. Try your own targets in the <a data-to="demo" href="#">live demo</a>.</p>
+      <!--YOLO-DESIGNS--><div class="tbl"><table><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">ms / frame</th><th class="n">mm²</th><th class="n">W</th><th class="n">FPS / W</th></tr></thead><tbody><tr><td>1 × 32×64, 4 b/cycle, 4 + 3 MB</td><td class="n">118</td><td class="n">8.51</td><td class="n">3.5</td><td class="n">0.15</td><td class="n">771</td></tr><tr><td>1 × 64×64, 8 b/cycle, 4 + 3 MB</td><td class="n">301</td><td class="n">3.32</td><td class="n">3.7</td><td class="n">0.29</td><td class="n">1,053</td></tr><tr><td>4 × 64×64, 4 b/cycle, 4 + 12 MB</td><td class="n">695</td><td class="n">5.76</td><td class="n">13.9</td><td class="n">0.85</td><td class="n">818</td></tr><tr><td>4 × 64×64, 8 b/cycle, 4 + 12 MB</td><td class="n">814</td><td class="n">4.91</td><td class="n">14.5</td><td class="n">1.02</td><td class="n">798</td></tr></tbody></table></div><!--/YOLO-DESIGNS-->
+    </div>
+
   </section>
 
   <section id="deliver">
@@ -280,7 +287,7 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="card"><span class="k">VERIFICATION</span><h3>Testbenches and references</h3><p>cocotb testbenches, the integer reference model and whole-frame checks that compare the RTL bit for bit.</p></div>
       <div class="card"><span class="k">PHYSICAL DESIGN</span><h3>Flow kit</h3><p>OpenROAD-flow-scripts configuration, constraints and memory macros: synthesize, floorplan and time each block yourself.</p></div>
       <div class="card"><span class="k">ESTIMATES</span><h3>Labelled, never mixed</h3><p>Every figure says how it was obtained: estimated, simulated, synthesized or routed.</p></div>
-      <div class="card"><span class="k">CUSTOMIZATION</span><h3>Your network next</h3><p>Bring your model and requirements; Atelier re-sizes Sutra for it and the same checks run again.</p></div>
+      <div class="card"><span class="k">CUSTOMIZATION</span><h3>Your network next</h3><p>Bring your workload and requirements; Atelier re-sizes Sutra for it and the same checks run again.</p></div>
     </div>
   </section>
 
@@ -300,8 +307,8 @@ footer a { color: var(--muted); text-decoration: none }
   <div class="close" id="contact">
     <div class="stack">
       <p class="label">Evaluate Sutra</p>
-      <h2 style="font-size:clamp(30px,3.6vw,48px)">Run your model on <em>Sutra.</em></h2>
-      <p style="color:var(--muted)">Tell us your network and your frame-rate, area and power targets. We size Sutra for it and share the package and the evidence for that configuration.</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Run your workload on <em>Sutra.</em></h2>
+      <p style="color:var(--muted)">Tell us your workload and your frame-rate, area and power targets. We size Sutra for it and share the package and the evidence for that configuration.</p>
     </div>
     <div class="mail"><code>hello@zenedgex.in</code></div>
   </div>
