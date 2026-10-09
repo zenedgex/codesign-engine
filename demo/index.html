@@ -130,17 +130,31 @@ footer { border-top: 1px solid var(--rule); padding-top: 22px; font-size: 13px; 
   <p class="soft">Every number below was produced by the engine: its T0 model over every buildable architecture, a real compile through MLIR, and cycle-accurate RTL simulation. Estimates and measurements are labelled.</p>
 </div>
 
-<!-- try it: first, so visitors know the package is published -->
+<!-- the walkthrough video, then try it: first, so visitors know the package is published -->
+<div class="step" id="video">
+  <p class="eyebrow">Watch · 2 minutes, real runs</p>
+  <h2>From pip install to a chip design</h2>
+  <div class="panel" style="padding:0;overflow:hidden">
+    <video controls playsinline preload="none" poster="atelier-demo-poster.png" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#08090C" aria-label="Atelier demo: install, Qwen3 estimates, Qwen3 on the RTL, YOLOv8n from requirements, the exported design, the live demo">
+      <source src="atelier-demo.mp4" type="video/mp4">
+    </video>
+  </div>
+  <p class="soft" style="margin-top:12px">Install, Qwen3-0.6B estimates, a whole Qwen3 token on the generated RTL (random weights), YOLOv8n sized from requirements, the exported design and this page. No sound; every number on screen comes from the commands shown.</p>
+</div>
+
+<!-- try it -->
 <div class="step" id="run">
-  <p class="eyebrow">Try it yourself · Atelier 0.4.1 technical preview</p>
+  <p class="eyebrow">Try it yourself · Atelier 0.4.2 technical preview</p>
   <h2>Install the package and run it on your machine</h2>
   <div class="panel run feature">
     <p class="soft">Everything on this page comes from the published package. Install it (Python 3.12 or later, macOS or Linux; no Docker or EDA tools needed for these steps) and get the same numbers for your own requirements.</p>
-    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.4.1/codesign_engine-0.4.1-py3-none-any.whl
+    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.4.2/codesign_engine-0.4.2-py3-none-any.whl
 codesign-engine info</code>
     <p class="soft">Run Qwen3-0.6B, or any Qwen2, 2.5 or 3 model from its Hugging Face <span class="mono">config.json</span>, on a Sutra design: time to first token, tokens per second and energy per token, by DRAM bandwidth and weight width.</p>
     <code>codesign-engine llm --model qwen3-0.6b --rows 64 --cols 64
 codesign-engine llm --hf-config config.json --engines 2 --cols 32 --dram-gbps 68.3</code>
+    <p class="soft">In a design-partner pilot, with the source tree and the simulation image, one whole Qwen3 token runs on the generated RTL, cycle-accurate: every matrix multiply and all 151,936 logits checked against the integer reference (645 of 645 bit-exact; cycle model within 0.004%). The weights are random, so this checks function and timing; correct replies with real weights need a 16-bit residual path, which is planned.</p>
+    <code>codesign-engine llm --rtl --model qwen3-0.6b --rows 64 --cols 64</code>
     <p class="soft">Size Sutra for YOLOv8n at 640&times;640 with your frame-rate, area, power and latency requirements, and export the design: the RTL with its parameters fixed, a README and <span class="mono">design.json</span> with the estimates, and the physical-design kit with the memory list (the kit needs Docker). A GEMM spec&rsquo;s export also carries the compiler output, test vectors and a testbench.</p>
     <code>codesign-engine spec-example --network &gt; net.json
 codesign-engine design --spec net.json --export out/ --flow</code>
