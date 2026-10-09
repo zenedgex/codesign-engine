@@ -141,7 +141,7 @@ codesign-engine info</code>
     <p class="soft">Run Qwen3-0.6B, or any Qwen2, 2.5 or 3 model from its Hugging Face <span class="mono">config.json</span>, on a Sutra design: time to first token, tokens per second and energy per token, by DRAM bandwidth and weight width.</p>
     <code>codesign-engine llm --model qwen3-0.6b --rows 64 --cols 64
 codesign-engine llm --hf-config config.json --engines 2 --cols 32 --dram-gbps 68.3</code>
-    <p class="soft">Size Sutra for YOLOv8n at 640&times;640 with your frame-rate, area, power and latency requirements, and export the design: RTL with the parameters fixed, compiler output, test vectors, a testbench and the physical-design kit (the kit needs Docker).</p>
+    <p class="soft">Size Sutra for YOLOv8n at 640&times;640 with your frame-rate, area, power and latency requirements, and export the design: the RTL with its parameters fixed, a README and <span class="mono">design.json</span> with the estimates, and the physical-design kit with the memory list (the kit needs Docker). A GEMM spec&rsquo;s export also carries the compiler output, test vectors and a testbench.</p>
     <code>codesign-engine spec-example --network &gt; net.json
 codesign-engine design --spec net.json --export out/ --flow</code>
     <p class="soft">Or start from single GEMMs: compile one through MLIR to the accelerator's command stream, find the best compiler setting, list the Pareto front of all 1,272 buildable designs, or design for your own GEMM shapes and budgets.</p>
