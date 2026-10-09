@@ -118,7 +118,7 @@ section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40
 .close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--copper) 28%, transparent), transparent 60%), radial-gradient(60% 100% at 0% 100%, rgba(134,167,216,.08), transparent 60%), var(--slab) }
 .close > * { min-width: 0 }
 .mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
-.wl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.wl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
 .wlc { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
 .wlc .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--amber) }
 .wlc p { color: var(--muted); font-size: 15.5px }
@@ -170,7 +170,7 @@ footer a { color: var(--muted); text-decoration: none }
     <p class="kicker">AI chip design engine</p>
     <h1>The best chip for <em>your workload.</em></h1>
     <p class="sub">Atelier designs AI accelerators around your workload, from GEMMs and convolutions to whole networks, and your area, power and performance targets. Architecture and compiler are searched together, and every design is verified before you see it.</p>
-    <p class="proofline"><b>Proof:</b> Sutra, an in-memory-compute accelerator IP with a RISC-V control core, designed by Atelier for YOLOv8n, bit-exact on RTL and floorplanned on ASAP7 7&nbsp;nm.</p>
+    <p class="proofline"><b>Proof:</b> Sutra, an in-memory-compute accelerator IP with a RISC-V control core, designed by Atelier for Qwen3 and YOLOv8n: a whole Qwen3 token and a full YOLOv8n frame bit-exact on RTL, floorplanned on ASAP7 7&nbsp;nm.</p>
     <div class="cta"><a class="btn primary" data-to="home" href="#">Explore Atelier <span>→</span></a><a class="btn line" data-to="ip" href="#">See Sutra, built by Atelier</a></div>
   </div>
 
@@ -181,7 +181,7 @@ footer a { color: var(--muted); text-decoration: none }
       <h2>Atelier</h2>
       <p>Searches accelerator architecture and compiler mapping together, against your requirements.</p>
       <ul>
-        <li>From your workload and its FPS, area, power and latency targets</li>
+        <li>From your workload and its token or frame rate, area, power and latency targets</li>
         <li>Chooses engines, array and memories; generates the RTL</li>
         <li>Checks every design on the reference model before export</li>
         <li>Fast estimates, labelled, then simulation and EDA to confirm</li>
@@ -192,9 +192,9 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="fig" aria-hidden="true"></div>
       <span class="tag">The proof · silicon IP built by Atelier</span>
       <h2>Sutra</h2>
-      <p>Digital in-memory-compute AI accelerator for edge vision, controlled by a RISC-V core.</p>
+      <p>Digital in-memory-compute AI accelerator for language and vision models at the edge, controlled by a RISC-V core.</p>
       <ul>
-        <li>Weights stay in compute memory; the whole network runs on chip</li>
+        <li>Language models stream weights from DRAM; vision networks run fully on chip</li>
         <li>One to eight engines from a single command stream</li>
         <li>INT8, bit-exact with the integer model</li>
         <li>Delivered as RTL with compiler, runtime, testbenches and a flow kit</li>
@@ -209,7 +209,7 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="body"><p>Sutra is a generator, not a fixed core. Atelier takes your workload and your targets, searches the configurations, and hands you the one that meets them, with its evidence.</p></div>
     </div>
     <div class="flow">
-      <div class="fbox"><span class="t">You bring</span><ul><li>Your workload (ONNX, GEMMs)</li><li>Frame rate</li><li>Area and power</li><li>Latency</li></ul></div>
+      <div class="fbox"><span class="t">You bring</span><ul><li>Your model (LLM config, ONNX, GEMMs)</li><li>Token or frame rate</li><li>Area and power</li><li>Latency</li></ul></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="fbox mid"><span class="t">Atelier</span><span class="name">Search and verify</span><ul><li>Architecture and compiler together</li><li>Reference-model check</li><li>RTL simulation and timing</li></ul></div>
       <div class="arrow" aria-hidden="true">→</div>
@@ -224,6 +224,7 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="body"><p>Give us the workload and the area, power and performance it must meet. Atelier searches architecture and compiler together and returns the design that meets every requirement, ranked by what you care about most, with the evidence for it.</p></div>
     </div>
     <div class="wl">
+      <div class="wlc"><span class="k">LANGUAGE MODEL</span><h3>Qwen3-0.6B, a whole token</h3><p>All <b>645 matrix multiplies</b> of a generated token, 28 layers and the output head, bit-exact on the generated RTL, with the logits equal to the integer reference; the cycle estimate within <b>0.004%</b> of its 16.8 million cycles.</p></div>
       <div class="wlc"><span class="k">GEMM</span><h3>Transformer matrix multiplies</h3><p>Compiled through MLIR for <b>22 accelerator configurations</b>, systolic and in-memory compute, from 4&times;4 to 128&times;64. Every program bit-exact against NumPy on the generated RTL; the cycle estimate is a median <b>1.4%</b> from RTL simulation.</p></div>
       <div class="wlc"><span class="k">CONVOLUTION</span><h3>CNN layers</h3><p>All <b>63 convolution layers</b> of YOLOv8n, from 3&times;3 stems to 1&times;1 heads, compiled onto in-memory-compute engines and run on the generated RTL, bit-exact with the integer reference.</p></div>
       <div class="wlc"><span class="k">NETWORK</span><h3>YOLOv8n, end to end</h3><p>The whole detector on chip: <b>0.364 mAP50-95</b> on COCO with the accelerator's integer arithmetic, a full 640&times;640 frame bit-exact on RTL, and the estimate within <b>0.05%</b> of its 3.26 million cycles.</p></div>
