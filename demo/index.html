@@ -335,13 +335,13 @@ codesign-engine spec-example &gt; spec.json &amp;&amp; codesign-engine design --
     const all = DATA.llm || [];
     if (!all.length) { document.getElementById('llm').hidden = true; return; }
     const q = { tps: store.get('l.tps', 20), ttft: store.get('l.ttft', 200), w: store.get('l.w', 3), prefer: store.get('l.prefer', 'area'),
-                dram: store.get('l.dram2', 'all'), wb: store.get('l.wb', 8), pick: null };
+                dram: store.get('l.dram2', 'all'), wb: store.get('l.wb2', 'all'), pick: null };
     const inp = { tps: document.getElementById('r-tps'), ttft: document.getElementById('r-ttft'), w: document.getElementById('r-lw') };
     inp.tps.value = q.tps; inp.ttft.value = q.ttft; inp.w.value = q.w;
     for (const k of ['tps', 'ttft', 'w']) inp[k].oninput = () => { q[k] = +inp[k].value; q.pick = null; store.set('l.' + k, q[k]); draw(); };
     chips(document.getElementById('lprefer'), [['area', 'Smallest'], ['power', 'Lowest power'], ['tps', 'Fastest']], q.prefer, v => { q.prefer = v; q.pick = null; store.set('l.prefer', v); draw(); });
     chips(document.getElementById('ldram'), [['all', 'All'], [17.1, 'LPDDR4X 17 GB/s'], [68.3, 'LPDDR5X 68 GB/s'], [136.5, '2× LPDDR5X 136 GB/s']], q.dram, v => { q.dram = v; q.pick = null; store.set('l.dram2', v); draw(); });
-    chips(document.getElementById('lwb'), [[8, 'INT8'], [4, 'INT4 (planned)']], q.wb, v => { q.wb = v; q.pick = null; store.set('l.wb', v); draw(); });
+    chips(document.getElementById('lwb'), [['all', 'Both'], [8, 'INT8'], [4, 'INT4 (planned)']], q.wb, v => { q.wb = v; q.pick = null; store.set('l.wb2', v); draw(); });
     const sv = document.getElementById('lscatter');
     const L = 64, R = 620, T = 16, B = 380;
     const amin = Math.min(...all.map(r => r.area)) * 0.85, amax = Math.max(...all.map(r => r.area)) * 1.1;
@@ -353,7 +353,7 @@ codesign-engine spec-example &gt; spec.json &amp;&amp; codesign-engine design --
       document.getElementById('v-tps').textContent = fmt(q.tps) + ' tokens/s';
       document.getElementById('v-ttft').textContent = fmt(q.ttft) + ' ms';
       document.getElementById('v-lw').textContent = q.w.toFixed(1) + ' W';
-      const rows = all.filter(r => (q.dram === 'all' || r.dram === q.dram) && r.wbits === q.wb);
+      const rows = all.filter(r => (q.dram === 'all' || r.dram === q.dram) && (q.wb === 'all' || r.wbits === q.wb));
       const ok = rows.filter(meets).sort((a, b) => key[q.prefer](a) - key[q.prefer](b));
       const chosen = q.pick || ok[0] || null;
       sv.textContent = '';
@@ -365,15 +365,15 @@ codesign-engine spec-example &gt; spec.json &amp;&amp; codesign-engine design --
       for (const r of [...rows].sort((a, b) => meets(a) - meets(b))) {
         const c = el('circle', { class: 'pt', cx: X(r.area), cy: Y(r.tps), r: 3.5 + 7 * r.w / wmax, fill: meets(r) ? '#F4BC72' : '#39424E', 'fill-opacity': meets(r) ? .85 : .7 }, sv);
         c.onclick = () => { q.pick = r; draw(); };
-        el('title', {}, c, `${r.label}, ${r.dram} GB/s: ${fmt(r.tps, 1)} tokens/s, ${fmt(r.ttft)} ms to first token, ${r.area.toFixed(1)} mm², ${r.w.toFixed(2)} W`);
+        el('title', {}, c, `${r.label}, ${r.dram} GB/s, INT${r.wbits}: ${fmt(r.tps, 1)} tokens/s, ${fmt(r.ttft)} ms to first token, ${r.area.toFixed(1)} mm², ${r.w.toFixed(2)} W`);
       }
       if (chosen) el('circle', { cx: X(chosen.area), cy: Y(chosen.tps), r: 10 + 7 * chosen.w / wmax, fill: 'none', stroke: '#ECEEF1', 'stroke-width': 2 }, sv);
-      document.getElementById('lsummary').textContent = `${ok.length} of ${rows.length} Sutra configurations meet every requirement ${q.dram === 'all' ? 'across the memory options' : 'at this memory'} and weight width.` + (q.pick ? ' Showing the one you clicked.' : '');
+      document.getElementById('lsummary').textContent = `${ok.length} of ${rows.length} Sutra configurations meet every requirement ${q.dram === 'all' ? 'across the memory options' : 'at this memory'}${q.wb === 'all' ? ' and both weight widths' : ' and weight width'}.` + (q.pick ? ' Showing the one you clicked.' : '');
       const d = document.getElementById('ldetail');
       if (!chosen) { d.innerHTML = '<span class="tag est">No configuration</span><p class="soft">Nothing meets all three. Relax a requirement, pick faster memory or INT4 weights, or talk to us.</p>'; return; }
       const c = chosen;
       d.innerHTML = `<span class="tag est">${q.pick ? 'Selected' : 'Chosen'} · estimate</span>
-        <h3 style="font-size:20px">${c.label}, ${c.dram} GB/s</h3>
+        <h3 style="font-size:20px">${c.label}, ${c.dram} GB/s, ${c.wbits === 8 ? 'INT8' : 'INT4'}</h3>
         <dl class="kv">
           <dt>Generation</dt><dd>${fmt(c.tps, 1)} tokens/s</dd>
           <dt>First token</dt><dd>${fmt(c.ttft)} ms (512-token prompt)</dd>
