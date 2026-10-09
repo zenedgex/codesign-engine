@@ -163,7 +163,7 @@ footer a { color: var(--muted); text-decoration: none }
     <div class="tiles" id="tiles" aria-hidden="true"></div>
   </div>
 
-  <nav class="jump" aria-label="On this page"><a href="#what">Overview</a><a href="#specs">Specifications</a><a href="#software">Software</a><a href="#evidence">Performance</a><a href="#applications">Applications</a><a href="#deliver">Deliverables</a><a href="#resources">Resources</a></nav>
+  <nav class="jump" aria-label="On this page"><a href="#what">Overview</a><a href="#specs">Specifications</a><a href="#software">Software</a><a href="#evidence">Performance</a><a href="#llm">Language models</a><a href="#applications">Applications</a><a href="#deliver">Deliverables</a><a href="#resources">Resources</a></nav>
   <div class="proof" id="keys" style="margin-top:12px">
     <div class="metric"><b>128&ndash;8,192</b><span>INT8 multiply-accumulates per cycle in one engine</span></div>
     <div class="metric"><b>1&ndash;8</b><span>engines from one command stream, one frame each</span></div>
@@ -253,6 +253,14 @@ footer a { color: var(--muted); text-decoration: none }
     </div>
   </section>
 
+  <section id="llm">
+    <div class="head">
+      <div class="stack"><p class="label">Language models</p><h2>Qwen3-0.6B, <em>its matrix layers on the RTL.</em></h2></div>
+      <div class="body"><p>Every distinct matrix multiply of a generated token and of a 512-token prompt, run on the generated RTL with Qwen3-0.6B's real shapes. The non-matrix layers are not on chip yet.</p></div>
+    </div>
+    <!--QWEN3--><div class="proof"><div class="metric"><b>13 / 13</b><span>distinct matrix shapes of a token and of a 512-token prompt, run on the RTL with random INT8 data, bit-identical to the integer reference</span></div><div class="metric"><b>0.2%</b><span>cycle estimate against the RTL over a whole token and a whole prompt (18.4 and 84.1 million cycles; every shape within 1%)</span></div><div class="metric"><b>20.5 ms</b><span>engine time per generated token at 900&nbsp;MHz: 49 tokens/s when memory keeps up</span></div><div class="metric"><b>93 ms</b><span>engine time for the matrix layers of a 512-token prompt</span></div></div><p class="fine">Model: Qwen3-0.6B (28 layers, grouped-query attention), INT8 weights and activations; wider layers split into 1,024-channel parts; attention run as matrix multiplies with K and V loaded at run time. Hardware: one 64&times;64 engine, simulated in Verilator, its weights and commands fed one per cycle by the test bench: the job of a planned weight DMA and command queue (the RISC-V control core alone takes about ten cycles per command). Not yet on chip: RMSNorm, softmax, RoPE and the SwiGLU multiply, which the estimates below cost on proposed units.</p><div class="stack" style="gap:16px;margin-top:24px"><h3>Qwen3-0.6B on one engine, estimated by Atelier</h3><p class="fine" style="margin-top:-6px">One 64&times;64 engine (3.9&nbsp;mm²) at 900&nbsp;MHz with the planned weight DMA and command queue; a 512-token prompt, then tokens generated with 1,024 in context. Engine cycles from the cycle model checked above; DRAM time from bytes moved over the bandwidth; energy from the calibrated energy model, standard-cell compute memory. Estimates, not measurements.</p><div class="tbl"><table><thead><tr><th>Memory</th><th>Weights</th><th class="n">ms to first token</th><th class="n">tokens / s</th><th class="n">mJ / token</th><th class="n">W</th></tr></thead><tbody><tr><td>LPDDR4X, 17 GB/s</td><td>INT8</td><td class="n">145</td><td class="n">24</td><td class="n">66</td><td class="n">1.6</td></tr><tr><td>LPDDR4X, 17 GB/s</td><td>INT4 (planned)</td><td class="n">138</td><td class="n">41</td><td class="n">43</td><td class="n">1.8</td></tr><tr><td>LPDDR5X, 68 GB/s</td><td>INT8</td><td class="n">100</td><td class="n">49</td><td class="n">51</td><td class="n">2.5</td></tr><tr><td>LPDDR5X, 68 GB/s</td><td>INT4 (planned)</td><td class="n">100</td><td class="n">49</td><td class="n">42</td><td class="n">2.0</td></tr></tbody></table></div></div><!--/QWEN3-->
+  </section>
+
   <section id="specs">
     <div class="head">
       <div class="stack"><p class="label">Specifications</p><h2>Sutra <em>at a glance.</em></h2></div>
@@ -302,7 +310,7 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="card"><span class="k">SMART CAMERAS</span><h3>Video analytics</h3><p>Object detection on every frame, one stream per engine, from always-on to multi-stream.</p></div>
       <div class="card"><span class="k">INDUSTRY</span><h3>Inspection and robotics</h3><p>Defect detection and robot vision on the line, with deterministic, bit-exact results.</p></div>
       <div class="card"><span class="k">DRONES</span><h3>Mobile platforms</h3><p>Detection and tracking where every watt and every gram counts.</p></div>
-      <div class="card"><span class="k">SENSORS</span><h3>Battery-powered IoT</h3><p>Small single-engine configurations for always-on sensing at under a tenth of a watt.</p></div>
+      <div class="card"><span class="k">SENSORS</span><h3>Battery-powered IoT</h3><p>Small single-engine configurations for always-on sensing, sized to the frame rate the sensor needs.</p></div>
       <div class="card"><span class="k">RETAIL &amp; BUILDINGS</span><h3>Occupancy and safety</h3><p>People counting and zone monitoring without sending video off the device.</p></div>
       <div class="card"><span class="k">CUSTOM SILICON</span><h3>Your network</h3><p>Bring your own model and targets; Atelier sizes Sutra for it.</p></div>
     </div>
