@@ -372,15 +372,15 @@ footer a:hover { color: var(--text) }
     <div class="head" style="margin-top:72px">
       <div class="stack">
         <p class="label">Case study</p>
-        <h2>YOLOv8n, <em>end to end.</em></h2>
+        <h2>Qwen3 and YOLOv8n, <em>on the RTL.</em></h2>
       </div>
-      <div class="body"><p>A full object detector, from its quantized model to a generated in-memory-compute accelerator: checked on real images, then a whole 640&times;640 frame run on the generated hardware.</p></div>
+      <div class="body"><p>A whole Qwen3-0.6B token, every matrix multiply bit-exact with its logits equal to the integer reference; and a full object detector, from its quantized model to a generated in-memory-compute accelerator: checked on real images, then a whole 640&times;640 frame run on the generated hardware.</p></div>
     </div>
     <div class="proof" id="yolo-metrics">
+      <div class="metric"><b>645 / 645</b><span>matrix multiplies of a whole Qwen3-0.6B token on the generated RTL, bit-identical, the logits equal to the integer reference</span></div>
+      <div class="metric"><b>0.004%</b><span>difference between the cycle estimate and RTL simulation over that token (16.8 million cycles)</span></div>
       <div class="metric"><b>0.364</b><span>COCO mAP50-95 through the accelerator's integer arithmetic, on all 5,000 val2017 images (floating-point model: 0.371)</span></div>
-      <div class="metric"><b>6 / 6</b><span>detection outputs of a full 640&times;640 frame on the generated RTL, bit-identical to the integer reference</span></div>
-      <div class="metric"><b>0.05%</b><span>difference between the instant cycle estimate and RTL simulation over that frame (3.26 million cycles)</span></div>
-      <div class="metric"><b>4 / 4</b><span>blocks synthesized and floorplanned on ASAP7 7&nbsp;nm with their memory macros, with timing reports: RISC-V core, compute engine, post-processing, activation unit</span></div>
+      <div class="metric"><b>6 / 6</b><span>detection outputs of a full 640&times;640 frame on the generated RTL, bit-identical to the integer reference</span></div></div>
     </div>
     <p class="fine">Model: Ultralytics YOLOv8n, INT8. Hardware: one 64&times;64 digital in-memory-compute engine with a RISC-V (CV32E40P) control core, simulated in Verilator. Implementation: synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
   </section>
