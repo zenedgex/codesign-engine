@@ -139,6 +139,15 @@ footer a { color: var(--muted); text-decoration: none }
   .steps > div + div { padding-left: 22px }
 }
 @media (prefers-reduced-motion: reduce) { .tiles i { animation: none } }
+.fp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 28px }
+.fp figure { margin: 0 }
+.fp img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line, #26303A) }
+.fp-key { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; font-size: 14px }
+.fp-key i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 8px; vertical-align: -1px }
+.fp-facts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 16px; margin: 0; font-size: 14px }
+.fp-facts dt { opacity: .7 }
+.fp-facts dd { margin: 0 }
+@media (max-width: 860px) { .fp { grid-template-columns: 1fr } .fp-key { grid-template-columns: 1fr } }
 </style>
 </head>
 <body>
@@ -147,7 +156,7 @@ footer a { color: var(--muted); text-decoration: none }
 <header class="bar">
   <div class="wrap">
     <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
-    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a class="on" href="#top">Sutra IP</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Evaluate Sutra →</a></nav>
+    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a class="on" href="#top">Sutra</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Contact us →</a></nav>
   </div>
 </header>
 
@@ -253,14 +262,6 @@ footer a { color: var(--muted); text-decoration: none }
     </div>
   </section>
 
-  <section id="llm">
-    <div class="head">
-      <div class="stack"><p class="label">Language models</p><h2>Qwen3-0.6B, <em>its matrix layers on the RTL.</em></h2></div>
-      <div class="body"><p>Every distinct matrix multiply of a generated token and of a 512-token prompt, run on the generated RTL with Qwen3-0.6B's real shapes. The non-matrix layers are not on chip yet.</p></div>
-    </div>
-    <!--QWEN3--><div class="proof"><div class="metric"><b>13 / 13</b><span>distinct matrix shapes of a token and of a 512-token prompt, run on the RTL with random INT8 data, bit-identical to the integer reference</span></div><div class="metric"><b>0.2%</b><span>cycle estimate against the RTL over a whole token and a whole prompt (18.4 and 84.1 million cycles; every shape within 1%)</span></div><div class="metric"><b>20.5 ms</b><span>engine time per generated token at 900&nbsp;MHz: 49 tokens/s when memory keeps up</span></div><div class="metric"><b>93 ms</b><span>engine time for the matrix layers of a 512-token prompt</span></div></div><p class="fine">Model: Qwen3-0.6B (28 layers, grouped-query attention), INT8 weights and activations; wider layers split into 1,024-channel parts; attention run as matrix multiplies with K and V loaded at run time. Hardware: one 64&times;64 engine, simulated in Verilator, its weights and commands fed one per cycle by the test bench: the job of a planned weight DMA and command queue (the RISC-V control core alone takes about ten cycles per command). Not yet on chip: RMSNorm, softmax, RoPE and the SwiGLU multiply, which the estimates below cost on proposed units.</p><div class="stack" style="gap:16px;margin-top:24px"><h3>Qwen3-0.6B on one engine, estimated by Atelier</h3><p class="fine" style="margin-top:-6px">One 64&times;64 engine (3.9&nbsp;mm²) at 900&nbsp;MHz with the planned weight DMA and command queue; a 512-token prompt, then tokens generated with 1,024 in context. Engine cycles from the cycle model checked above; DRAM time from bytes moved over the bandwidth; energy from the calibrated energy model, standard-cell compute memory. Estimates, not measurements.</p><div class="tbl"><table><thead><tr><th>Memory</th><th>Weights</th><th class="n">ms to first token</th><th class="n">tokens / s</th><th class="n">mJ / token</th><th class="n">W</th></tr></thead><tbody><tr><td>LPDDR4X, 17 GB/s</td><td>INT8</td><td class="n">145</td><td class="n">24</td><td class="n">66</td><td class="n">1.6</td></tr><tr><td>LPDDR4X, 17 GB/s</td><td>INT4 (planned)</td><td class="n">138</td><td class="n">41</td><td class="n">43</td><td class="n">1.8</td></tr><tr><td>LPDDR5X, 68 GB/s</td><td>INT8</td><td class="n">100</td><td class="n">49</td><td class="n">51</td><td class="n">2.5</td></tr><tr><td>LPDDR5X, 68 GB/s</td><td>INT4 (planned)</td><td class="n">100</td><td class="n">49</td><td class="n">42</td><td class="n">2.0</td></tr></tbody></table></div></div><!--/QWEN3-->
-  </section>
-
   <section id="specs">
     <div class="head">
       <div class="stack"><p class="label">Specifications</p><h2>Sutra <em>at a glance.</em></h2></div>
@@ -328,12 +329,35 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="metric"><b>4 / 4</b><span>blocks synthesized and floorplanned on ASAP7 7&nbsp;nm with their memory macros, with timing reports: RISC-V core, compute engine, post-processing, activation unit</span></div>
     </div>
     <p class="fine">Model: Ultralytics YOLOv8n, INT8. Hardware: one 64&times;64 engine with the RISC-V control core, simulated in Verilator. Implementation: synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
+    <div class="fp">
+      <figure><img src="sutra-engine-floorplan.png" width="1000" height="1000" alt="Floorplan of a Sutra engine on ASAP7: compute-memory, accumulator, scratchpad, activation and post-op SRAM macros around the placed standard cells of the in-memory-compute adder trees, activation unit, post-op unit and control" loading="lazy"></figure>
+      <div class="stack" style="gap:14px">
+        <h3>A Sutra engine, placed and routed</h3>
+        <p class="fine">One 16&times;8 Sutra engine with its activation unit and post-op unit, implemented with OpenROAD-flow-scripts on the ASAP7 7&nbsp;nm predictive kit, after global routing. Boxes are SRAM macros; the shaded areas are standard cells, coloured by block, darker where denser.</p>
+        <ul class="fp-key"><li><i style="background:#4285f4"></i>Compute memory</li><li><i style="background:#f08040"></i>In-memory compute adder trees</li><li><i style="background:#34c784"></i>Activation unit and memory</li><li><i style="background:#b070e8"></i>Post-op unit and parameters</li><li><i style="background:#e85478"></i>Accumulator memory</li><li><i style="background:#e2ba3c"></i>Input scratchpad</li><li><i style="background:#808c9a"></i>Control and other logic</li></ul>
+        <dl class="fp-facts">
+          <dt>Die</dt><dd>512 &times; 512&nbsp;&micro;m, 0.262&nbsp;mm²</dd>
+          <dt>SRAM macros</dt><dd>62 (32 compute memory, 16 post-op, 8 activation, 4 accumulator, 2 scratchpad)</dd>
+          <dt>Timing</dt><dd>&minus;5.3&nbsp;ps worst slack at 900&nbsp;MHz after global routing: 896&nbsp;MHz</dd>
+          <dt>Memories</dt><dd>ASAP7 example SRAM macros; your foundry's memory compilers replace them</dd>
+        </dl>
+      </div>
+    </div>
+
     <div class="stack" style="gap:16px;margin-top:24px">
       <h3>YOLOv8n configurations, sized by Atelier</h3>
       <p class="fine" style="margin-top:-6px">The smallest Sutra configuration for each frame-rate target, and the fastest. Atelier estimates for 640&times;640 INT8 at the 900&nbsp;MHz design clock: frame rate from the cycle model (within 0.05% of RTL simulation over a full frame), area from ASAP7 synthesis and memory-macro models, power from the energy model. Memory: compute memory per engine + activation memory; b/cycle: input bits per cycle. Try your own targets in the <a data-to="demo" href="#">live demo</a>.</p>
-      <!--YOLO-DESIGNS--><div class="tbl"><table><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">ms / frame</th><th class="n">mm²</th><th class="n">W</th><th class="n">FPS / W</th></tr></thead><tbody><tr><td>1 × 32×32, 8 b/cycle, 1 + 3 MB</td><td class="n">58</td><td class="n">17.19</td><td class="n best" title="smallest area">1.9</td><td class="n best" title="lowest power">0.08</td><td class="n">719</td></tr><tr><td>1 × 32×64, 4 b/cycle, 4 + 3 MB</td><td class="n">106</td><td class="n">9.45</td><td class="n">3.5</td><td class="n">0.14</td><td class="n">733</td></tr><tr><td>2 × 64×64, 8 b/cycle, 4 + 6 MB</td><td class="n">510</td><td class="n">3.92</td><td class="n">7.2</td><td class="n">0.52</td><td class="n">985</td></tr><tr><td>4 × 64×64, 4 b/cycle, 4 + 12 MB</td><td class="n">625</td><td class="n">6.40</td><td class="n">13.9</td><td class="n">0.79</td><td class="n">789</td></tr><tr><td>4 × 64×64, 8 b/cycle, 4 + 12 MB</td><td class="n best" title="highest frame rate">732</td><td class="n">5.46</td><td class="n">14.5</td><td class="n">0.95</td><td class="n">773</td></tr></tbody></table></div><p class="fine best-key"><span class="best">highlighted</span> highest frame rate, smallest area, lowest power</p><!--/YOLO-DESIGNS-->
+      <!--YOLO-DESIGNS--><div class="tbl"><table><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">ms / frame</th><th class="n">mm²</th><th class="n">W</th><th class="n">FPS / W</th></tr></thead><tbody><tr><td>1 × 32×32, 8 b/cycle, 1 + 3 MB</td><td class="n">58</td><td class="n">17.23</td><td class="n best" title="smallest area">1.9</td><td class="n best" title="lowest power">0.39</td><td class="n">150</td></tr><tr><td>1 × 64×64, 4 b/cycle, 4 + 3 MB</td><td class="n">129</td><td class="n">7.76</td><td class="n">3.5</td><td class="n">1.04</td><td class="n">124</td></tr><tr><td>1 × 128×64, 8 b/cycle, 4 + 3 MB</td><td class="n">362</td><td class="n">2.76</td><td class="n">4.0</td><td class="n">2.60</td><td class="n">139</td></tr><tr><td>4 × 32×64, 8 b/cycle, 4 + 12 MB</td><td class="n">634</td><td class="n">6.31</td><td class="n">14.1</td><td class="n">3.92</td><td class="n">162</td></tr><tr><td>4 × 64×64, 8 b/cycle, 4 + 12 MB</td><td class="n best" title="highest frame rate">1,045</td><td class="n">3.83</td><td class="n">14.6</td><td class="n">6.52</td><td class="n">160</td></tr></tbody></table></div><p class="fine best-key"><span class="best">highlighted</span> highest frame rate, smallest area, lowest power</p><!--/YOLO-DESIGNS-->
     </div>
 
+  </section>
+
+  <section id="llm">
+    <div class="head">
+      <div class="stack"><p class="label">Language models</p><h2>Qwen3-0.6B, <em>its matrix layers on the RTL.</em></h2></div>
+      <div class="body"><p>Every distinct matrix multiply of a generated token and of a 512-token prompt, run on the generated RTL with Qwen3-0.6B's real shapes. The non-matrix layers are not on chip yet.</p></div>
+    </div>
+    <!--QWEN3--><div class="proof"><div class="metric"><b>13 / 13</b><span>distinct matrix shapes of a token and of a 512-token prompt, run on the RTL with random INT8 data, bit-identical to the integer reference</span></div><div class="metric"><b>0.2%</b><span>cycle estimate against the RTL over a whole token and a whole prompt (18.4 and 84.1 million cycles; every shape within 1%)</span></div><div class="metric"><b>20.5 ms</b><span>engine time per generated token at 900&nbsp;MHz: 49 tokens/s when memory keeps up</span></div><div class="metric"><b>93 ms</b><span>engine time for the matrix layers of a 512-token prompt</span></div></div><p class="fine">Model: Qwen3-0.6B (28 layers, grouped-query attention), INT8 weights and activations; wider layers split into 1,024-channel parts; attention run as matrix multiplies with K and V loaded at run time. Hardware: one 64&times;64 engine, simulated in Verilator, its weights and commands fed one per cycle by the test bench: the job of a planned weight DMA and command queue (the RISC-V control core alone takes about ten cycles per command). Not yet on chip: RMSNorm, softmax, RoPE and the SwiGLU multiply, which the estimates below cost on proposed units.</p><div class="stack" style="gap:16px;margin-top:24px"><h3>Qwen3-0.6B on one engine, estimated by Atelier</h3><p class="fine" style="margin-top:-6px">One 64&times;64 engine (3.9&nbsp;mm²) at 900&nbsp;MHz with the planned weight DMA and command queue; a 512-token prompt, then tokens generated with 1,024 in context. Engine cycles from the cycle model checked above; DRAM time from bytes moved over the bandwidth; energy from the calibrated energy model, standard-cell compute memory. Estimates, not measurements.</p><div class="tbl"><table><thead><tr><th>Memory</th><th>Weights</th><th class="n">ms to first token</th><th class="n">tokens / s</th><th class="n">mJ / token</th><th class="n">W</th></tr></thead><tbody><tr><td>LPDDR4X, 17 GB/s</td><td>INT8</td><td class="n">145</td><td class="n">24</td><td class="n">66</td><td class="n">1.6</td></tr><tr><td>LPDDR4X, 17 GB/s</td><td>INT4 (planned)</td><td class="n">138</td><td class="n">41</td><td class="n">43</td><td class="n">1.8</td></tr><tr><td>LPDDR5X, 68 GB/s</td><td>INT8</td><td class="n">100</td><td class="n">49</td><td class="n">51</td><td class="n">2.5</td></tr><tr><td>LPDDR5X, 68 GB/s</td><td>INT4 (planned)</td><td class="n">100</td><td class="n">49</td><td class="n">42</td><td class="n">2.0</td></tr></tbody></table></div></div><!--/QWEN3-->
   </section>
 
   <section id="deliver">
@@ -387,7 +411,7 @@ footer a { color: var(--muted); text-decoration: none }
 
   <footer>
     <span>© 2026 ZenEdgeX · Sutra and Atelier are technical previews</span>
-    <nav aria-label="Footer"><a data-to="site" href="#">ZenEdgeX</a><a data-to="home" href="#">Atelier</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a></nav>
+    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a href="#top">Sutra</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">Contact us</a></nav>
   </footer>
 </div>
 
