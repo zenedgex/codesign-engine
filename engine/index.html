@@ -26,37 +26,37 @@
    industries, evidence, contact. A progress line tracks the reader; lime is the
    only accent. Engineering depth lives on the technology page. */
 :root {
-  --void: #08090C;
-  --slab: #0F1217;
-  --slab-2: #151920;
-  --slab-3: #1B2029;
-  --line: #20262F;
-  --line-2: #2B333F;
-  --text: #EDEFF2;
-  --muted: #9AA3AF;
-  --faint: #626B78;
+  --void: #FFFFFF;
+  --slab: #F6F7F3;
+  --slab-2: #EFF1EB;
+  --slab-3: #E7EAE2;
+  --line: #E2E5DD;
+  --line-2: #CFD4C7;
+  --text: #12161C;
+  --muted: #4F5866;
+  --faint: #6B7380;
   --leaf: #A9CC72;
-  --lime: #D0E6A5;
-  --glow: rgba(208, 230, 165, .16);
+  --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C;
+  --glow: rgba(169, 204, 114, .22);
   --display: 'Archivo', 'Arial Black', Arial, sans-serif;
   --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
   --ease: cubic-bezier(.2, .7, .2, 1);
-  color-scheme: dark;
+  color-scheme: light;
 }
 * { box-sizing: border-box }
 html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
 body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility }
 .wrap { max-width: 1200px; margin-inline: auto }
-a { color: var(--lime); text-underline-offset: 3px }
-:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px }
+a { color: var(--green); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px }
 ::selection { background: color-mix(in srgb, var(--lime) 40%, transparent) }
 h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
 h1 { font-size: clamp(48px, 7.8vw, 112px); line-height: .93; font-weight: 770; font-stretch: 112%; letter-spacing: -.028em; max-width: 11ch }
 h2 { font-size: clamp(32px, 4.2vw, 58px); line-height: 1.02; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
 h3 { font-size: 22px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
 p { margin: 0; max-width: 64ch }
-em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--leaf), var(--lime)); -webkit-background-clip: text; background-clip: text; color: transparent }
+em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--green-deep), var(--green-2)); -webkit-background-clip: text; background-clip: text; color: transparent }
 .label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
 .label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
 .muted { color: var(--muted) }
@@ -78,7 +78,7 @@ em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, va
 .hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(620px circle at var(--px) var(--py), var(--glow), transparent 60%); pointer-events: none; z-index: 1 }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--void) 0%, color-mix(in srgb, var(--void) 86%, transparent) 38%, transparent 70%), linear-gradient(0deg, var(--void) 0%, transparent 32%); pointer-events: none; z-index: 1 }
 .hero-copy { position: relative; z-index: 2; padding: 140px 20px 90px; max-width: 1200px; width: 100%; margin-inline: auto; display: flex; flex-direction: column; gap: 28px }
-.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--lime); display: flex; align-items: center; gap: 12px }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 12px }
 .kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
 .sub { font: 500 clamp(19px, 1.8vw, 23px)/1.45 var(--body); color: var(--text); max-width: 44ch }
 .lede { font-size: 17.5px; color: var(--muted); max-width: 54ch }
@@ -89,7 +89,7 @@ em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, va
 .btn .arr { transition: transform .25s var(--ease) }
 .btn:hover .arr { transform: translateX(4px) }
 .signature { font: 500 italic 15px/1.4 var(--body); color: var(--faint); display: flex; align-items: center; gap: 10px }
-.signature b { font-style: normal; color: var(--lime); font-weight: 500 }
+.signature b { font-style: normal; color: var(--green); font-weight: 500 }
 .die-cap { position: absolute; right: 20px; bottom: 20px; z-index: 2; font: 400 12px/1.4 var(--mono); color: var(--faint); max-width: 380px; text-align: right }
 
 /* ---------- section scaffolding */
@@ -113,8 +113,8 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .question { margin-top: 120px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 26px; padding: 72px 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: radial-gradient(60% 120% at 50% 0%, rgba(169, 204, 114, .10), transparent 70%) }
 .question h2 { max-width: 20ch; margin-inline: auto }
 .triad { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; font: 720 clamp(22px, 2.6vw, 34px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
-.triad span:nth-child(2) { color: var(--leaf) }
-.triad span:nth-child(3) { color: var(--lime) }
+.triad span:nth-child(2) { color: var(--green) }
+.triad span:nth-child(3) { color: var(--green) }
 
 /* ---------- benefits */
 .benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
@@ -125,7 +125,7 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 /* ---------- differentiator */
 .diff { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center }
 .diff > * { min-width: 0 }
-.quote { border-left: 2px solid var(--lime); padding: 6px 0 6px 22px; font: 720 clamp(24px, 2.6vw, 34px)/1.12 var(--display); font-stretch: 110%; letter-spacing: -.01em }
+.quote { border-left: 2px solid var(--leaf); padding: 6px 0 6px 22px; font: 720 clamp(24px, 2.6vw, 34px)/1.12 var(--display); font-stretch: 110%; letter-spacing: -.01em }
 .visual { background: radial-gradient(110% 90% at 50% 10%, var(--slab-2), var(--slab)); border: 1px solid var(--line); border-radius: 12px; padding: 24px }
 .visual svg { width: 100%; height: auto; display: block }
 .spin { transform-origin: 280px 170px; animation: spin 18s linear infinite }
@@ -147,7 +147,7 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .fbox.engine .name { font: 740 22px/1.1 var(--display); font-stretch: 110% }
 .fbox.engine .plus { display: flex; flex-direction: column; gap: 8px }
 .fbox.engine .plus span { font: 500 14px/1 var(--body); padding: 11px 12px; border-radius: 6px; background: var(--slab-3); border: 1px solid var(--line-2) }
-.arrow { color: var(--leaf); font: 600 22px/1 var(--mono) }
+.arrow { color: var(--green); font: 600 22px/1 var(--mono) }
 .flow-note { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: center }
 .flow-note b { font: 650 20px/1.3 var(--display); font-stretch: 106% }
 
@@ -155,7 +155,7 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .why { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab) }
 .why > div { padding: 30px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; border-left: 1px solid var(--line) }
 .why > div:first-child { border-left: none }
-.why .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--lime) }
+.why .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
 .why h3 { font-size: 18px }
 .why p { color: var(--muted); font-size: 15px }
 
@@ -177,7 +177,7 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 /* ---------- results by workload */
 .wl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
 .wlc { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
-.wlc .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--lime) }
+.wlc .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
 .wlc p { color: var(--muted); font-size: 15.5px }
 .wlc b { color: var(--text); font-weight: 500 }
 @media (max-width: 960px) { .wl { grid-template-columns: minmax(0, 1fr) } }
@@ -187,9 +187,9 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .close .actions { display: flex; flex-direction: column; gap: 14px; align-items: stretch }
 .mail { display: flex; align-items: center; gap: 10px; font: 400 15px/1 var(--mono) }
 .mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; user-select: all; font-family: var(--mono) }
-.mail button { all: unset; cursor: pointer; font: 500 13px/1 var(--body); color: var(--lime); border: 1px solid color-mix(in srgb, var(--lime) 45%, transparent); padding: 11px 13px; border-radius: 4px }
-.mail button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px }
-.partner { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--lime) }
+.mail button { all: unset; cursor: pointer; font: 500 13px/1 var(--body); color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 45%, transparent); padding: 11px 13px; border-radius: 4px }
+.mail button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px }
+.partner { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--green) }
 footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
 footer nav { display: flex; gap: 20px; flex-wrap: wrap }
 footer a { color: var(--muted); text-decoration: none }
@@ -232,7 +232,7 @@ footer a:hover { color: var(--text) }
 
 <header class="bar">
   <div class="wrap">
-    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#A9CC72"/><stop offset="1" stop-color="#D0E6A5"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
+    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg>ZenEdgeX</a>
     <nav aria-label="Main"><a class="on" href="#top">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Contact us →</a></nav>
   </div>
   <div class="progress" id="progress" aria-hidden="true"></div>
@@ -273,9 +273,9 @@ footer a:hover { color: var(--text) }
       </div>
     </div>
     <div class="benefits">
-      <div class="card benefit glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><span class="num">01</span><h3>Explore faster</h3><p>Evaluate thousands of architecture and implementation possibilities instead of relying on a small number of manual experiments.</p></div>
-      <div class="card benefit glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg></span><span class="num">02</span><h3>Optimize better</h3><p>Find the best trade-offs across performance, power and area for your actual workloads, not for a generic benchmark.</p></div>
-      <div class="card benefit glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="num">03</span><h3>Reduce design risk</h3><p>Validate important design decisions earlier, before committing significant engineering resources to implementation.</p></div>
+      <div class="card benefit glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><span class="num">01</span><h3>Explore faster</h3><p>Evaluate thousands of architecture and implementation possibilities instead of relying on a small number of manual experiments.</p></div>
+      <div class="card benefit glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg></span><span class="num">02</span><h3>Optimize better</h3><p>Find the best trade-offs across performance, power and area for your actual workloads, not for a generic benchmark.</p></div>
+      <div class="card benefit glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="num">03</span><h3>Reduce design risk</h3><p>Validate important design decisions earlier, before committing significant engineering resources to implementation.</p></div>
     </div>
   </section>
 
@@ -351,11 +351,11 @@ footer a:hover { color: var(--text) }
       </div>
     </div>
     <div class="inds">
-      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg></span><h3>AI &amp; ML</h3><p>Accelerators for inference, training and emerging AI workloads.</p></div>
-      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16l2-6h10l2 6"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="19" r="1.2"/><circle cx="16.5" cy="19" r="1.2"/></svg></span><h3>Automotive &amp; robotics</h3><p>Specialized compute for perception, autonomy and real-time workloads.</p></div>
-      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></span><h3>Edge &amp; embedded</h3><p>Performance and efficiency under tight power and area constraints.</p></div>
-      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg></span><h3>Datacenter &amp; networking</h3><p>Specialized architectures for high-throughput workloads.</p></div>
-      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D0E6A5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></span><h3>Custom silicon</h3><p>Workload-specific architectures, without limiting exploration to existing designs.</p></div>
+      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg></span><h3>AI &amp; ML</h3><p>Accelerators for inference, training and emerging AI workloads.</p></div>
+      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16l2-6h10l2 6"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="19" r="1.2"/><circle cx="16.5" cy="19" r="1.2"/></svg></span><h3>Automotive &amp; robotics</h3><p>Specialized compute for perception, autonomy and real-time workloads.</p></div>
+      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></span><h3>Edge &amp; embedded</h3><p>Performance and efficiency under tight power and area constraints.</p></div>
+      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M8 7h.01M8 17h.01"/></svg></span><h3>Datacenter &amp; networking</h3><p>Specialized architectures for high-throughput workloads.</p></div>
+      <div class="ind glow reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4A7A16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></span><h3>Custom silicon</h3><p>Workload-specific architectures, without limiting exploration to existing designs.</p></div>
     </div>
   </section>
 
@@ -464,20 +464,20 @@ footer a:hover { color: var(--text) }
     svgEl(g, 'stop', { offset: 0, 'stop-color': '#A9CC72' }); svgEl(g, 'stop', { offset: 1, 'stop-color': '#D0E6A5' });
     const mono = 'Geist Mono, monospace', disp = 'Archivo, Arial, sans-serif';
     const ring = svgEl(sv, 'g', { class: 'spin' });
-    svgEl(ring, 'circle', { cx: 280, cy: 170, r: 118, fill: 'none', stroke: '#2B333F', 'stroke-width': 1.4, 'stroke-dasharray': '3 7' });
+    svgEl(ring, 'circle', { cx: 280, cy: 170, r: 118, fill: 'none', stroke: '#CFD4C7', 'stroke-width': 1.4, 'stroke-dasharray': '3 7' });
     svgEl(ring, 'circle', { cx: 398, cy: 170, r: 5, fill: '#D0E6A5' });
     svgEl(ring, 'circle', { cx: 162, cy: 170, r: 5, fill: '#A9CC72' });
-    const pill = (x, y, w, t, s) => { svgEl(sv, 'rect', { x: x - w / 2, y: y - 30, width: w, height: 60, rx: 30, fill: '#151920', stroke: '#2B333F' }); svgEl(sv, 'text', { x, y: y - 2, 'text-anchor': 'middle', fill: '#EDEFF2', 'font-family': disp, 'font-size': 16, 'font-weight': 650 }, t); svgEl(sv, 'text', { x, y: y + 17, 'text-anchor': 'middle', fill: '#9AA3AF', 'font-family': mono, 'font-size': 11 }, s); };
+    const pill = (x, y, w, t, s) => { svgEl(sv, 'rect', { x: x - w / 2, y: y - 30, width: w, height: 60, rx: 30, fill: '#EFF1EB', stroke: '#CFD4C7' }); svgEl(sv, 'text', { x, y: y - 2, 'text-anchor': 'middle', fill: '#12161C', 'font-family': disp, 'font-size': 16, 'font-weight': 650 }, t); svgEl(sv, 'text', { x, y: y + 17, 'text-anchor': 'middle', fill: '#4F5866', 'font-family': mono, 'font-size': 11 }, s); };
     pill(140, 92, 200, 'Architecture', 'array · memory · dataflow');
     pill(420, 92, 200, 'Compiler', 'tiling · mapping · schedule');
     svgEl(sv, 'line', { x1: 240, y1: 92, x2: 320, y2: 92, stroke: '#A9CC72', 'stroke-width': 1.6 });
-    svgEl(sv, 'text', { x: 280, y: 80, 'text-anchor': 'middle', fill: '#D0E6A5', 'font-family': mono, 'font-size': 11 }, 'together');
-    svgEl(sv, 'path', { d: 'M 140 122 C 140 190, 196 222, 205 237', fill: 'none', stroke: '#4A5260', 'stroke-width': 1.4 });
-    svgEl(sv, 'path', { d: 'M 420 122 C 420 190, 364 222, 355 237', fill: 'none', stroke: '#4A5260', 'stroke-width': 1.4 });
+    svgEl(sv, 'text', { x: 280, y: 80, 'text-anchor': 'middle', fill: '#4A7A16', 'font-family': mono, 'font-size': 11 }, 'together');
+    svgEl(sv, 'path', { d: 'M 140 122 C 140 190, 196 222, 205 237', fill: 'none', stroke: '#A3AAB4', 'stroke-width': 1.4 });
+    svgEl(sv, 'path', { d: 'M 420 122 C 420 190, 364 222, 355 237', fill: 'none', stroke: '#A3AAB4', 'stroke-width': 1.4 });
     svgEl(sv, 'rect', { x: 205, y: 205, width: 150, height: 64, rx: 10, fill: 'url(#cu)' });
     svgEl(sv, 'text', { x: 280, y: 233, 'text-anchor': 'middle', fill: '#11160B', 'font-family': disp, 'font-size': 16, 'font-weight': 700 }, 'Your design');
     svgEl(sv, 'text', { x: 280, y: 252, 'text-anchor': 'middle', fill: '#2A3A17', 'font-family': mono, 'font-size': 11 }, '+ its compiler');
-    svgEl(sv, 'text', { x: 280, y: 314, 'text-anchor': 'middle', fill: '#9AA3AF', 'font-family': mono, 'font-size': 11.5 }, 'measured on your workloads, every iteration');
+    svgEl(sv, 'text', { x: 280, y: 314, 'text-anchor': 'middle', fill: '#4F5866', 'font-family': mono, 'font-size': 11.5 }, 'measured on your workloads, every iteration');
   })();
 
   // hero: floorplan + wavefront
@@ -500,13 +500,13 @@ footer a:hover { color: var(--text) }
     const narrow = w < 960;
     const s = Math.min((narrow ? w * .9 : w * .42) / W, (h * .62) / H);
     const ox = narrow ? (w - W * s) / 2 : w - W * s - Math.max(48, w * .07), oy = (h - H * s) / 2 - (narrow ? 80 : 30);
-    ctx.strokeStyle = '#20262F'; ctx.lineWidth = 1; ctx.strokeRect(ox - 16, oy - 16, W * s + 32, H * s + 32);
-    ctx.strokeStyle = '#11151B';
+    ctx.strokeStyle = '#E2E5DD'; ctx.lineWidth = 1; ctx.strokeRect(ox - 16, oy - 16, W * s + 32, H * s + 32);
+    ctx.strokeStyle = '#EEF0EB';
     for (let x = ox - 16; x < ox + W * s + 16; x += 12) { ctx.beginPath(); ctx.moveTo(x, oy - 16); ctx.lineTo(x, oy + H * s + 16); ctx.stroke(); }
     const mac = (m, x, y) => {
-      ctx.fillStyle = '#10151E'; ctx.fillRect(x, y, m.w_um * s, m.h_um * s);
-      ctx.strokeStyle = '#3B4C66'; ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, m.w_um * s - 1, m.h_um * s - 1);
-      ctx.strokeStyle = '#1A2331'; ctx.beginPath();
+      ctx.fillStyle = '#EEF2F7'; ctx.fillRect(x, y, m.w_um * s, m.h_um * s);
+      ctx.strokeStyle = '#A9B6CB'; ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, m.w_um * s - 1, m.h_um * s - 1);
+      ctx.strokeStyle = '#DCE2EA'; ctx.beginPath();
       for (let yy = y + 4; yy < y + m.h_um * s; yy += 4) { ctx.moveTo(x + 3, yy); ctx.lineTo(x + m.w_um * s - 3, yy); }
       ctx.stroke();
     };
@@ -519,7 +519,7 @@ footer a:hover { color: var(--text) }
     for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
       const phase = ((time - (i + j)) % (2 * n) + 2 * n) % (2 * n);
       const gl = phase < 3 ? 1 - phase / 3 : 0;
-      ctx.fillStyle = gl > 0 ? `rgba(208, 230, 165,${.18 + .72 * gl})` : '#171C24';
+      ctx.fillStyle = gl > 0 ? `rgba(140, 186, 76,${.18 + .72 * gl})` : '#E6E9E1';
       ctx.fillRect(ax + j * c + 1, ay + i * c + 1, c - 2, c - 2);
     }
     ctx.strokeStyle = '#A9CC72'; ctx.lineWidth = 1.2; ctx.strokeRect(ax + .5, ay + .5, as - 1, as - 1);

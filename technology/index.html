@@ -25,39 +25,39 @@
    wavefront; "How it works" pins its loop diagram while the steps scroll past; "Intelligence" is
    a tabbed layer explorer; "Who" is a snapping carousel. Lime light is the only accent. */
 :root {
-  --void: #08090C;
-  --slab: #0F1217;
-  --slab-2: #151920;
-  --slab-3: #1B2029;
-  --line: #20262F;
-  --line-2: #2B333F;
-  --text: #EDEFF2;
-  --muted: #9AA3AF;
-  --faint: #626B78;
+  --void: #FFFFFF;
+  --slab: #F6F7F3;
+  --slab-2: #EFF1EB;
+  --slab-3: #E7EAE2;
+  --line: #E2E5DD;
+  --line-2: #CFD4C7;
+  --text: #12161C;
+  --muted: #4F5866;
+  --faint: #6B7380;
   --leaf: #A9CC72;
-  --lime: #D0E6A5;
-  --glow: rgba(208, 230, 165, .16);
+  --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C;
+  --glow: rgba(169, 204, 114, .22);
   --display: 'Archivo', 'Arial Black', Arial, sans-serif;
   --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
   --ease: cubic-bezier(.2, .7, .2, 1);
-  color-scheme: dark;
+  color-scheme: light;
 }
 * { box-sizing: border-box }
 html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
 body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility }
 .wrap { max-width: 1200px; margin-inline: auto }
-a { color: var(--lime); text-underline-offset: 3px }
-:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px }
+a { color: var(--green); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px }
 ::selection { background: color-mix(in srgb, var(--lime) 40%, transparent) }
 h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
 h1 { font-size: clamp(46px, 7.4vw, 104px); line-height: .94; font-weight: 760; font-stretch: 112%; letter-spacing: -.025em; max-width: 12ch }
 h2 { font-size: clamp(32px, 4.2vw, 58px); line-height: 1.02; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
 h3 { font-size: 21px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
 p { margin: 0; max-width: 64ch }
-em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--leaf), var(--lime)); -webkit-background-clip: text; background-clip: text; color: transparent }
+em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--green-deep), var(--green-2)); -webkit-background-clip: text; background-clip: text; color: transparent }
 .label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
-.label .no { color: var(--lime) }
+.label .no { color: var(--green) }
 .label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
 .muted { color: var(--muted) }
 
@@ -78,7 +78,7 @@ em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, va
 .rail a i { height: 1px; background: var(--line-2); transition: width .3s var(--ease), background .3s; width: 12px; justify-self: start }
 .rail a span { opacity: 0; transform: translateX(-4px); transition: opacity .25s, transform .25s var(--ease); white-space: nowrap }
 .rail:hover a span, .rail a.on span { opacity: 1; transform: none }
-.rail a.on { color: var(--lime) }
+.rail a.on { color: var(--green) }
 .rail a.on i { width: 22px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
 @media (min-width: 1560px) { .rail { display: flex } }
 
@@ -88,7 +88,7 @@ em.lit, h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, va
 .hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(600px circle at var(--px) var(--py), var(--glow), transparent 60%); pointer-events: none; z-index: 1 }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--void) 0%, color-mix(in srgb, var(--void) 86%, transparent) 36%, transparent 68%), linear-gradient(0deg, var(--void) 0%, transparent 32%); pointer-events: none; z-index: 1 }
 .hero-copy { position: relative; z-index: 2; padding: 140px 20px 88px; max-width: 1200px; width: 100%; margin-inline: auto; display: flex; flex-direction: column; gap: 28px }
-.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--lime); display: flex; align-items: center; gap: 12px }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 12px }
 .kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
 .sub { font: 600 clamp(19px, 1.8vw, 23px)/1.35 var(--body); color: var(--text); max-width: 34ch }
 .lede { font-size: 18.5px; line-height: 1.6; color: var(--muted); max-width: 54ch }
@@ -152,8 +152,8 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .step .k { font: 500 12px/1 var(--mono); letter-spacing: .16em; color: var(--faint); transition: color .4s }
 .step p { color: var(--muted); font-size: 17px; transition: color .4s }
 .step .out { font: 400 13px/1.45 var(--mono); color: var(--faint) }
-.step.on { border-left-color: var(--lime) }
-.step.on .k { color: var(--lime) }
+.step.on { border-left-color: var(--green) }
+.step.on .k { color: var(--green) }
 .step.on p { color: var(--text) }
 
 .budget { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 56px; align-items: center; background: radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--leaf) 10%, transparent), transparent 55%), var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 40px }
@@ -177,8 +177,8 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .tab b { font: 650 18px/1.25 var(--display); font-stretch: 106% }
 .tab:hover, .tab[aria-selected="true"] { background: var(--slab-2) }
 .tab[aria-selected="true"]::before { transform: scaleY(1) }
-.tab[aria-selected="true"] .n { color: var(--lime) }
-.tab:focus-visible { outline: 2px solid var(--lime); outline-offset: -2px }
+.tab[aria-selected="true"] .n { color: var(--green) }
+.tab:focus-visible { outline: 2px solid var(--green); outline-offset: -2px }
 .panel { padding: 40px; display: flex; flex-direction: column; gap: 22px; min-height: 420px }
 .panel[hidden] { display: none }
 .panel.in { animation: panelIn .5s var(--ease) }
@@ -187,7 +187,7 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .panel p { color: var(--muted) }
 .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 8px }
 .chain span { font: 400 13px/1 var(--mono); color: var(--text); border: 1px solid var(--line-2); background: var(--slab-3); border-radius: 4px; padding: 10px 12px }
-.chain i { font-style: normal; color: var(--leaf) }
+.chain i { font-style: normal; color: var(--green) }
 .panel.in .chain > * { animation: chainIn .5s var(--ease) both }
 @keyframes chainIn { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
 .learned { display: flex; flex-direction: column; gap: 8px; font: 400 13px/1.45 var(--mono); color: var(--muted); border-left: 2px solid var(--leaf); padding-left: 14px }
@@ -197,7 +197,7 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .platform { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
 .mod { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 34px; display: flex; flex-direction: column; gap: 14px; min-width: 0; transition: border-color .3s, opacity .8s var(--ease), transform .8s var(--ease) }
 .mod:hover { border-color: var(--line-2) }
-.mod .tagline { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--leaf) }
+.mod .tagline { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--green) }
 .mod p { color: var(--muted); font-size: 16px }
 .mod ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto }
 .mod li { font: 400 12.5px/1 var(--mono); color: var(--muted); border: 1px solid var(--line-2); border-radius: 999px; padding: 7px 11px; background: var(--slab-2) }
@@ -207,13 +207,13 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .track::-webkit-scrollbar { display: none }
 .who { scroll-snap-align: start; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 32px 30px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
 .who .tierk { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--faint) }
-.who:first-child .tierk { color: var(--lime) }
+.who:first-child .tierk { color: var(--green) }
 .who .q { font: 600 19px/1.35 var(--display); font-stretch: 104%; color: var(--text) }
 .who p { color: var(--muted); font-size: 15.5px }
 .ctrl { display: flex; gap: 10px; justify-content: flex-end }
 .ctrl button { all: unset; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--text); transition: border-color .2s, background .2s }
-.ctrl button:hover { border-color: var(--lime); background: var(--slab-2) }
-.ctrl button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px }
+.ctrl button:hover { border-color: var(--green); background: var(--slab-2) }
+.ctrl button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px }
 .ctrl button[disabled] { opacity: .35; cursor: default }
 
 /* ---------- 07 roadmap + measured results */
@@ -222,9 +222,9 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .road > div::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--line-2) }
 .road > div.now::before { background: linear-gradient(90deg, var(--leaf), var(--lime)) }
 .road > div::after { content: ""; position: absolute; top: -6px; left: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--void); border: 2px solid var(--faint) }
-.road > div.now::after { border-color: var(--lime); background: var(--lime); box-shadow: 0 0 0 6px rgba(208, 230, 165, .14) }
+.road > div.now::after { border-color: var(--green); background: var(--lime); box-shadow: 0 0 0 6px rgba(208, 230, 165, .14) }
 .road .when { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--faint) }
-.road .now .when { color: var(--lime) }
+.road .now .when { color: var(--green) }
 .road ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; color: var(--muted); font-size: 15.5px }
 .road li { padding-left: 16px; position: relative }
 .road li::before { content: ""; position: absolute; left: 0; top: .72em; width: 7px; height: 1px; background: var(--leaf) }
@@ -246,8 +246,8 @@ section { padding-block: 136px 0; display: flex; flex-direction: column; gap: 44
 .close .actions { display: flex; flex-direction: column; gap: 14px; align-items: stretch }
 .mail { display: flex; align-items: center; gap: 10px; font: 400 15px/1 var(--mono) }
 .mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; user-select: all; font-family: var(--mono) }
-.mail button { all: unset; cursor: pointer; font: 500 13px/1 var(--body); color: var(--lime); border: 1px solid color-mix(in srgb, var(--lime) 45%, transparent); padding: 11px 13px; border-radius: 4px }
-.mail button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px }
+.mail button { all: unset; cursor: pointer; font: 500 13px/1 var(--body); color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 45%, transparent); padding: 11px 13px; border-radius: 4px }
+.mail button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px }
 footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap }
 
 /* ---------- responsive */
@@ -286,16 +286,16 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
 .pstage .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--faint) }
 .pstage b { font: 650 17px/1.25 var(--display); font-stretch: 106% }
 .pstage span:last-child { font: 400 12.5px/1.45 var(--mono); color: var(--muted) }
-.pstage:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); z-index: 1; color: var(--leaf); font: 600 14px/1 var(--mono); background: var(--void); padding: 2px 0 }
+.pstage:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); z-index: 1; color: var(--green); font: 600 14px/1 var(--mono); background: var(--void); padding: 2px 0 }
 .pstage.hot { background: radial-gradient(120% 120% at 50% 0%, rgba(169, 204, 114, .22), transparent 70%), var(--slab-2) }
-.pstage.hot .k { color: var(--lime) }
+.pstage.hot .k { color: var(--green) }
 .integ { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px }
 .integ > div { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
-.integ .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--leaf) }
+.integ .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--green) }
 .integ ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px }
 .integ li { font: 400 13px/1 var(--mono); border: 1px solid var(--line-2); background: var(--slab-2); border-radius: 999px; padding: 8px 12px }
 .integ .st { margin-top: auto; font: 500 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint) }
-.integ .st.now { color: var(--lime) }
+.integ .st.now { color: var(--green) }
 @media (max-width: 960px) {
   .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   .pstage { border-left: none; border-top: 1px solid var(--line) }
@@ -315,7 +315,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
 
 <header class="bar">
   <div class="wrap">
-    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#A9CC72"/><stop offset="1" stop-color="#D0E6A5"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
+    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" width="24" height="24" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg>ZenEdgeX</a>
     <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a class="on" href="#top">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" data-to="site" data-hash="#contact" href="#">Contact us →</a></nav>
   </div>
   <div class="progress" id="progress" aria-hidden="true"></div>
@@ -380,7 +380,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     </div>
     <div class="budget reveal">
       <div style="display:flex;flex-direction:column;gap:16px">
-        <p class="label" style="color:var(--lime)">Adaptive EDA budgeting</p>
+        <p class="label" style="color: var(--green)">Adaptive EDA budgeting</p>
         <h3 style="font-size:30px;line-height:1.12">The engine decides which candidate deserves expensive EDA time.</h3>
         <p class="muted">Each tier costs orders of magnitude more than the one before it. Instead of a fixed filter, the planner chooses where to spend: a candidate moves on only when it is likely to improve your trade-off, and every result updates that judgement.</p>
       </div>
@@ -578,11 +578,11 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     svgEl(g, 'stop', { offset: 0, 'stop-color': '#A9CC72' }); svgEl(g, 'stop', { offset: 1, 'stop-color': '#D0E6A5' });
     const mono = 'Geist Mono, monospace', disp = 'Archivo, Arial, sans-serif';
     const box = (x, y, w, h, label, sub, hot) => {
-      svgEl(sv, 'rect', { x, y, width: w, height: h, rx: 5, fill: hot ? 'url(#eng)' : '#151920', stroke: hot ? 'none' : '#2B333F' });
-      svgEl(sv, 'text', { x: x + w / 2, y: y + h / 2 + (sub ? -2 : 5), 'text-anchor': 'middle', fill: hot ? '#11160B' : '#EDEFF2', 'font-family': disp, 'font-size': 15, 'font-weight': 650 }, label);
-      if (sub) svgEl(sv, 'text', { x: x + w / 2, y: y + h / 2 + 16, 'text-anchor': 'middle', fill: hot ? '#2A3A17' : '#9AA3AF', 'font-family': mono, 'font-size': 11 }, sub);
+      svgEl(sv, 'rect', { x, y, width: w, height: h, rx: 5, fill: hot ? 'url(#eng)' : '#EFF1EB', stroke: hot ? 'none' : '#CFD4C7' });
+      svgEl(sv, 'text', { x: x + w / 2, y: y + h / 2 + (sub ? -2 : 5), 'text-anchor': 'middle', fill: hot ? '#11160B' : '#12161C', 'font-family': disp, 'font-size': 15, 'font-weight': 650 }, label);
+      if (sub) svgEl(sv, 'text', { x: x + w / 2, y: y + h / 2 + 16, 'text-anchor': 'middle', fill: hot ? '#2A3A17' : '#4F5866', 'font-family': mono, 'font-size': 11 }, sub);
     };
-    const line = (x1, y1, x2, y2) => svgEl(sv, 'line', { x1, y1, x2, y2, stroke: '#4A5260', 'stroke-width': 1.4 });
+    const line = (x1, y1, x2, y2) => svgEl(sv, 'line', { x1, y1, x2, y2, stroke: '#A3AAB4', 'stroke-width': 1.4 });
     box(205, 10, 150, 46, 'Workload', 'models · constraints');
     line(280, 56, 280, 88);
     box(165, 88, 230, 58, 'Atelier', 'decides what to build', true);
@@ -591,7 +591,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     line(95, 240, 95, 262); line(280, 240, 280, 262); line(465, 240, 465, 262); line(95, 262, 465, 262); line(280, 262, 280, 282);
     box(180, 282, 200, 48, 'Best design', 'worth implementing');
     svgEl(sv, 'path', { d: 'M 540 214 C 558 214 558 117 397 117', fill: 'none', stroke: '#A9CC72', 'stroke-width': 1.6, class: 'flow-dash' });
-    svgEl(sv, 'text', { x: 551, y: 166, 'text-anchor': 'middle', fill: '#A9CC72', 'font-family': mono, 'font-size': 11, transform: 'rotate(90 551 166)' }, 'measured PPA');
+    svgEl(sv, 'text', { x: 551, y: 166, 'text-anchor': 'middle', fill: '#4A7A16', 'font-family': mono, 'font-size': 11, transform: 'rotate(90 551 166)' }, 'measured PPA');
   })();
 
   // ---------------------------------------------------------------- 03 pinned loop + steps
@@ -601,16 +601,16 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     svgEl(g, 'stop', { offset: 0, 'stop-color': '#A9CC72' }); svgEl(g, 'stop', { offset: 1, 'stop-color': '#D0E6A5' });
     const mono = 'Geist Mono, monospace', disp = 'Archivo, Arial, sans-serif';
     const C = 2 * Math.PI * 128;
-    svgEl(sv, 'circle', { cx: 200, cy: 200, r: 128, fill: 'none', stroke: '#20262F', 'stroke-width': 1.5 });
+    svgEl(sv, 'circle', { cx: 200, cy: 200, r: 128, fill: 'none', stroke: '#E2E5DD', 'stroke-width': 1.5 });
     const arc = svgEl(sv, 'circle', { cx: 200, cy: 200, r: 128, fill: 'none', stroke: 'url(#cu)', 'stroke-width': 2.5, 'stroke-linecap': 'round', 'stroke-dasharray': String(C), 'stroke-dashoffset': String(C * .75), transform: 'rotate(-90 200 200)', style: 'transition: stroke-dashoffset .8s cubic-bezier(.2,.7,.2,1)' });
-    svgEl(sv, 'text', { x: 200, y: 194, 'text-anchor': 'middle', fill: '#EDEFF2', 'font-family': disp, 'font-size': 20, 'font-weight': 700 }, 'Atelier');
-    svgEl(sv, 'text', { x: 200, y: 215, 'text-anchor': 'middle', fill: '#9AA3AF', 'font-family': mono, 'font-size': 10.5, 'letter-spacing': 2 }, 'LEARNS EVERY LOOP');
+    svgEl(sv, 'text', { x: 200, y: 194, 'text-anchor': 'middle', fill: '#12161C', 'font-family': disp, 'font-size': 20, 'font-weight': 700 }, 'Atelier');
+    svgEl(sv, 'text', { x: 200, y: 215, 'text-anchor': 'middle', fill: '#4F5866', 'font-family': mono, 'font-size': 10.5, 'letter-spacing': 2 }, 'LEARNS EVERY LOOP');
     const pts = [[200, 72, 'Define', 'workloads'], [328, 200, 'Explore', 'arch × compiler'], [200, 328, 'Prove', 'measured PPA'], [72, 200, 'Deliver', 'Pareto front']];
     const nodes = pts.map(([x, y, t, s]) => {
       const n = svgEl(sv, 'g', { class: 'node' });
-      svgEl(n, 'rect', { x: x - 64, y: y - 27, width: 128, height: 54, rx: 27, fill: '#151920', stroke: '#2B333F' });
-      svgEl(n, 'text', { x, y: y - 2, 'text-anchor': 'middle', fill: '#EDEFF2', 'font-family': disp, 'font-size': 15, 'font-weight': 650, class: 't' }, t);
-      svgEl(n, 'text', { x, y: y + 15, 'text-anchor': 'middle', fill: '#9AA3AF', 'font-family': mono, 'font-size': 10.5, class: 's' }, s);
+      svgEl(n, 'rect', { x: x - 64, y: y - 27, width: 128, height: 54, rx: 27, fill: '#EFF1EB', stroke: '#CFD4C7' });
+      svgEl(n, 'text', { x, y: y - 2, 'text-anchor': 'middle', fill: '#12161C', 'font-family': disp, 'font-size': 15, 'font-weight': 650, class: 't' }, t);
+      svgEl(n, 'text', { x, y: y + 15, 'text-anchor': 'middle', fill: '#4F5866', 'font-family': mono, 'font-size': 10.5, class: 's' }, s);
       return n;
     });
     const steps = [...document.querySelectorAll('#steps .step')];
@@ -683,13 +683,13 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     const narrow = w < 960;
     const s = Math.min((narrow ? w * .9 : w * .44) / W, (h * .64) / H);
     const ox = narrow ? (w - W * s) / 2 : w - W * s - Math.max(48, w * .07), oy = (h - H * s) / 2 - (narrow ? 70 : 30);
-    ctx.strokeStyle = '#20262F'; ctx.lineWidth = 1; ctx.strokeRect(ox - 16, oy - 16, W * s + 32, H * s + 32);
-    ctx.strokeStyle = '#11151B';
+    ctx.strokeStyle = '#E2E5DD'; ctx.lineWidth = 1; ctx.strokeRect(ox - 16, oy - 16, W * s + 32, H * s + 32);
+    ctx.strokeStyle = '#EEF0EB';
     for (let x = ox - 16; x < ox + W * s + 16; x += 12) { ctx.beginPath(); ctx.moveTo(x, oy - 16); ctx.lineTo(x, oy + H * s + 16); ctx.stroke(); }
     const mac = (m, x, y) => {
-      ctx.fillStyle = '#10151E'; ctx.fillRect(x, y, m.w_um * s, m.h_um * s);
-      ctx.strokeStyle = '#3B4C66'; ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, m.w_um * s - 1, m.h_um * s - 1);
-      ctx.strokeStyle = '#1A2331'; ctx.beginPath();
+      ctx.fillStyle = '#EEF2F7'; ctx.fillRect(x, y, m.w_um * s, m.h_um * s);
+      ctx.strokeStyle = '#A9B6CB'; ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, m.w_um * s - 1, m.h_um * s - 1);
+      ctx.strokeStyle = '#DCE2EA'; ctx.beginPath();
       for (let yy = y + 4; yy < y + m.h_um * s; yy += 4) { ctx.moveTo(x + 3, yy); ctx.lineTo(x + m.w_um * s - 3, yy); }
       ctx.stroke();
     };
@@ -702,7 +702,7 @@ footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line);
     for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
       const phase = ((time - (i + j)) % (2 * n) + 2 * n) % (2 * n);
       const glow = phase < 3 ? 1 - phase / 3 : 0;
-      ctx.fillStyle = glow > 0 ? `rgba(208, 230, 165,${.18 + .72 * glow})` : '#171C24';
+      ctx.fillStyle = glow > 0 ? `rgba(140, 186, 76,${.18 + .72 * glow})` : '#E6E9E1';
       ctx.fillRect(ax + j * c + 1, ay + i * c + 1, c - 2, c - 2);
     }
     ctx.strokeStyle = '#A9CC72'; ctx.lineWidth = 1.2; ctx.strokeRect(ax + .5, ay + .5, as - 1, as - 1);
