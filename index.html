@@ -22,12 +22,12 @@
 <style>
 /* Company home: two offerings, kept apart and then joined. Hero; Sutra (the accelerator IP) and
    Atelier (the design engine, the product) first, Sutra (the IP it designed, the proof) second; how it sizes Sutra for a workload;
-   the verified evidence; contact. Same dark world and copper-to-amber accent as the rest. */
+   the verified evidence; contact. Same dark world and lime accent as the rest. */
 :root {
   --void: #08090C; --slab: #0F1217; --slab-2: #151920; --slab-3: #1B2029;
   --line: #20262F; --line-2: #2B333F;
   --text: #EDEFF2; --muted: #9AA3AF; --faint: #626B78;
-  --copper: #E3894E; --amber: #F4BC72; --sky: #86A7D8;
+  --leaf: #A9CC72; --lime: #D0E6A5; --sky: #86A7D8;
   --display: 'Archivo', 'Arial Black', Arial, sans-serif;
   --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
@@ -38,14 +38,14 @@
 html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
 body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased }
 .wrap { max-width: 1200px; margin-inline: auto }
-a { color: var(--amber); text-underline-offset: 3px }
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 3px }
+a { color: var(--lime); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 3px }
 h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
 h1 { font-size: clamp(46px, 7.4vw, 108px); line-height: .93; font-weight: 770; font-stretch: 112%; letter-spacing: -.028em; max-width: 13ch }
 h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.03; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
 h3 { font-size: 20px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
 p { margin: 0; max-width: 64ch }
-h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--copper), var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent }
+h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--leaf), var(--lime)); -webkit-background-clip: text; background-clip: text; color: transparent }
 .label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
 .label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
 
@@ -56,39 +56,39 @@ h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--copp
 .bar nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; align-items: center }
 .bar nav a { color: var(--muted); text-decoration: none }
 .bar nav a:hover { color: var(--text) }
-.bar nav a.go { color: #17110B; background: linear-gradient(92deg, var(--copper), var(--amber)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
+.bar nav a.go { color: #11160B; background: linear-gradient(92deg, var(--leaf), var(--lime)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
 
 .hero { position: relative; padding-block: 130px 70px; display: flex; flex-direction: column; gap: 28px }
-.hero::before { content: ""; position: absolute; inset: 0 -20px; background: radial-gradient(700px 480px at 85% 20%, rgba(227,137,78,.16), transparent 60%), radial-gradient(500px 400px at 10% 90%, rgba(134,167,216,.07), transparent 60%); pointer-events: none; z-index: -1 }
-.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--amber); display: flex; align-items: center; gap: 12px }
-.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--copper), var(--amber)) }
+.hero::before { content: ""; position: absolute; inset: 0 -20px; background: radial-gradient(700px 480px at 85% 20%, rgba(169, 204, 114,.16), transparent 60%), radial-gradient(500px 400px at 10% 90%, rgba(134,167,216,.07), transparent 60%); pointer-events: none; z-index: -1 }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--lime); display: flex; align-items: center; gap: 12px }
+.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
 .sub { font: 500 clamp(18px, 1.8vw, 23px)/1.45 var(--body); max-width: 52ch }
 .cta { display: flex; gap: 14px; flex-wrap: wrap }
 .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 4px; font: 600 15px/1 var(--body); text-decoration: none }
-.btn.primary { background: linear-gradient(92deg, var(--copper), var(--amber)); color: #17110B; box-shadow: 0 10px 40px -12px rgba(227, 137, 78, .55) }
+.btn.primary { background: linear-gradient(92deg, var(--leaf), var(--lime)); color: #11160B; box-shadow: 0 10px 40px -12px rgba(169, 204, 114, .55) }
 .btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
 
 .offers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px }
 .offer { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; padding: 40px 36px 36px; display: flex; flex-direction: column; gap: 18px; min-width: 0; background: var(--slab); text-decoration: none; color: inherit; transition: border-color .3s, transform .35s var(--ease) }
-.offer:hover { border-color: rgba(244,188,114,.45); transform: translateY(-3px) }
-.offer.ip { background: radial-gradient(90% 80% at 100% 0%, rgba(227,137,78,.20), transparent 60%), var(--slab) }
+.offer:hover { border-color: rgba(208, 230, 165,.45); transform: translateY(-3px) }
+.offer.ip { background: radial-gradient(90% 80% at 100% 0%, rgba(169, 204, 114,.20), transparent 60%), var(--slab) }
 .offer.sw { background: radial-gradient(90% 80% at 100% 0%, rgba(134,167,216,.14), transparent 60%), var(--slab) }
-.offer .tag { font: 500 11.5px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--amber) }
+.offer .tag { font: 500 11.5px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--lime) }
 .offer.sw .tag { color: var(--sky) }
 .offer h2 { font-size: clamp(32px, 3.6vw, 48px) }
 .offer p { color: var(--muted) }
 .offer ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15.5px }
 .offer li { display: flex; gap: 12px; align-items: baseline }
-.offer li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); flex: none; transform: translateY(-2px) }
+.offer li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--leaf); flex: none; transform: translateY(-2px) }
 .offer.sw li::before { background: var(--sky) }
 .offer .go { margin-top: auto; padding-top: 8px; font: 600 15px/1 var(--body); color: var(--text) }
-.offer .go span { color: var(--amber) }
+.offer .go span { color: var(--lime) }
 .offer.sw .go span { color: var(--sky) }
-.proofline { font-size: 15.5px; color: var(--muted); max-width: 70ch; border-left: 2px solid var(--amber); padding-left: 14px }
-.proofline b { color: var(--amber); font-weight: 500 }
+.proofline { font-size: 15.5px; color: var(--muted); max-width: 70ch; border-left: 2px solid var(--lime); padding-left: 14px }
+.proofline b { color: var(--lime); font-weight: 500 }
 .offer .fig { height: 120px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; margin-bottom: 4px }
 .offer .fig i { border-radius: 3px; background: var(--slab-3); border: 1px solid var(--line-2) }
-.offer.ip .fig i:nth-child(5n+2), .offer.ip .fig i:nth-child(7n) { background: rgba(244,188,114,.5); border-color: var(--amber) }
+.offer.ip .fig i:nth-child(5n+2), .offer.ip .fig i:nth-child(7n) { background: rgba(208, 230, 165,.5); border-color: var(--lime) }
 .offer.sw .fig { display: flex; align-items: flex-end; gap: 6px }
 .offer.sw .fig i { flex: 1; border-radius: 3px 3px 0 0 }
 
@@ -103,24 +103,24 @@ section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40
 .fbox .t { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--faint) }
 .fbox ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px }
 .fbox li { display: flex; gap: 10px; align-items: center }
-.fbox li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); flex: none }
+.fbox li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--leaf); flex: none }
 .fbox.mid { background: radial-gradient(120% 120% at 50% 0%, rgba(134,167,216,.16), transparent 70%), var(--slab-2); border-color: rgba(134,167,216,.35) }
 .fbox.mid li::before { background: var(--sky) }
-.fbox.out { background: radial-gradient(120% 120% at 50% 0%, rgba(227,137,78,.22), transparent 70%), var(--slab-2); border-color: rgba(244,188,114,.35) }
+.fbox.out { background: radial-gradient(120% 120% at 50% 0%, rgba(169, 204, 114,.22), transparent 70%), var(--slab-2); border-color: rgba(208, 230, 165,.35) }
 .fbox .name { font: 740 21px/1.1 var(--display); font-stretch: 110% }
-.arrow { color: var(--copper); font: 600 22px/1 var(--mono) }
+.arrow { color: var(--leaf); font: 600 22px/1 var(--mono) }
 .proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
 .metric { padding: 30px 22px 30px 0; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
 .metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
 .metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
 .metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
 .fine { font-size: 14px; color: var(--faint); max-width: 96ch }
-.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--copper) 28%, transparent), transparent 60%), radial-gradient(60% 100% at 0% 100%, rgba(134,167,216,.08), transparent 60%), var(--slab) }
+.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--leaf) 28%, transparent), transparent 60%), radial-gradient(60% 100% at 0% 100%, rgba(134,167,216,.08), transparent 60%), var(--slab) }
 .close > * { min-width: 0 }
 .mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
 .wl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
 .wlc { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
-.wlc .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--amber) }
+.wlc .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--lime) }
 .wlc p { color: var(--muted); font-size: 15.5px }
 .wlc b { color: var(--text); font-weight: 500 }
 @media (max-width: 960px) { .wl { grid-template-columns: minmax(0, 1fr) } }
@@ -130,10 +130,10 @@ td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--
 td:first-child { color: var(--text); white-space: nowrap }
 .tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
 td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
-td.best { color: var(--amber); font-weight: 600; position: relative }
-td.best::before { content: ""; position: absolute; inset: 7px -6px 7px auto; width: calc(100% + 4px); border-radius: 4px; background: rgba(244,188,114,.12); border: 1px solid rgba(244,188,114,.35); z-index: 0; pointer-events: none }
+td.best { color: var(--lime); font-weight: 600; position: relative }
+td.best::before { content: ""; position: absolute; inset: 7px -6px 7px auto; width: calc(100% + 4px); border-radius: 4px; background: rgba(208, 230, 165,.12); border: 1px solid rgba(208, 230, 165,.35); z-index: 0; pointer-events: none }
 .best-key { margin-top: -4px }
-.best-key .best { color: var(--amber); font-weight: 600; padding: 2px 7px; border-radius: 4px; background: rgba(244,188,114,.12); border: 1px solid rgba(244,188,114,.35); margin-right: 6px }
+.best-key .best { color: var(--lime); font-weight: 600; padding: 2px 7px; border-radius: 4px; background: rgba(208, 230, 165,.12); border: 1px solid rgba(208, 230, 165,.35); margin-right: 6px }
 footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
 footer nav { display: flex; gap: 20px; flex-wrap: wrap }
 footer a { color: var(--muted); text-decoration: none }
@@ -160,7 +160,7 @@ footer a { color: var(--muted); text-decoration: none }
 
 <header class="bar">
   <div class="wrap">
-    <a class="mark" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E3894E"/><stop offset="1" stop-color="#F4BC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
+    <a class="mark" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#A9CC72"/><stop offset="1" stop-color="#D0E6A5"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#0F1217" stroke="#2B333F"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#3A4352" stroke-width="1.8"/></svg>ZenEdgeX</a>
     <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Contact us →</a></nav>
   </div>
 </header>
