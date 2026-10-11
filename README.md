@@ -7,27 +7,26 @@ The best chip for your workload.
 - Live demo: https://zenedgex.in/demo/
 - Contact: hello@zenedgex.in
 
-## Try Atelier
+## Try Atelier Studio
 
-Python 3.12 or later, macOS or Linux:
+Atelier Studio runs in your browser, on your machine only. The trial does everything but export:
+create a project from a reference architecture or your own RTL, explore designs for a workload
+(each compiled by the compiler and timed on the SoC model), and build and simulate the one you
+pick against the reference model. Exporting the RTL needs a license from ZenEdgeX.
+
+macOS on Apple silicon (Linux x86_64 later), with `uv`, Docker and the Xcode command-line tools.
+Trial downloads are by invitation: write to hello@zenedgex.in with your GitHub username. Then, with
+the release's four files in one folder under your home folder:
 
 ```sh
-pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.3.0/codesign_engine-0.3.0-py3-none-any.whl
-codesign-engine info
-codesign-engine compile --m 64 --k 128 --n 128 --show-ir
-codesign-engine best-compiler --rows 32 --cols 32 --dataflow ws
-codesign-engine explore --clock-ps 800
-codesign-engine search --method planner --budget 20
-
-# a whole network: YOLOv8n at 640x640, sized for your requirements, with the physical-design kit
-codesign-engine spec-example --network > net.json
-codesign-engine design --spec net.json --export out/ --flow
+shasum -a 256 -c SHA256SUMS
+tar xzf atelier-studio-trial-0.1.5.tar.gz
+cd atelier-studio-trial-0.1.5
+./install.sh
+./studio.sh my-project
 ```
 
-The package runs the MLIR compiler path, the analytical (T0) estimates, the search and the
-design export. With `--flow`, a network design comes with a physical-design kit that synthesizes
-and floorplans its blocks on ASAP7 with OpenROAD-flow-scripts (needs Docker). RTL simulation and
-the port to your foundry run in a design-partner pilot.
+Watch the walkthrough: https://zenedgex.in/demo/
 
 This repository holds the website and the released package only. Proprietary preview; do not
 redistribute.

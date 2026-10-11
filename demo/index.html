@@ -130,40 +130,39 @@ footer { border-top: 1px solid var(--rule); padding-top: 22px; font-size: 13px; 
   <p class="soft">Every number below was produced by the engine: its T0 model over every buildable architecture, a real compile through MLIR, and cycle-accurate RTL simulation. Estimates and measurements are labelled.</p>
 </div>
 
-<!-- the walkthrough video, then try it: first, so visitors know the package is published -->
+<!-- the walkthrough video, then try it: Atelier Studio first, so visitors see the product and how to get it -->
 <div class="step" id="video">
-  <p class="eyebrow">Watch · 2 minutes, real runs</p>
-  <h2>From pip install to a chip design</h2>
+  <p class="eyebrow">Watch &middot; 3 minutes, real runs</p>
+  <h2>Launching Atelier Studio: from install to an exported design</h2>
   <div class="panel" style="padding:0;overflow:hidden">
-    <video controls playsinline preload="none" poster="atelier-demo-poster.png" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#FFFFFF" aria-label="Atelier demo: install, Qwen3 estimates, Qwen3 on the RTL, YOLOv8n from requirements, the exported design, the live demo">
-      <source src="atelier-demo.mp4" type="video/mp4">
+    <video controls playsinline preload="none" poster="atelier-studio-demo-poster.png" style="display:block;width:100%;height:auto;aspect-ratio:16/10;background:#FFFFFF" aria-label="Atelier Studio demo: install the trial, create a project, explore YOLOv8n designs with the compiler, the recommended design's profile, build and simulate, license and export the RTL">
+      <source src="atelier-studio-demo.mp4" type="video/mp4">
     </video>
   </div>
-  <p class="soft" style="margin-top:12px">Install, Qwen3-0.6B estimates, a whole Qwen3 token on the generated RTL (random weights), YOLOv8n sized from requirements, the exported design and this page. No sound; every number on screen comes from the commands shown.</p>
+  <p class="soft" style="margin-top:12px">The trial installed from its release, a new Sutra project, then Explore on YOLOv8n at 640&times;640 for the lowest power at any frame rate: 10 designs, each compiled by the compiler and timed on the SoC model, across architectures. The search recommends a Yantra design (one 32&times;32 weight-stationary engine, 96 frames a second at 0.25 W). Its profile, its RTL built and simulated against the reference model, then a license installed and the RTL exported. No sound; the long runs are sped up and say so on screen, and every figure names the model it comes from.</p>
 </div>
 
-<!-- try it -->
+<!-- try it: the Studio trial -->
 <div class="step" id="run">
-  <p class="eyebrow">Try it yourself · Atelier 0.4.2 technical preview</p>
-  <h2>Install the package and run it on your machine</h2>
+  <p class="eyebrow">Try it yourself &middot; Atelier Studio trial 0.1.5</p>
+  <h2>Atelier Studio on your machine</h2>
   <div class="panel run feature">
-    <p class="soft">Everything on this page comes from the published package. Install it (Python 3.12 or later, macOS or Linux; no Docker or EDA tools needed for these steps) and get the same numbers for your own requirements.</p>
-    <code>pip install https://github.com/zenedgex/codesign-engine/releases/download/v0.4.2/codesign_engine-0.4.2-py3-none-any.whl
-codesign-engine info</code>
-    <p class="soft">Run Qwen3-0.6B, or any Qwen2, 2.5 or 3 model from its Hugging Face <span class="mono">config.json</span>, on a Sutra design: time to first token, tokens per second and energy per token, by DRAM bandwidth and weight width.</p>
-    <code>codesign-engine llm --model qwen3-0.6b --rows 64 --cols 64
-codesign-engine llm --hf-config config.json --engines 2 --cols 32 --dram-gbps 68.3</code>
-    <p class="soft">In a design-partner pilot, with the source tree and the simulation image, one whole Qwen3 token runs on the generated RTL, cycle-accurate: every matrix multiply and all 151,936 logits checked against the integer reference (645 of 645 bit-exact; cycle model within 0.004%). The weights are random, so this checks function and timing; correct replies with real weights need a 16-bit residual path, which is planned.</p>
-    <code>codesign-engine llm --rtl --model qwen3-0.6b --rows 64 --cols 64</code>
-    <p class="soft">Size Sutra for YOLOv8n at 640&times;640 with your frame-rate, area, power and latency requirements, and export the design: the RTL with its parameters fixed, a README and <span class="mono">design.json</span> with the estimates, and the physical-design kit with the memory list (the kit needs Docker). A GEMM spec&rsquo;s export also carries the compiler output, test vectors and a testbench.</p>
-    <code>codesign-engine spec-example --network &gt; net.json
-codesign-engine design --spec net.json --export out/ --flow</code>
-    <p class="soft">Or start from single GEMMs: compile one through MLIR to the accelerator's command stream, find the best compiler setting, list the Pareto front of all 1,272 buildable designs, or design for your own GEMM shapes and budgets.</p>
-    <code>codesign-engine compile --m 64 --k 128 --n 128 --show-ir
-codesign-engine best-compiler --rows 32 --cols 32 --dataflow ws
-codesign-engine explore --clock-ps 800
-codesign-engine spec-example &gt; spec.json &amp;&amp; codesign-engine design --spec spec.json --export out/</code>
-    <p class="soft">Figures from the package are T0 estimates (cycles, area, and energy from per-operation coefficients), labelled as such. RTL simulation, synthesis and place-and-route run in a design-partner pilot, on your EDA flow. Contact <span class="mono" style="user-select:all;color:var(--ink)">hello@zenedgex.in</span>.</p>
+    <p class="soft">Atelier Studio runs in your browser, on your machine only: nothing about your projects leaves it. In the trial you can do everything but export:</p>
+    <ul class="soft" style="margin:0 0 14px 18px;padding:0;line-height:1.7">
+      <li><b style="color:var(--ink)">Create a project</b> from a reference architecture (Sutra, compute-in-memory; Yantra, a systolic NPU) or import your own RTL as blocks.</li>
+      <li><b style="color:var(--ink)">Explore</b> from a workload and targets (frame rate, power, area) to designs: for each design, the compiler builds that design's own compiler search space from its hardware description, searches it, compiles the best program and times it on the SoC model.</li>
+      <li><b style="color:var(--ink)">Build and simulate</b> the design you pick: its RTL generated, linted and simulated against the reference model, engine and SoC.</li>
+      <li><b style="color:var(--ink)">Export</b> the design (its RTL, file list and machine description) with a license from ZenEdgeX.</li>
+    </ul>
+    <p class="soft">Runs on a Mac with Apple silicon (Linux x86_64 comes in a later release). It needs <span class="mono">uv</span>, Docker and the Xcode command-line tools. Trial downloads are by invitation: ask with your GitHub username and we add you.</p>
+    <p style="margin:6px 0 16px"><a style="display:inline-block;color:#11160B;background:linear-gradient(92deg, var(--leaf), var(--lime));padding:9px 16px;border-radius:999px;font-weight:600;text-decoration:none" href="mailto:hello@zenedgex.in?subject=Atelier%20Studio%20trial%20access&amp;body=GitHub%20username%3A%20%0AWorkload%20and%20targets%3A%20">Request trial access &rarr;</a></p>
+    <p class="soft">Then, with the release&rsquo;s four files in one folder under your home folder:</p>
+    <code>shasum -a 256 -c SHA256SUMS
+tar xzf atelier-studio-trial-0.1.5.tar.gz
+cd atelier-studio-trial-0.1.5
+./install.sh
+./studio.sh my-project</code>
+    <p class="soft">Studio&rsquo;s top bar has <b style="color:var(--ink)">Work with us</b>: bring your own engine (a CIM macro, a systolic array, a vector or LLM engine) or your own SoC and flow, or design your accelerator with us as a design partner. The request is shown in full and sent from your own mail app, only with what you tick. Or write to <span class="mono" style="user-select:all;color:var(--ink)">hello@zenedgex.in</span>.</p>
   </div>
 </div>
 
