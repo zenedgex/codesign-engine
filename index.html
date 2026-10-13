@@ -228,6 +228,46 @@ form.pilot .note { margin-top: -2px }
   .steps li + li { border-left: none; border-top: 1px solid var(--line) }
 }
 @media (min-width: 961px) and (max-width: 1100px) { .cards, .legend { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+/* visuals: hero floorplan, design-space scatter, Sutra floorplan, Qwen3 scaling bars */
+.hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 48px; align-items: center }
+.hero-copy { display: flex; flex-direction: column; gap: 28px; min-width: 0 }
+.hero h1 { font-size: clamp(44px, 6vw, 92px) }
+.hero-art { margin: 0; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.hero-art canvas { width: 100%; aspect-ratio: 10 / 9; display: block }
+.hero-stat { font: 500 12.5px/1.45 var(--mono); color: var(--green); min-height: 2.9em }
+.hero-art figcaption { font: 400 12px/1.5 var(--mono); color: var(--faint) }
+.viz { position: relative; margin: 0; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 26px 28px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
+.viz-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px }
+.viz-head h3 { font-size: 19px }
+.viz-head p { font-size: 15px; color: var(--muted); margin-top: 6px }
+.viz svg { display: block; width: 100%; overflow: visible }
+.viz svg text { font-family: var(--mono); font-size: 11.5px; fill: var(--faint) }
+.viz svg text.ink { fill: var(--text); font-family: var(--body); font-size: 13px }
+.viz figcaption { font-size: 13.5px; color: var(--faint); line-height: 1.5 }
+.keys { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13.5px; color: var(--muted) }
+.keys span { display: inline-flex; align-items: center; gap: 8px }
+.keys i { width: 10px; height: 10px; border-radius: 50%; display: inline-block }
+.keys .ok { background: #6A9A2C }
+.keys .miss { border: 1.5px solid #A3AAB4; background: var(--slab) }
+.keys .pick { background: #6A9A2C; box-shadow: 0 0 0 2px var(--slab), 0 0 0 4px var(--text) }
+.keys .int8 { width: 18px; border-radius: 2px; background: #6A9A2C }
+.keys .int4 { width: 18px; border-radius: 2px; background: repeating-linear-gradient(135deg, #6A9A2C 0 2px, #D0E6A5 2px 5px) }
+.keys .sq { width: 12px; height: 12px; border-radius: 2px }
+.tip { position: absolute; z-index: 5; pointer-events: none; background: var(--text); color: #F6F7F3; font: 400 12.5px/1.45 var(--body); padding: 8px 11px; border-radius: 6px; max-width: 260px; box-shadow: 0 8px 24px -10px rgba(18, 22, 28, .5) }
+.tip b { font-weight: 600 }
+.tv > summary { cursor: pointer; font-size: 13.5px; color: var(--green); width: max-content }
+.tv .tbl { margin-top: 12px; max-height: 320px; overflow: auto; background: var(--void); padding: 12px 18px }
+.tv table { font-size: 13.5px }
+.tv td { padding: 8px 14px 8px 0 }
+.viz2 { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 16px }
+.fpfig img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line-2) }
+@media (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 28px }
+  .hero-art { max-width: 380px; width: 100% }
+  .viz2 { grid-template-columns: minmax(0, 1fr) }
+  .viz { padding: 22px 18px }
+  .viz-head { flex-direction: column }
+}
 </style>
 </head>
 <body>
@@ -242,11 +282,14 @@ form.pilot .note { margin-top: -2px }
 
 <div class="wrap" id="top">
   <div class="hero">
+   <div class="hero-copy">
     <p class="kicker">AI chip design engine</p>
     <h1>The best chip for <em>your workload.</em></h1>
     <p class="sub">Atelier Studio searches accelerator architectures and their compiler mappings together, against your AI workload and your performance, power and area targets, so you choose a design on evidence before you commit to implementation.</p>
     <p class="proofline"><b>Proof:</b> Sutra, an in-memory-compute accelerator IP designed with Atelier Studio for Qwen3 and YOLOv8n: a whole Qwen3 token and a full YOLOv8n frame bit-exact on RTL, floorplanned on the ASAP7 predictive 7&nbsp;nm kit.</p>
     <div class="cta"><a class="btn primary" href="#pilot">Request a pilot <span>→</span></a><a class="btn line" data-to="demo" href="#">Try the live demo</a></div>
+   </div>
+   <figure class="hero-art"><canvas id="die" aria-hidden="true"></canvas><p class="hero-stat" id="hero-stat" aria-live="off"></p><figcaption>Explore at work: the 89 YOLOv8n designs charted below, each drawn to its area with its engines inside, checked against at least 150 FPS within 1.5&nbsp;W. The smallest that meets both is picked.</figcaption></figure>
   </div>
 
   <div class="ident" aria-label="ZenEdgeX, Atelier Studio and Sutra">
@@ -311,6 +354,14 @@ form.pilot .note { margin-top: -2px }
       <li><b>Evaluation in tiers</b><span>Fast estimate, then the SoC model; RTL simulation, synthesis and floorplan for the designs worth it</span></li>
       <li><b>Ranked designs</b><span>The designs that meet your targets, ranked by what you care about most, each with its evidence</span></li>
     </ol>
+    <figure class="viz" id="space">
+      <div class="viz-head"><div><h3>YOLOv8n on Sutra: 89 designs, one pick</h3><p>Targets: at least 150 frames per second within 1.5&nbsp;W, then the smallest area. <span id="space-sum"></span></p></div><span class="ev est">Model-estimated</span></div>
+      <div class="keys"><span><i class="ok"></i>meets both targets</span><span><i class="miss"></i>misses one or both</span><span><i class="pick"></i>picked: smallest area</span></div>
+      <svg id="scatter" role="img"></svg>
+      <div class="tip" hidden></div>
+      <figcaption>Each dot is a Sutra configuration for YOLOv8n at 640&times;640, INT8, at the 900&nbsp;MHz design clock: frame rate from the cycle model (within 0.05% of RTL simulation over a full frame), area from ASAP7 synthesis and memory-macro models, power from the energy model. <a data-to="demo" href="#">Set your own targets in the live demo →</a></figcaption>
+      <details class="tv"><summary>View as a table</summary><div class="tbl"><table id="space-tbl"><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">mm²</th><th class="n">W</th><th>Against the targets</th></tr></thead><tbody></tbody></table></div></details>
+    </figure>
     <div class="tbl"><table class="cmp"><thead><tr><th>Conventional workflow</th><th>With Atelier Studio</th></tr></thead><tbody>
       <tr><td>Engineers hand-pick a few candidate architectures</td><td>Explore evaluates many candidate architectures against your workload and targets in one run</td></tr>
       <tr><td>Compiler mapping is worked out after the hardware is fixed</td><td>Each candidate is compared with its own best compiler mapping, so architecture and mapping are judged together</td></tr>
@@ -362,6 +413,21 @@ form.pilot .note { margin-top: -2px }
       <div class="metric"><b>0.364</b><span>YOLOv8n COCO mAP50-95 with Sutra's integer arithmetic, all 5,000 val2017 images (floating-point model: 0.371)</span><span class="ev int">Integer model</span></div>
       <div class="metric"><b>4 / 4</b><span>Sutra blocks synthesized and floorplanned with their memory macros and timing reports</span><span class="ev pd">Floorplan-evaluated</span></div>
     </div>
+    <div class="viz2">
+      <figure class="viz fpfig">
+        <div class="viz-head"><div><h3>One Sutra engine, floorplanned</h3><p>SRAM macros around the placed standard cells of the compute engine.</p></div><span class="ev pd">Floorplan-evaluated</span></div>
+        <img src="ip/sutra-engine-floorplan.png" width="1000" height="1000" alt="Floorplan of a Sutra engine on ASAP7: compute-memory, accumulator, scratchpad, activation and post-op SRAM macros around the placed standard cells of the in-memory-compute adder trees, activation unit, post-op unit and control" loading="lazy">
+        <div class="keys"><span><i class="sq" style="background:#4285f4"></i>Compute memory</span><span><i class="sq" style="background:#f08040"></i>In-memory compute adder trees</span><span><i class="sq" style="background:#34c784"></i>Activation unit and memory</span><span><i class="sq" style="background:#b070e8"></i>Post-op unit and parameters</span><span><i class="sq" style="background:#e85478"></i>Accumulator memory</span><span><i class="sq" style="background:#e2ba3c"></i>Input scratchpad</span><span><i class="sq" style="background:#808c9a"></i>Control and other logic</span></div>
+        <figcaption>OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Not fabricated silicon. <a data-to="ip" href="#">More on Sutra →</a></figcaption>
+      </figure>
+      <figure class="viz" id="scale">
+        <div class="viz-head"><div><h3>Qwen3-0.6B, one engine to eight</h3><p>Generated tokens per second as Sutra grows, with the memory bandwidth to feed it.</p></div><span class="ev est">Model-estimated</span></div>
+        <div class="keys"><span><i class="int8"></i>INT8 weights</span><span><i class="int4"></i>INT4 weights (planned)</span></div>
+        <svg id="bars" role="img" aria-label="Qwen3-0.6B tokens per second by Sutra configuration: 24 for one 64×64 engine at 17 GB/s, rising to 235 for eight engines at 136 GB/s with INT4 weights (planned)."></svg>
+        <div class="tip" hidden></div>
+        <figcaption>At 900&nbsp;MHz with the planned weight DMA and command queue; one user, a 512-token prompt, 1,024 tokens in context. Engine cycles from the cycle model checked against RTL; DRAM time from bytes moved; energy from the calibrated energy model. Full table under <a href="#full" id="open-full">full technical validation</a>.</figcaption>
+      </figure>
+    </div>
     <div class="wl">
       <div class="wlc"><span class="k">LANGUAGE MODEL</span><h3>Qwen3-0.6B, a whole token</h3><p>All <b>645 matrix multiplies</b> of a generated token, 28 layers and the output head, bit-exact on the generated RTL, with the logits equal to the integer reference; the cycle estimate within <b>0.004%</b> of its 16.8 million cycles.</p><span class="ev rtl">RTL-verified</span></div>
       <div class="wlc"><span class="k">GEMM</span><h3>Transformer matrix multiplies</h3><p>Compiled through MLIR for <b>22 accelerator configurations</b>, systolic and in-memory compute, from 4&times;4 to 128&times;64. Every program bit-exact against NumPy on the generated RTL; the cycle estimate is a median <b>1.4%</b> from RTL simulation.</p><span class="ev rtl">RTL-verified</span></div>
@@ -369,7 +435,7 @@ form.pilot .note { margin-top: -2px }
       <div class="wlc"><span class="k">NETWORK</span><h3>YOLOv8n, end to end</h3><p>The whole detector on chip: a full 640&times;640 frame bit-exact on RTL, the estimate within <b>0.05%</b> of its 3.26 million cycles, and <b>0.364 mAP50-95</b> on COCO with the accelerator's integer arithmetic.</p><span class="ev rtl">RTL-verified</span></div>
     </div>
     <p class="fine">Scope: one 64&times;64 Sutra engine with its RISC-V control core, simulated in Verilator. On the Qwen3 token the test bench feeds weights and commands, the job of a planned weight DMA and command queue; RMSNorm, softmax, RoPE and the SwiGLU multiply are computed in the integer reference beside the RTL, not yet on chip. ASAP7 is a predictive academic kit: results on your process depend on its PDK, memory macros, constraints and physical-design flow.</p>
-    <details class="deep">
+    <details class="deep" id="full">
       <summary><div>Full technical validation<span>Qwen3-0.6B and YOLOv8n in detail: scope, assumptions, and the configurations Atelier Studio sized for each</span></div></summary>
       <div class="inner">
         <section id="llm">
@@ -479,6 +545,157 @@ form.pilot .note { margin-top: -2px }
   const ip = document.querySelector('.offer.ip .fig'), sw = document.querySelector('.offer.sw .fig');
   for (let i = 0; i < 36; i++) ip.appendChild(document.createElement('i'));
   [38, 62, 45, 80, 56, 92, 70, 100, 64, 84, 52, 74].forEach(h => { const b = document.createElement('i'); b.style.height = h + '%'; b.style.background = `linear-gradient(180deg, rgba(134,167,216,${.25 + h / 250}), rgba(134,167,216,.06))`; b.style.border = '1px solid rgba(134,167,216,.3)'; sw.appendChild(b); });
+  // ---------------------------------------------------------------- visuals
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const el = (tag, attrs, parent, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; };
+  const fmt = n => n.toLocaleString('en-US');
+  function tipper(fig) {
+    const tip = fig.querySelector('.tip');
+    return {
+      show(html, x, y) { tip.innerHTML = html; tip.hidden = false; const fw = fig.clientWidth, tw = tip.offsetWidth; tip.style.left = Math.min(Math.max(8, x + 14), fw - tw - 8) + 'px'; tip.style.top = Math.max(8, y - tip.offsetHeight - 12) + 'px'; },
+      hide() { tip.hidden = true; }
+    };
+  }
+  function relPos(fig, ev) { const r = fig.getBoundingClientRect(); return [ev.clientX - r.left, ev.clientY - r.top]; }
+
+  const NET = [["1 × 64×64, 8 b/cycle, 4 + 3 MB",261.2,3.71,1.62],["1 × 128×64, 8 b/cycle, 4 + 3 MB",362.1,3.96,2.6],["1 × 128×64, 8 b/cycle, 4 + 3 MB",281.3,3.9,2.17],["1 × 32×64, 8 b/cycle, 4 + 3 MB",188.7,3.68,1.18],["4 × 64×64, 8 b/cycle, 4 + 12 MB",731.2,14.45,5.14],["1 × 64×64, 8 b/cycle, 4 + 3 MB",254.1,3.67,1.57],["4 × 64×64, 8 b/cycle, 4 + 12 MB",1044.8,14.57,6.52],["1 × 16×64, 4 b/cycle, 4 + 4 MB",63.2,4.09,0.76],["1 × 32×64, 8 b/cycle, 4 + 3 MB",182.6,3.62,1.09],["1 × 32×32, 8 b/cycle, 2 + 3 MB",59.6,2.43,0.41],["4 × 64×64, 8 b/cycle, 4 + 12 MB",1044.8,14.57,6.51],["4 × 64×64, 8 b/cycle, 4 + 12 MB",731.2,14.45,5.13],["1 × 64×64, 2 b/cycle, 4 + 12 MB",103.7,6.75,1.1],["1 × 128×64, 8 b/cycle, 4 + 4 MB",362.1,4.31,2.61],["1 × 128×64, 8 b/cycle, 4 + 4 MB",281.3,4.25,2.18],["4 × 32×64, 8 b/cycle, 4 + 12 MB",404.0,14.03,2.97],["4 × 32×64, 8 b/cycle, 4 + 12 MB",634.3,14.09,3.92],["1 × 64×64, 4 b/cycle, 4 + 3 MB",181.2,3.63,1.29],["1 × 64×64, 4 b/cycle, 4 + 3 MB",158.4,3.6,1.18],["4 × 128×64, 8 b/cycle, 4 + 12 MB",729.3,15.18,6.84],["4 × 64×64, 8 b/cycle, 4 + 16 MB",1044.8,15.98,6.57],["4 × 64×64, 8 b/cycle, 4 + 16 MB",731.2,15.86,5.19],["1 × 128×64, 8 b/cycle, 4 + 3 MB",287.5,3.96,2.27],["1 × 128×64, 8 b/cycle, 4 + 3 MB",226.2,3.9,1.93],["1 × 32×64, 8 b/cycle, 4 + 3 MB",126.0,3.62,0.88],["4 × 64×64, 8 b/cycle, 4 + 12 MB",435.4,14.39,3.87],["4 × 128×64, 8 b/cycle, 4 + 12 MB",728.4,15.18,6.85],["1 × 32×64, 2 b/cycle, 4 + 3 MB",61.0,3.52,0.62],["1 × 16×32, 8 b/cycle, 1 + 3 MB",46.4,1.91,0.35],["1 × 64×64, 4 b/cycle, 4 + 3 MB",134.3,3.6,1.07],["1 × 64×64, 4 b/cycle, 4 + 3 MB",173.3,3.63,1.27],["1 × 64×64, 8 b/cycle, 4 + 3 MB",191.0,3.67,1.32],["1 × 32×32, 8 b/cycle, 1 + 3 MB",59.6,1.9,0.4],["4 × 16×64, 8 b/cycle, 4 + 12 MB",410.8,13.9,2.73],["1 × 64×64, 4 b/cycle, 2 + 3 MB",70.9,2.57,0.84],["1 × 64×64, 4 b/cycle, 2 + 3 MB",67.2,2.54,0.8],["1 × 32×64, 4 b/cycle, 1 + 12 MB",54.5,5.14,0.62],["1 × 64×64, 8 b/cycle, 4 + 3 MB",182.8,3.68,1.27],["1 × 128×64, 8 b/cycle, 2 + 3 MB",85.2,2.9,1.36],["1 × 128×64, 8 b/cycle, 2 + 3 MB",80.0,2.84,1.28],["1 × 64×64, 8 b/cycle, 2 + 3 MB",79.7,2.61,0.88],["1 × 64×64, 8 b/cycle, 2 + 3 MB",73.2,2.66,0.86],["4 × 32×64, 8 b/cycle, 4 + 12 MB",634.3,14.09,3.91],["4 × 32×64, 8 b/cycle, 4 + 16 MB",634.3,15.49,3.95],["1 × 32×32, 8 b/cycle, 1 + 3 MB",58.0,1.86,0.39],["2 × 16×64, 4 b/cycle, 4 + 16 MB",107.3,10.36,1.01],["1 × 64×64, 8 b/cycle, 2 + 3 MB",80.6,2.66,0.89],["1 × 64×64, 8 b/cycle, 2 + 3 MB",71.6,2.63,0.82],["1 × 32×64, 8 b/cycle, 1 + 3 MB",72.1,2.04,0.65],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.7,1.88,0.25],["1 × 32×32, 8 b/cycle, 1 + 3 MB",53.2,1.93,0.42],["1 × 64×64, 8 b/cycle, 4 + 3 MB",201.4,3.73,1.43],["1 × 128×64, 4 b/cycle, 4 + 3 MB",247.3,3.69,2.0],["1 × 128×64, 4 b/cycle, 4 + 3 MB",273.2,3.75,2.18],["1 × 32×64, 8 b/cycle, 4 + 3 MB",177.2,3.58,1.06],["1 × 64×64, 8 b/cycle, 4 + 3 MB",194.1,3.71,1.35],["1 × 32×32, 4 b/cycle, 1 + 12 MB",44.8,5.04,0.45],["1 × 32×64, 8 b/cycle, 2 + 3 MB",72.1,2.56,0.66],["1 × 32×32, 8 b/cycle, 1 + 3 MB",59.6,1.9,0.4],["1 × 32×64, 8 b/cycle, 2 + 3 MB",72.1,2.56,0.66],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.4,1.85,0.22],["1 × 128×64, 8 b/cycle, 4 + 3 MB",182.1,3.87,1.7],["1 × 64×64, 4 b/cycle, 4 + 3 MB",177.8,3.59,1.27],["2 × 32×64, 8 b/cycle, 4 + 12 MB",365.2,9.26,2.24],["1 × 64×64, 4 b/cycle, 4 + 3 MB",181.2,3.63,1.29],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.2,1.79,0.21],["1 × 32×32, 8 b/cycle, 1 + 4 MB",59.6,2.25,0.41],["1 × 32×16, 8 b/cycle, 1 + 3 MB",41.2,1.86,0.27],["1 × 32×32, 8 b/cycle, 2 + 3 MB",61.0,2.46,0.45],["1 × 64×64, 4 b/cycle, 2 + 3 MB",69.2,2.53,0.83],["1 × 32×16, 8 b/cycle, 1 + 3 MB",40.9,1.81,0.27],["1 × 128×32, 8 b/cycle, 2 + 3 MB",76.3,2.62,0.85],["1 × 64×64, 8 b/cycle, 2 + 6 MB",73.2,3.71,0.88],["1 × 32×32, 8 b/cycle, 1 + 3 MB",61.0,1.93,0.44],["1 × 64×64, 4 b/cycle, 4 + 3 MB",164.5,3.56,1.2],["1 × 64×64, 2 b/cycle, 2 + 3 MB",55.1,2.49,0.77],["1 × 64×64, 4 b/cycle, 4 + 3 MB",128.8,3.53,1.04],["1 × 64×64, 4 b/cycle, 2 + 3 MB",70.3,2.53,0.83],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.2,1.79,0.21],["1 × 32×64, 8 b/cycle, 4 + 3 MB",124.1,3.58,0.86],["1 × 64×64, 4 b/cycle, 4 + 3 MB",182.7,3.65,1.35],["2 × 64×64, 4 b/cycle, 4 + 8 MB",372.7,7.99,2.77],["1 × 64×32, 8 b/cycle, 1 + 3 MB",70.0,1.94,0.55],["1 × 64×64, 4 b/cycle, 4 + 3 MB",175.1,3.62,1.31],["1 × 16×32, 8 b/cycle, 2 + 8 MB",43.7,4.19,0.44],["1 × 32×64, 8 b/cycle, 4 + 3 MB",154.5,3.55,0.94],["1 × 32×32, 8 b/cycle, 1 + 3 MB",59.3,1.89,0.42],["1 × 32×64, 8 b/cycle, 4 + 3 MB",113.7,3.55,0.79],["2 × 64×64, 8 b/cycle, 4 + 6 MB",559.3,7.45,3.5]].map(([label, fps, area, power]) => ({ label, fps, area, power }));
+  // hero: Explore at work. The YOLOv8n designs charted below, each a tile sized to its area with its
+  // engines inside, checked in turn against the targets; the smallest that meets both is picked. Loops.
+  (function hero() {
+    const T = { fps: 150, pw: 1.5 }, meets = d => d.fps >= T.fps && d.power <= T.pw;
+    const items = NET.map(d => ({ ...d, eng: parseInt(d.label, 10) })).sort((a, b) => a.area - b.area);
+    const pick = items.filter(meets).sort((a, b) => a.area - b.area)[0], nOk = items.filter(meets).length;
+    const amax = Math.max(...items.map(d => d.area)), COLS = 10, ROWS = Math.ceil(items.length / COLS);
+    const STEP = 55, EVAL = STEP * items.length, REVEAL = EVAL + 500, PERIOD = REVEAL + 4200;
+    const cv = document.getElementById('die'), ctx = cv.getContext('2d'), stat = document.getElementById('hero-stat');
+    const rr = (x, y, w, h, r) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); };
+    const t0 = performance.now(); let visible = true, running = false, last = '';
+    function frame(now) {
+      running = false;
+      const dpr = Math.min(devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+      const t = reduce ? PERIOD - 1 : (now - t0) % PERIOD, cell = Math.min(w / COLS, h / ROWS);
+      const ox = (w - cell * COLS) / 2, oy = (h - cell * ROWS) / 2;
+      let checked = 0, ok = 0, pk = null;
+      items.forEach((d, i) => {
+        const te = i * STEP, done = t >= te + 120, live = t >= te && !done;
+        if (t >= te) { checked++; if (meets(d)) ok++; }
+        const s = cell * .86 * Math.max(.42, Math.sqrt(d.area / amax));
+        const cx = ox + (i % COLS + .5) * cell, cy = oy + (Math.floor(i / COLS) + .5) * cell, x = cx - s / 2, y = cy - s / 2;
+        const good = done && meets(d), bad = done && !meets(d), dim = t >= REVEAL && d !== pick;
+        ctx.globalAlpha = dim ? (good ? .55 : .5) : 1;
+        rr(x, y, s, s, Math.min(4, s * .18));
+        ctx.fillStyle = live ? '#D0E6A5' : good ? '#6A9A2C' : bad ? '#F6F7F3' : '#EEF0EB'; ctx.fill();
+        ctx.lineWidth = live ? 1.6 : 1; ctx.strokeStyle = live ? '#6A9A2C' : good ? '#6A9A2C' : bad ? '#C3C9D1' : '#DCE0D7'; ctx.stroke();
+        // engines inside the tile: 1, 2 side by side, 2x2, 4x2
+        const gx = d.eng >= 8 ? 4 : d.eng >= 2 ? 2 : 1, gy = d.eng >= 4 ? 2 : 1, pad = s * .16, ew = (s - 2 * pad) / gx, eh = (s - 2 * pad) / gy;
+        ctx.fillStyle = good ? 'rgba(246,247,243,.55)' : live ? 'rgba(106,154,44,.45)' : 'rgba(163,170,180,.45)';
+        for (let a = 0; a < gx; a++) for (let b = 0; b < gy; b++) ctx.fillRect(x + pad + a * ew + 1, y + pad + b * eh + 1, Math.max(1, ew - 2), Math.max(1, eh - 2));
+        ctx.globalAlpha = 1;
+        if (d === pick) pk = { cx, cy, s };
+      });
+      if (t >= REVEAL && pk) {
+        const k = reduce ? 1 : Math.min(1, (t - REVEAL) / 400);
+        ctx.globalAlpha = k; ctx.lineWidth = 2; ctx.strokeStyle = '#12161C';
+        ctx.beginPath(); ctx.arc(pk.cx, pk.cy, pk.s / 2 + 7, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1;
+      }
+      const msg = t < EVAL ? `Checking ${checked} of ${items.length} designs · ${ok} meet ${T.fps} FPS within ${T.pw} W`
+        : `${nOk} of ${items.length} meet ${T.fps} FPS within ${T.pw} W · picked: ${pick.label.split(',')[0]}, ${pick.area} mm²`;
+      if (msg !== last) { stat.textContent = msg; last = msg; }
+      if (!reduce && visible) { running = true; requestAnimationFrame(frame); }
+    }
+    const kick = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
+    kick();
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) kick(); }).observe(cv);
+    addEventListener('resize', kick);
+  })();
+
+  // solution: every YOLOv8n design point from the demo's data; the targets pick one
+  (function space() {
+    const D = NET;
+    const T = { fps: 150, pw: 1.5 };
+    const meets = d => d.fps >= T.fps && d.power <= T.pw;
+    const ok = D.filter(meets).sort((a, b) => a.area - b.area), pick = ok[0];
+    const fig = document.getElementById('space'), sv = document.getElementById('scatter'), tip = tipper(fig);
+    const why = d => d === pick ? 'picked: smallest area that meets both' : meets(d) ? 'meets both targets' : d.fps < T.fps && d.power > T.pw ? 'misses both' : d.fps < T.fps ? `misses ${T.fps} FPS` : `misses ${T.pw} W`;
+    const line = d => `<b>${d.label}</b><br>${fmt(d.fps)} FPS · ${d.area} mm² · ${d.power} W<br>${why(d)}`;
+    function draw() {
+      const w = sv.clientWidth || 640, h = w < 520 ? 300 : 380;
+      sv.setAttribute('viewBox', `0 0 ${w} ${h}`); sv.setAttribute('height', h); sv.textContent = '';
+      const L = 46, R = w - 12, Tp = 10, B = h - 40;
+      const amin = 1.6, amax = 17, fmax = 1150;
+      const X = a => L + (R - L) * Math.log(a / amin) / Math.log(amax / amin), Y = f => B - (B - Tp) * f / fmax;
+      for (const f of [0, 250, 500, 750, 1000]) { el('line', { x1: L, x2: R, y1: Y(f), y2: Y(f), stroke: f ? '#E6E9E1' : '#CFD4C7' }, sv); el('text', { x: L - 8, y: Y(f) + 4, 'text-anchor': 'end' }, sv, fmt(f)); }
+      for (const a of [2, 4, 8, 16]) el('text', { x: X(a), y: B + 20, 'text-anchor': 'middle' }, sv, a);
+      el('text', { x: R, y: B + 34, 'text-anchor': 'end' }, sv, 'area, mm² (log scale) →');
+      el('text', { x: L, y: Tp - 0, 'text-anchor': 'start', dy: -2 }, sv, '↑ frames per second');
+      el('line', { x1: L, x2: R, y1: Y(T.fps), y2: Y(T.fps), stroke: '#4A7A16', 'stroke-dasharray': '5 5', 'stroke-width': 1.2 }, sv);
+      el('text', { x: R, y: Y(T.fps) - 7, 'text-anchor': 'end', fill: '#4A7A16', style: 'fill:#4A7A16' }, sv, `target ≥ ${T.fps} FPS`);
+      const order = [...D.filter(d => !meets(d)), ...D.filter(d => meets(d) && d !== pick)];
+      for (const d of order) {
+        const g = el('g', { class: 'pt' }, sv), cx = X(d.area), cy = Y(d.fps);
+        if (meets(d)) el('circle', { cx, cy, r: 4.5, fill: '#6A9A2C', stroke: '#F6F7F3', 'stroke-width': 2 }, g);
+        else el('circle', { cx, cy, r: 4, fill: '#F6F7F3', stroke: '#A3AAB4', 'stroke-width': 1.5 }, g);
+        hit(g, d, cx, cy);
+      }
+      const g = el('g', {}, sv), cx = X(pick.area), cy = Y(pick.fps);
+      el('circle', { cx, cy, r: 11, fill: 'none', stroke: '#12161C', 'stroke-width': 2 }, g);
+      el('circle', { cx, cy, r: 6, fill: '#6A9A2C', stroke: '#F6F7F3', 'stroke-width': 2 }, g);
+      // label in the empty upper left (small, fast designs do not exist), leader down to the pick
+      const lx = Math.max(L + 12, cx - 250), ly = Y(w < 520 ? 720 : 520);
+      el('line', { x1: lx + 20, y1: ly + 22, x2: cx - 6, y2: cy - 9, stroke: '#12161C', 'stroke-width': 1 }, g);
+      el('text', { x: lx, y: ly - 16, class: 'ink', style: 'font-weight:600' }, g, `Picked: ${pick.label.split(',')[0]}, ${pick.area} mm²`);
+      el('text', { x: lx, y: ly }, g, `${pick.fps} FPS · ${pick.power} W`);
+      hit(g, pick, cx, cy);
+    }
+    function hit(g, d, cx, cy) {
+      el('circle', { cx, cy, r: 10, fill: 'transparent' }, g);
+      g.addEventListener('mouseenter', ev => tip.show(line(d), ...relPos(fig, ev)));
+      g.addEventListener('mousemove', ev => tip.show(line(d), ...relPos(fig, ev)));
+      g.addEventListener('mouseleave', () => tip.hide());
+    }
+    draw(); addEventListener('resize', draw);
+    document.getElementById('space-sum').textContent = `${ok.length} of ${D.length} designs meet both; Atelier Studio picks ${pick.label.split(',')[0]} at ${pick.area} mm², ${pick.fps} FPS and ${pick.power} W.`;
+    sv.setAttribute('aria-label', `Scatter of ${D.length} Sutra designs for YOLOv8n, frame rate against area. ${ok.length} meet at least ${T.fps} frames per second within ${T.pw} watts; the smallest of them, ${pick.label}, is picked.`);
+    const tb = document.querySelector('#space-tbl tbody');
+    for (const d of [...ok, ...D.filter(d => !meets(d)).sort((a, b) => b.fps - a.fps)]) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${d.label}</td><td class="n">${fmt(d.fps)}</td><td class="n">${d.area}</td><td class="n">${d.power}</td><td>${why(d)}</td>`;
+      tb.appendChild(tr);
+    }
+  })();
+
+  // proof: Qwen3-0.6B token rate, one engine to eight (the estimates table in the full validation)
+  (function scale() {
+    const Q = [['1 × 64×64', '17 GB/s', 'INT8', 3.9, 145, 24, 66, 1.6], ['1 × 64×64', '68 GB/s', 'INT8', 3.9, 100, 49, 51, 2.5], ['2 × 64×64', '68 GB/s', 'INT4', 6.4, 58, 93, 39, 3.6], ['4 × 64×64', '68 GB/s', 'INT8', 11.4, 45, 88, 61, 5.3], ['4 × 64×64', '68 GB/s', 'INT4', 11.4, 41, 142, 42, 5.9], ['4 × 64×64', '136 GB/s', 'INT4', 11.4, 32, 177, 40, 7.1], ['8 × 64×64', '136 GB/s', 'INT4', 21.6, 26, 235, 47, 11.1]];
+    const fig = document.getElementById('scale'), sv = document.getElementById('bars'), tip = tipper(fig);
+    function draw() {
+      const w = sv.clientWidth || 560, narrow = w < 440, lw = narrow ? 118 : 156, bh = 22, gp = 12, top = 4;
+      const h = top + Q.length * (bh + gp) + 18;
+      sv.setAttribute('viewBox', `0 0 ${w} ${h}`); sv.setAttribute('height', h); sv.textContent = '';
+      const defs = el('defs', {}, sv), pat = el('pattern', { id: 'hatch', patternUnits: 'userSpaceOnUse', width: 5, height: 5, patternTransform: 'rotate(45)' }, defs);
+      el('rect', { width: 5, height: 5, fill: '#D0E6A5' }, pat); el('line', { x1: 0, y1: 0, x2: 0, y2: 5, stroke: '#6A9A2C', 'stroke-width': 2.4 }, pat);
+      const x0 = lw, x1 = w - 44, X = v => x0 + (x1 - x0) * v / 250;
+      el('line', { x1: x0, x2: x0, y1: 0, y2: h - 14, stroke: '#CFD4C7' }, sv);
+      Q.forEach((q, i) => {
+        const y = top + i * (bh + gp), g = el('g', {}, sv), bw = X(q[5]) - x0, r = Math.min(4, bw / 2);
+        el('text', { x: 0, y: y + 11, class: 'ink' }, g, q[0]);
+        el('text', { x: 0, y: y + 25 }, g, q[1]);
+        el('path', { d: `M${x0} ${y}h${bw - r}a${r} ${r} 0 0 1 ${r} ${r}v${bh - 2 * r}a${r} ${r} 0 0 1 -${r} ${r}h-${bw - r}z`, fill: q[2] === 'INT8' ? '#6A9A2C' : 'url(#hatch)' }, g);
+        el('text', { x: X(q[5]) + 6, y: y + 16, class: 'ink', style: 'font-weight:600' }, g, q[5]);
+        el('rect', { x: 0, y: y - gp / 2, width: w, height: bh + gp, fill: 'transparent' }, g);
+        const html = `<b>${q[0]}, ${q[1]}, ${q[2]}${q[2] === 'INT4' ? ' (planned)' : ''}</b><br>${q[5]} tokens/s · ${q[4]} ms to first token<br>${q[6]} mJ/token · ${q[7]} W · ${q[3]} mm²`;
+        g.addEventListener('mouseenter', ev => tip.show(html, ...relPos(fig, ev)));
+        g.addEventListener('mousemove', ev => tip.show(html, ...relPos(fig, ev)));
+        g.addEventListener('mouseleave', () => tip.hide());
+      });
+      el('text', { x: x1 + 44, y: h - 2, 'text-anchor': 'end' }, sv, 'tokens per second →');
+    }
+    draw(); addEventListener('resize', draw);
+  })();
+  document.getElementById('open-full').addEventListener('click', () => { document.getElementById('full').open = true; });
   // pilot request: composed in the visitor's own mail app; the site has no server
   const f = document.getElementById('pilot');
   f.addEventListener('submit', e => {
