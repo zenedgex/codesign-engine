@@ -315,7 +315,7 @@ footer a:hover { color: var(--text) }
         <p class="label">How it works</p>
         <h2>From your workload to optimized designs.</h2>
       </div>
-      <div class="body"><p>Bring what your chip must run and the limits it must meet. Atelier explores the possibilities and returns the designs worth taking to implementation.</p></div>
+      <div class="body"><p>Bring what your chip must run and the limits it must meet. Atelier explores the possibilities and identifies the promising designs to take to implementation.</p></div>
     </div>
     <div class="flow reveal">
       <div class="fbox"><span class="t">You bring</span><ul><li>Your workloads</li><li>Your requirements</li></ul></div>
@@ -374,22 +374,22 @@ footer a:hover { color: var(--text) }
         <p class="label">Case study</p>
         <h2>Qwen3 and YOLOv8n, <em>on the RTL.</em></h2>
       </div>
-      <div class="body"><p>A whole Qwen3-0.6B token, every matrix multiply bit-exact with its logits equal to the integer reference; and a full object detector, from its quantized model to a generated in-memory-compute accelerator: checked on real images, then a whole 640&times;640 frame run on the generated hardware.</p></div>
+      <div class="body"><p>A whole Qwen3-0.6B token, every matrix multiply bit-exact with its logits equal to the integer reference; and a full object detector, from its quantized model to a generated in-memory computing accelerator: checked on real images, then a whole 640&times;640 frame run on the generated hardware.</p></div>
     </div>
     <div class="proof" id="yolo-metrics">
-      <div class="metric"><b>645 / 645</b><span>matrix multiplies of a whole Qwen3-0.6B token on the generated RTL, bit-identical, the logits equal to the integer reference</span></div>
-      <div class="metric"><b>0.004%</b><span>difference between the cycle estimate and RTL simulation over that token (16.8 million cycles)</span></div>
-      <div class="metric"><b>0.364</b><span>COCO mAP50-95 through the accelerator's integer arithmetic, on all 5,000 val2017 images (floating-point model: 0.371)</span></div>
-      <div class="metric"><b>6 / 6</b><span>detection outputs of a full 640&times;640 frame on the generated RTL, bit-identical to the integer reference</span></div></div>
+      <div class="metric"><b>645 / 645</b> <span>matrix multiplies of a whole Qwen3-0.6B token on the generated RTL, bit-identical, the logits equal to the integer reference</span></div>
+      <div class="metric"><b>0.004%</b> <span>difference between the cycle estimate and RTL simulation over that token (16.8 million cycles)</span></div>
+      <div class="metric"><b>0.364</b> <span>COCO mAP50-95 through the accelerator's integer arithmetic, on all 5,000 val2017 images (floating-point model: 0.371)</span></div>
+      <div class="metric"><b>6 / 6</b> <span>detection outputs of a full 640&times;640 frame on the generated RTL, bit-identical to the integer reference</span></div></div>
     </div>
-    <p class="fine">Model: Ultralytics YOLOv8n, INT8. Hardware: one 64&times;64 digital in-memory-compute engine with a RISC-V (CV32E40P) control core, simulated in Verilator. Implementation: synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
+    <p class="fine">Model: Ultralytics YOLOv8n, INT8. Hardware: one 64&times;64 digital in-memory-compute engine with a RISC-V (CV32E40P) control core, simulated in Verilator. Implementation: synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive kit. Next: your foundry. The RTL and design constraints provide a starting point for evaluation in your target foundry flow; technology-specific memories, timing and physical implementation must be revalidated.</p>
   </section>
 
 
   <section id="workloads">
     <div class="head">
       <div class="stack"><p class="label">Results by workload</p><h2>The best chip for <em>your targets.</em></h2></div>
-      <div class="body"><p>Give us the workload and the area, power and performance it must meet. Atelier searches architecture and compiler together and returns the design that meets every requirement, ranked by what you care about most, with the evidence for it.</p></div>
+      <div class="body"><p>Give us the workload and the area, power and performance it must meet. Atelier searches architecture and compiler together and ranks the candidate designs against every requirement, by what you care about most, with the evidence for each.</p></div>
     </div>
     <div class="wl">
       <div class="wlc"><span class="k">LANGUAGE MODEL</span><h3>Qwen3-0.6B, a whole token</h3><p>All <b>645 matrix multiplies</b> of a generated token, 28 layers and the output head, bit-exact on the generated RTL, with the logits equal to the integer reference; the cycle estimate within <b>0.004%</b> of its 16.8 million cycles.</p></div>

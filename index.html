@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="ZenEdgeX Atelier designs the best AI accelerator for your workload and your area, power and performance targets. Proof: Sutra, an in-memory-compute accelerator IP it designed.">
+<meta name="description" content="ZenEdgeX Atelier Studio explores AI accelerator architectures and compiler mappings against your workload and your performance, power and area targets.">
 <meta property="og:title" content="ZenEdgeX Atelier: the best AI chip for your workload">
-<meta property="og:description" content="ZenEdgeX Atelier designs the best AI accelerator for your workload and your area, power and performance targets. Proof: Sutra, an in-memory-compute accelerator IP it designed.">
+<meta property="og:description" content="ZenEdgeX Atelier Studio explores AI accelerator architectures and compiler mappings against your workload and your performance, power and area targets.">
 <meta property="og:image" content="https://zenedgex.in/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -228,7 +228,7 @@ form.pilot .note { margin-top: -2px }
   .steps li + li { border-left: none; border-top: 1px solid var(--line) }
 }
 @media (min-width: 961px) and (max-width: 1100px) { .cards, .legend { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
-/* visuals: hero floorplan, design-space scatter, Sutra floorplan, Qwen3 scaling bars */
+/* visuals: the Explore-at-work hero and the design-space scatter */
 .hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 48px; align-items: center }
 .hero-copy { display: flex; flex-direction: column; gap: 28px; min-width: 0 }
 .hero h1 { font-size: clamp(44px, 6vw, 92px) }
@@ -285,19 +285,19 @@ form.pilot .note { margin-top: -2px }
    <div class="hero-copy">
     <p class="kicker">AI chip design engine</p>
     <h1>The best chip for <em>your workload.</em></h1>
-    <p class="sub">Atelier Studio searches accelerator architectures and their compiler mappings together, against your AI workload and your performance, power and area targets, so you choose a design on evidence before you commit to implementation.</p>
-    <p class="proofline"><b>Proof:</b> Sutra, an in-memory-compute accelerator IP designed with Atelier Studio for Qwen3 and YOLOv8n: a whole Qwen3 token and a full YOLOv8n frame bit-exact on RTL, floorplanned on the ASAP7 predictive 7&nbsp;nm kit.</p>
+    <p class="sub">Atelier Studio explores AI accelerator architectures and compiler mappings against your workload and your performance, power and area targets. It validates supported functionality against reference models and uses simulation and implementation results to evaluate candidate designs.</p>
+    <p class="proofline"><b>Proof:</b> Sutra, an in-memory computing accelerator IP designed with Atelier Studio, checked against reference models in RTL simulation and evaluated using the ASAP7 predictive 7&nbsp;nm flow.</p>
     <div class="cta"><a class="btn primary" href="#pilot">Request a pilot <span>→</span></a><a class="btn line" data-to="demo" href="#">Try the live demo</a></div>
    </div>
-   <figure class="hero-art"><canvas id="die" aria-hidden="true"></canvas><p class="hero-stat" id="hero-stat" aria-live="off"></p><figcaption>Explore at work: the 89 YOLOv8n designs charted below, each drawn to its area with its engines inside, checked against at least 150 FPS within 1.5&nbsp;W. The smallest that meets both is picked.</figcaption></figure>
+   <figure class="hero-art"><canvas id="die" aria-hidden="true"></canvas><p class="hero-stat" id="hero-stat" aria-live="off"></p><figcaption>Explore at work: 89 candidate designs for one vision workload, each drawn to its area with its engines inside, checked against at least 150 frames a second within 1.5&nbsp;W. The smallest that meets both is picked.</figcaption></figure>
   </div>
 
   <div class="ident" aria-label="ZenEdgeX, Atelier Studio and Sutra">
-    <div><span class="k">The company</span><b>ZenEdgeX</b><span>Builds the design engine and the accelerator IP.</span></div>
+    <div><span class="k">The company</span><b>ZenEdgeX</b> <span>Builds the design engine and the accelerator IP.</span></div>
     <div class="arrow" aria-hidden="true">builds →</div>
-    <div><span class="k">The product</span><b>Atelier Studio</b><span>The design engine: from your workload and targets to a verified accelerator design.</span></div>
+    <div><span class="k">The product</span><b>Atelier Studio</b> <span>The design engine: from your workload and targets to candidate accelerator designs, with the evidence for each.</span></div>
     <div class="arrow" aria-hidden="true">designs →</div>
-    <div><span class="k">What it produces</span><b>Sutra, Yantra, yours</b><span>Accelerator IP: Sutra (compute-in-memory) is the proof on this page; Yantra is a systolic NPU; or your own RTL blocks.</span></div>
+    <div><span class="k">What it produces</span><b>Sutra, Yantra, yours</b> <span>Accelerator IP: Sutra (in-memory computing) and Yantra (a systolic NPU), or your own RTL blocks.</span></div>
   </div>
 
   <div class="offers">
@@ -309,7 +309,7 @@ form.pilot .note { margin-top: -2px }
       <ul>
         <li>From your workload and its token or frame rate, area, power and latency targets</li>
         <li>Chooses engines, array and memories; generates the RTL</li>
-        <li>Checks the design you pick against the reference model, in RTL simulation</li>
+        <li>Validates supported functionality against reference models, in RTL simulation</li>
         <li>Every figure labelled: estimate, simulation or implementation</li>
       </ul>
       <span class="go">Atelier Studio <span>→</span></span>
@@ -318,12 +318,12 @@ form.pilot .note { margin-top: -2px }
       <div class="fig" aria-hidden="true"></div>
       <span class="tag">The proof · silicon IP it designed</span>
       <h2>Sutra</h2>
-      <p>Digital in-memory-compute AI accelerator for language and vision models at the edge, controlled by a RISC-V core.</p>
+      <p>An in-memory computing AI accelerator for language and vision models at the edge.</p>
       <ul>
-        <li>Language models stream weights from DRAM; vision networks run fully on chip</li>
-        <li>One to eight engines from a single command stream</li>
-        <li>INT8, bit-exact with the integer model</li>
-        <li>Delivered as RTL with compiler, runtime, testbenches and a flow kit</li>
+        <li>Sized by Atelier Studio for each workload</li>
+        <li>Scales from one engine to eight</li>
+        <li>Results match the reference model exactly</li>
+        <li>Delivered as RTL with its compiler, runtime and tests</li>
       </ul>
       <span class="go">Sutra IP <span>→</span></span>
     </a>
@@ -344,28 +344,28 @@ form.pilot .note { margin-top: -2px }
 
   <section id="solution">
     <div class="head">
-      <div class="stack"><p class="label">The solution</p><h2>One search across workload, <em>hardware and compiler.</em></h2></div>
-      <div class="body"><p>A chip is only as good as the program that runs on it. Atelier Studio gives every candidate architecture its own compiler search, so designs are compared on how your workload will actually execute, not on peak numbers.</p></div>
+      <div class="stack"><p class="label">What makes it different</p><h2>Explore the hardware and compiler <em>as one design space.</em></h2></div>
+      <div class="body"><p>Traditional workflows evaluate architecture, mapping and implementation in repeated engineering loops. Atelier Studio coordinates these decisions, so your workload requirements, the compiler mapping and implementation results all inform the search for candidate designs.</p><p>Today, Explore evaluates each candidate in the search range with its own compiler search and ranks them against your targets. You choose which design to take further; RTL simulation and implementation then check it.</p></div>
     </div>
     <ol class="steps">
-      <li><b>Workload and constraints</b><span>Your model and its frame or token rate, power, area and latency targets</span></li>
-      <li><b>Candidate architectures</b><span>Engines, array, memories and dataflow, from a reference architecture or your own RTL blocks</span></li>
-      <li><b>Compiler mapping</b><span>For each candidate, the compiler builds that design's mapping space, searches it and compiles its best program</span></li>
-      <li><b>Evaluation in tiers</b><span>Fast estimate, then the SoC model; RTL simulation, synthesis and floorplan for the designs worth it</span></li>
-      <li><b>Ranked designs</b><span>The designs that meet your targets, ranked by what you care about most, each with its evidence</span></li>
+      <li><b>Workload and constraints</b> <span>Your model and its frame or token rate, power, area and latency targets</span></li>
+      <li><b>Candidate architectures</b> <span>Engines, array, memories and dataflow, from a reference architecture or your own RTL blocks</span></li>
+      <li><b>Compiler mapping</b> <span>For each candidate, the compiler builds that design's mapping space, searches it and compiles its best program</span></li>
+      <li><b>Evaluation in tiers</b> <span>Fast estimate, then the SoC model; RTL simulation, synthesis and floorplan for the designs worth it</span></li>
+      <li><b>Ranked designs</b> <span>The designs that meet your targets, ranked by what you care about most, each with its evidence</span></li>
     </ol>
     <figure class="viz" id="space">
-      <div class="viz-head"><div><h3>YOLOv8n on Sutra: 89 designs, one pick</h3><p>Targets: at least 150 frames per second within 1.5&nbsp;W, then the smallest area. <span id="space-sum"></span></p></div><span class="ev est">Model-estimated</span></div>
+      <div class="viz-head"><div><h3>One workload, 89 candidate designs, one pick</h3><p>Targets: at least 150 frames per second within 1.5&nbsp;W, then the smallest area. <span id="space-sum"></span></p></div><span class="ev est">Model-estimated</span></div>
       <div class="keys"><span><i class="ok"></i>meets both targets</span><span><i class="miss"></i>misses one or both</span><span><i class="pick"></i>picked: smallest area</span></div>
       <svg id="scatter" role="img"></svg>
       <div class="tip" hidden></div>
-      <figcaption>Each dot is a Sutra configuration for YOLOv8n at 640&times;640, INT8, at the 900&nbsp;MHz design clock: frame rate from the cycle model (within 0.05% of RTL simulation over a full frame), area from ASAP7 synthesis and memory-macro models, power from the energy model. <a data-to="demo" href="#">Set your own targets in the live demo →</a></figcaption>
+      <figcaption>Each dot is a candidate Sutra configuration for one vision workload. Frame rate from the cycle model, checked against RTL simulation; area and power from models. Estimates, not silicon measurements. <a data-to="demo" href="#">Set your own targets in the live demo →</a></figcaption>
       <details class="tv"><summary>View as a table</summary><div class="tbl"><table id="space-tbl"><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">mm²</th><th class="n">W</th><th>Against the targets</th></tr></thead><tbody></tbody></table></div></details>
     </figure>
     <div class="tbl"><table class="cmp"><thead><tr><th>Conventional workflow</th><th>With Atelier Studio</th></tr></thead><tbody>
       <tr><td>Engineers hand-pick a few candidate architectures</td><td>Explore evaluates many candidate architectures against your workload and targets in one run</td></tr>
       <tr><td>Compiler mapping is worked out after the hardware is fixed</td><td>Each candidate is compared with its own best compiler mapping, so architecture and mapping are judged together</td></tr>
-      <tr><td>Expensive implementation runs are needed to narrow the choices</td><td>Fast estimates, checked against RTL simulation, rank the candidates; simulation and implementation confirm the ones you pick</td></tr>
+      <tr><td>Expensive implementation runs are needed to narrow the choices</td><td>Fast estimates, checked against RTL simulation, rank the candidates; simulation and implementation evaluate the ones you pick</td></tr>
       <tr><td>Each round of results feeds the next manual iteration</td><td>Every candidate is compiled, timed and ranked in the same run; you choose from ranked designs with their evidence, then build and simulate</td></tr>
     </tbody></table></div>
   </section>
@@ -392,82 +392,21 @@ form.pilot .note { margin-top: -2px }
       <div><h3>Explore faster</h3><p>Many candidate designs evaluated in one run, each with its compiled program, instead of a few by hand.</p></div>
       <div><h3>Better designs</h3><p>Architecture and mapping judged together, so the design that wins is the one your workload actually runs best on.</p></div>
       <div><h3>Trade-offs you can see</h3><p>Performance, power and area side by side for every design, ranked by the target you care about.</p></div>
-      <div><h3>Less implementation risk</h3><p>The design you pick is checked against the reference model in RTL simulation before it goes to implementation.</p></div>
+      <div><h3>Less implementation risk</h3><p>The design you pick has its supported functionality checked against reference models in RTL simulation before implementation.</p></div>
     </div>
   </section>
 
   <section id="proof">
     <div class="head">
-      <div class="stack"><p class="label">Proof</p><h2>Built and tested on <em>real workloads.</em></h2></div>
-      <div class="body"><p>Sutra, designed with Atelier Studio, on a language model and an object detector. Every result says what kind of evidence it is.</p></div>
+      <div class="stack"><p class="label">Proof</p><h2>Proven on a real <em>accelerator design.</em></h2></div>
+      <div class="body"><p>Atelier Studio designed Sutra, an in-memory computing accelerator IP, for real language and vision models. Its supported functionality is checked against reference models in RTL simulation, and its blocks are evaluated using the ASAP7 predictive 7&nbsp;nm flow. Every result says whether it is measured or estimated, and what is still planned.</p></div>
     </div>
-    <div class="legend">
-      <div><span class="ev rtl">RTL-verified</span><p>Results or cycle counts checked against a reference, in cycle-accurate simulation of the generated RTL. The tested scope is stated with each result.</p></div>
-      <div><span class="ev int">Integer model</span><p>Measured in software with the accelerator's exact integer arithmetic, which the RTL matches bit for bit on the frames checked.</p></div>
-      <div><span class="ev est">Model-estimated</span><p>Performance, power or area from Atelier Studio's models; their assumptions and calibration are stated with each table.</p></div>
-      <div><span class="ev pd">Floorplan-evaluated</span><p>Synthesis and floorplan with OpenROAD-flow-scripts on the ASAP7 predictive kit. Not fabricated silicon, not a foundry process.</p></div>
+    <div class="cards">
+      <div><h3>The results</h3><p>What was validated, on which workloads, and what is estimated.</p><a data-to="ip" href="#">Sutra IP →</a></div>
+      <div><h3>How the search works</h3><p>Workload, architecture, compiler and implementation in one loop.</p><a data-to="tech" href="#">Technology →</a></div>
+      <div><h3>Try it yourself</h3><p>Set targets and see the candidate designs that meet them.</p><a data-to="demo" href="#">Live demo →</a></div>
+      <div><h3>Your workload</h3><p>Bring your model and constraints to a design-partner pilot.</p><a href="#pilot">Request a pilot →</a></div>
     </div>
-    <div class="proof">
-      <div class="metric"><b>645 / 645</b><span>matrix multiplies of a whole Qwen3-0.6B token on the generated RTL, bit-identical; logits equal the integer reference</span><span class="ev rtl">RTL-verified</span></div>
-      <div class="metric"><b>6 / 6</b><span>detection outputs of a full 640&times;640 YOLOv8n frame on the generated RTL, bit-identical to the integer reference</span><span class="ev rtl">RTL-verified</span></div>
-      <div class="metric"><b>0.364</b><span>YOLOv8n COCO mAP50-95 with Sutra's integer arithmetic, all 5,000 val2017 images (floating-point model: 0.371)</span><span class="ev int">Integer model</span></div>
-      <div class="metric"><b>4 / 4</b><span>Sutra blocks synthesized and floorplanned with their memory macros and timing reports</span><span class="ev pd">Floorplan-evaluated</span></div>
-    </div>
-    <div class="viz2">
-      <figure class="viz fpfig">
-        <div class="viz-head"><div><h3>One Sutra engine, floorplanned</h3><p>SRAM macros around the placed standard cells of the compute engine.</p></div><span class="ev pd">Floorplan-evaluated</span></div>
-        <img src="ip/sutra-engine-floorplan.png" width="1000" height="1000" alt="Floorplan of a Sutra engine on ASAP7: compute-memory, accumulator, scratchpad, activation and post-op SRAM macros around the placed standard cells of the in-memory-compute adder trees, activation unit, post-op unit and control" loading="lazy">
-        <div class="keys"><span><i class="sq" style="background:#4285f4"></i>Compute memory</span><span><i class="sq" style="background:#f08040"></i>In-memory compute adder trees</span><span><i class="sq" style="background:#34c784"></i>Activation unit and memory</span><span><i class="sq" style="background:#b070e8"></i>Post-op unit and parameters</span><span><i class="sq" style="background:#e85478"></i>Accumulator memory</span><span><i class="sq" style="background:#e2ba3c"></i>Input scratchpad</span><span><i class="sq" style="background:#808c9a"></i>Control and other logic</span></div>
-        <figcaption>OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Not fabricated silicon. <a data-to="ip" href="#">More on Sutra →</a></figcaption>
-      </figure>
-      <figure class="viz" id="scale">
-        <div class="viz-head"><div><h3>Qwen3-0.6B, one engine to eight</h3><p>Generated tokens per second as Sutra grows, with the memory bandwidth to feed it.</p></div><span class="ev est">Model-estimated</span></div>
-        <div class="keys"><span><i class="int8"></i>INT8 weights</span><span><i class="int4"></i>INT4 weights (planned)</span></div>
-        <svg id="bars" role="img" aria-label="Qwen3-0.6B tokens per second by Sutra configuration: 24 for one 64×64 engine at 17 GB/s, rising to 235 for eight engines at 136 GB/s with INT4 weights (planned)."></svg>
-        <div class="tip" hidden></div>
-        <figcaption>At 900&nbsp;MHz with the planned weight DMA and command queue; one user, a 512-token prompt, 1,024 tokens in context. Engine cycles from the cycle model checked against RTL; DRAM time from bytes moved; energy from the calibrated energy model. Full table under <a href="#full" id="open-full">full technical validation</a>.</figcaption>
-      </figure>
-    </div>
-    <div class="wl">
-      <div class="wlc"><span class="k">LANGUAGE MODEL</span><h3>Qwen3-0.6B, a whole token</h3><p>All <b>645 matrix multiplies</b> of a generated token, 28 layers and the output head, bit-exact on the generated RTL, with the logits equal to the integer reference; the cycle estimate within <b>0.004%</b> of its 16.8 million cycles.</p><span class="ev rtl">RTL-verified</span></div>
-      <div class="wlc"><span class="k">GEMM</span><h3>Transformer matrix multiplies</h3><p>Compiled through MLIR for <b>22 accelerator configurations</b>, systolic and in-memory compute, from 4&times;4 to 128&times;64. Every program bit-exact against NumPy on the generated RTL; the cycle estimate is a median <b>1.4%</b> from RTL simulation.</p><span class="ev rtl">RTL-verified</span></div>
-      <div class="wlc"><span class="k">CONVOLUTION</span><h3>CNN layers</h3><p>All <b>63 convolution layers</b> of YOLOv8n, from 3&times;3 stems to 1&times;1 heads, compiled onto in-memory-compute engines and run on the generated RTL, bit-exact with the integer reference.</p><span class="ev rtl">RTL-verified</span></div>
-      <div class="wlc"><span class="k">NETWORK</span><h3>YOLOv8n, end to end</h3><p>The whole detector on chip: a full 640&times;640 frame bit-exact on RTL, the estimate within <b>0.05%</b> of its 3.26 million cycles, and <b>0.364 mAP50-95</b> on COCO with the accelerator's integer arithmetic.</p><span class="ev rtl">RTL-verified</span></div>
-    </div>
-    <p class="fine">Scope: one 64&times;64 Sutra engine with its RISC-V control core, simulated in Verilator. On the Qwen3 token the test bench feeds weights and commands, the job of a planned weight DMA and command queue; RMSNorm, softmax, RoPE and the SwiGLU multiply are computed in the integer reference beside the RTL, not yet on chip. ASAP7 is a predictive academic kit: results on your process depend on its PDK, memory macros, constraints and physical-design flow.</p>
-    <details class="deep" id="full">
-      <summary><div>Full technical validation<span>Qwen3-0.6B and YOLOv8n in detail: scope, assumptions, and the configurations Atelier Studio sized for each</span></div></summary>
-      <div class="inner">
-        <section id="llm">
-          <div class="head">
-            <div class="stack"><p class="label">Evidence · language models</p><h2>Qwen3-0.6B, <em>a whole token on the RTL.</em></h2></div>
-            <div class="body"><p>Every matrix multiply of a generated token on the generated RTL, with Qwen3-0.6B's real shapes; the norms, softmax and RoPE in our integer spec beside it. Then Sutra sized from one engine to eight for the token rate you need.</p></div>
-          </div>
-          <!--QWEN3--><div class="proof"><div class="metric"><b>645 / 645</b><span>matrix multiplies of a whole token, all 28 layers and the output head, run on the RTL bit-identical; the logits equal the integer reference, the other ops computed in its integer arithmetic (16.8 million cycles, cycle model within 0.004%)</span></div><div class="metric"><b>13 / 13</b><span>distinct matrix shapes of a token and of a 512-token prompt, run on the RTL with random INT8 data, bit-identical to the integer reference</span></div><div class="metric"><b>0.2%</b><span>cycle estimate against the RTL over a whole token and a whole prompt (18.4 and 84.1 million cycles; every shape within 1%)</span></div><div class="metric"><b>20.5 ms</b><span>engine time per generated token at 900&nbsp;MHz: 49 tokens/s when memory keeps up</span></div></div><p class="fine">Model: Qwen3-0.6B (28 layers, grouped-query attention), INT8 weights and activations; wider layers split into 1,024-channel parts; attention run as matrix multiplies with K and V loaded at run time. Hardware: one 64&times;64 engine, simulated in Verilator, its weights and commands fed one per cycle by the test bench: the job of a planned weight DMA and command queue (the RISC-V control core alone takes about ten cycles per command). Not yet on chip: RMSNorm, softmax, RoPE and the SwiGLU multiply, which the estimates below cost on proposed units. Weights here are random: function and timing, not answers. With the real weights, a simulation of Sutra's number formats shows a correct reply needs a 16-bit residual stream and per-token activation scales (planned).</p><div class="stack" style="gap:16px;margin-top:24px"><h3>Qwen3-0.6B from one engine to eight, estimated by Atelier Studio <span class="ev est">Model-estimated</span></h3><p class="fine" style="margin-top:-6px">Sutra designs at 900&nbsp;MHz with the planned weight DMA and command queue; one user, a 512-token prompt, then tokens generated with 1,024 in context. More engines pay off with more memory bandwidth (136 GB/s: two LPDDR5X channels). Engine cycles from the cycle model checked above; DRAM time from bytes moved over the bandwidth; energy from the calibrated energy model, standard-cell compute memory. Estimates, not measurements; a model split across engines is cycle-model only. Try other budgets in the <a data-to="demo" href="#">live demo</a>.</p><div class="tbl"><table><thead><tr><th>Sutra</th><th class="n">mm²</th><th>Memory</th><th>Weights</th><th class="n">ms to first token</th><th class="n">tokens / s</th><th class="n">mJ / token</th><th class="n">W</th></tr></thead><tbody><tr><td>1 × 64×64</td><td class="n">3.9</td><td>17 GB/s</td><td>INT8</td><td class="n">145</td><td class="n">24</td><td class="n">66</td><td class="n">1.6</td></tr><tr><td>1 × 64×64</td><td class="n">3.9</td><td>68 GB/s</td><td>INT8</td><td class="n">100</td><td class="n">49</td><td class="n">51</td><td class="n">2.5</td></tr><tr><td>2 × 64×64</td><td class="n">6.4</td><td>68 GB/s</td><td>INT4 (planned)</td><td class="n">58</td><td class="n">93</td><td class="n">39</td><td class="n">3.6</td></tr><tr><td>4 × 64×64</td><td class="n">11.4</td><td>68 GB/s</td><td>INT8</td><td class="n">45</td><td class="n">88</td><td class="n">61</td><td class="n">5.3</td></tr><tr><td>4 × 64×64</td><td class="n">11.4</td><td>68 GB/s</td><td>INT4 (planned)</td><td class="n">41</td><td class="n">142</td><td class="n">42</td><td class="n">5.9</td></tr><tr><td>4 × 64×64</td><td class="n">11.4</td><td>136 GB/s</td><td>INT4 (planned)</td><td class="n">32</td><td class="n">177</td><td class="n">40</td><td class="n">7.1</td></tr><tr><td>8 × 64×64</td><td class="n">21.6</td><td>136 GB/s</td><td>INT4 (planned)</td><td class="n">26</td><td class="n best">235</td><td class="n">47</td><td class="n">11.1</td></tr></tbody></table></div><p class="fine best-key"><span class="best">highlighted</span> highest token rate</p></div><!--/QWEN3-->
-        </section>
-
-        <section id="evidence">
-          <div class="head">
-            <div class="stack"><p class="label">Evidence · vision</p><h2>YOLOv8n, <em>verified end to end.</em></h2></div>
-            <div class="body"><p>A real detector, from the quantized network to Sutra's generated RTL and its ASAP7 floorplan.</p></div>
-          </div>
-          <div class="proof">
-            <div class="metric"><b>0.364</b><span>COCO mAP50-95 with Sutra's integer arithmetic, all 5,000 val2017 images (floating-point model: 0.371)</span></div>
-            <div class="metric"><b>6 / 6</b><span>detection outputs of a full 640&times;640 frame on the RTL, bit-identical to the integer reference</span></div>
-            <div class="metric"><b>0.05%</b><span>Atelier's cycle estimate against RTL simulation over that frame, 3.26 million cycles</span></div>
-            <div class="metric"><b>4 / 4</b><span>blocks synthesized and floorplanned on ASAP7 7&nbsp;nm with their memory macros, with timing reports: RISC-V core, compute engine, post-processing, activation unit</span></div>
-          </div>
-          <p class="fine">One 64&times;64 Sutra engine with its RISC-V control core, simulated in Verilator. Implementation: OpenROAD-flow-scripts on the ASAP7 predictive 7&nbsp;nm kit. Next: your foundry. The RTL, constraints, memory list and physical-design kit carry over to your process design kit and memory compilers.</p>
-          <div class="stack" style="gap:16px;margin-top:24px">
-            <h3>YOLOv8n configurations, sized by Atelier Studio <span class="ev est">Model-estimated</span></h3>
-            <p class="fine" style="margin-top:-6px">The smallest Sutra configuration for each frame-rate target, and the fastest. Atelier estimates for 640&times;640 INT8 at the 900&nbsp;MHz design clock: frame rate from the cycle model (within 0.05% of RTL simulation over a full frame), area from ASAP7 synthesis and memory-macro models, power from the energy model. Memory: compute memory per engine + activation memory; b/cycle: input bits per cycle. Try your own targets in the <a data-to="demo" href="#">live demo</a>.</p>
-            <!--YOLO-DESIGNS--><div class="tbl"><table><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">ms / frame</th><th class="n">mm²</th><th class="n">W</th><th class="n">FPS / W</th></tr></thead><tbody><tr><td>1 × 32×32, 8 b/cycle, 1 + 3 MB</td><td class="n">58</td><td class="n">17.23</td><td class="n best" title="smallest area">1.9</td><td class="n best" title="lowest power">0.39</td><td class="n">150</td></tr><tr><td>1 × 64×64, 4 b/cycle, 4 + 3 MB</td><td class="n">129</td><td class="n">7.76</td><td class="n">3.5</td><td class="n">1.04</td><td class="n">124</td></tr><tr><td>1 × 128×64, 8 b/cycle, 4 + 3 MB</td><td class="n">362</td><td class="n">2.76</td><td class="n">4.0</td><td class="n">2.60</td><td class="n">139</td></tr><tr><td>4 × 32×64, 8 b/cycle, 4 + 12 MB</td><td class="n">634</td><td class="n">6.31</td><td class="n">14.1</td><td class="n">3.92</td><td class="n">162</td></tr><tr><td>4 × 64×64, 8 b/cycle, 4 + 12 MB</td><td class="n best" title="highest frame rate">1,045</td><td class="n">3.83</td><td class="n">14.6</td><td class="n">6.52</td><td class="n">160</td></tr></tbody></table></div><p class="fine best-key"><span class="best">highlighted</span> highest frame rate, smallest area, lowest power</p><!--/YOLO-DESIGNS-->
-          </div>
-
-        </section>
-
-      </div>
-    </details>
   </section>
 
   <section id="today">
@@ -491,30 +430,29 @@ form.pilot .note { margin-top: -2px }
       </ul></div>
       <div><span class="k">Planned</span><ul>
         <li>Atelier Studio for Linux x86_64</li>
-        <li>Sutra: a weight DMA and command queue</li>
-        <li>Sutra: RMSNorm, softmax and RoPE on chip</li>
-        <li>Sutra: INT4 weights for language models</li>
+        <li>Sutra: more of the language-model pipeline on chip</li>
+        <li>Sutra: lower-precision weights for language models</li>
       </ul></div>
     </div>
     <div class="facts">
       <div><span class="k">Inputs and outputs</span><ul>
-        <li><b>Workloads</b>: networks as ONNX (YOLOv8n-class CNNs, INT8), language models from their Hugging Face config, GEMMs</li>
+        <li><b>Workloads</b>: vision networks (ONNX), language models (Hugging Face config), matrix workloads</li>
         <li><b>Targets</b>: frame or token rate, power, area, latency</li>
         <li><b>Out</b>: RTL with its file list and machine description, the compiled program, and the evidence for each design</li>
       </ul></div>
       <div><span class="k">Deployment and your data</span><p>Atelier Studio runs on your machine: your models, projects and designs do not leave it. Exporting a design needs a license from ZenEdgeX; the terms for generated RTL are set in the pilot or license agreement.</p></div>
-      <div><span class="k">Foundry portability</span><p>The exploration carries over to your target; the implementation numbers do not. The RTL, constraints, memory list and physical-design kit move to your process, and area, power and timing are re-evaluated with your PDK, memory compilers, constraints and flow.</p></div>
+      <div><span class="k">Foundry portability</span><p>The RTL and design constraints provide a starting point for evaluation in your target foundry flow; technology-specific memories, timing and physical implementation must be revalidated.</p></div>
     </div>
   </section>
 
   <div class="close cta2" id="contact">
     <div class="stack">
       <p class="label">Talk to us</p>
-      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring your workload. Define your constraints. <em>Explore your design.</em></h2>
-      <p style="color:var(--muted)">Two ways to start.</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring your workload. <em>Let's explore the design space.</em></h2>
+      <p style="color:var(--muted)">Share your model, performance target, and power and area constraints. We'll discuss how Atelier Studio can evaluate the workload and identify promising accelerator configurations. For AI chip teams exploring a new accelerator or optimizing an existing architecture.</p>
       <div class="acts">
-        <a class="act on" href="#pilot"><b>Request a design-partner pilot →</b><span>You have a model, target constraints and a chip-design problem. We explore it with you in Atelier Studio.</span></a>
-        <a class="act" data-to="demo" href="#"><b>Explore the live demo →</b><span>Set targets and see the designs that meet them, before you talk to anyone.</span></a>
+        <a class="act on" href="#pilot"><b>Request a design-partner pilot →</b> <span>You have a model, target constraints and a chip-design problem. We explore it with you and identify promising configurations.</span></a>
+        <a class="act" data-to="demo" href="#"><b>Explore the live demo →</b> <span>Set targets and see the designs that meet them, before you talk to anyone.</span></a>
       </div>
       <p class="note">Or write to <a href="mailto:hello@zenedgex.in">hello@zenedgex.in</a>.</p>
     </div>
@@ -524,7 +462,7 @@ form.pilot .note { margin-top: -2px }
         <label>Work email<input name="email" type="email" autocomplete="email" required></label>
         <label>Company<input name="company" autocomplete="organization" required></label>
       </div>
-      <label>Target workload<input name="workload" placeholder="e.g. YOLOv8n at 60 FPS, a 1B-parameter LLM, our own GEMMs" required></label>
+      <label>Target workload<input name="workload" placeholder="e.g. object detection at 60 FPS, a 1B-parameter language model" required></label>
       <label>Primary objective<select name="objective"><option>Performance</option><option>Power</option><option>Area</option><option selected>All three</option></select></label>
       <label>Anything else (optional)<textarea name="notes" placeholder="Process node, timeline, your own engines or RTL"></textarea></label>
       <button class="btn primary" type="submit">Prepare the request <span>→</span></button>
@@ -658,7 +596,7 @@ form.pilot .note { margin-top: -2px }
     }
     draw(); addEventListener('resize', draw);
     document.getElementById('space-sum').textContent = `${ok.length} of ${D.length} designs meet both; Atelier Studio picks ${pick.label.split(',')[0]} at ${pick.area} mm², ${pick.fps} FPS and ${pick.power} W.`;
-    sv.setAttribute('aria-label', `Scatter of ${D.length} Sutra designs for YOLOv8n, frame rate against area. ${ok.length} meet at least ${T.fps} frames per second within ${T.pw} watts; the smallest of them, ${pick.label}, is picked.`);
+    sv.setAttribute('aria-label', `Scatter of ${D.length} candidate Sutra designs for one vision workload, frame rate against area. ${ok.length} meet at least ${T.fps} frames per second within ${T.pw} watts; the smallest of them, ${pick.label}, is picked.`);
     const tb = document.querySelector('#space-tbl tbody');
     for (const d of [...ok, ...D.filter(d => !meets(d)).sort((a, b) => b.fps - a.fps)]) {
       const tr = document.createElement('tr');
@@ -667,35 +605,6 @@ form.pilot .note { margin-top: -2px }
     }
   })();
 
-  // proof: Qwen3-0.6B token rate, one engine to eight (the estimates table in the full validation)
-  (function scale() {
-    const Q = [['1 × 64×64', '17 GB/s', 'INT8', 3.9, 145, 24, 66, 1.6], ['1 × 64×64', '68 GB/s', 'INT8', 3.9, 100, 49, 51, 2.5], ['2 × 64×64', '68 GB/s', 'INT4', 6.4, 58, 93, 39, 3.6], ['4 × 64×64', '68 GB/s', 'INT8', 11.4, 45, 88, 61, 5.3], ['4 × 64×64', '68 GB/s', 'INT4', 11.4, 41, 142, 42, 5.9], ['4 × 64×64', '136 GB/s', 'INT4', 11.4, 32, 177, 40, 7.1], ['8 × 64×64', '136 GB/s', 'INT4', 21.6, 26, 235, 47, 11.1]];
-    const fig = document.getElementById('scale'), sv = document.getElementById('bars'), tip = tipper(fig);
-    function draw() {
-      const w = sv.clientWidth || 560, narrow = w < 440, lw = narrow ? 118 : 156, bh = 22, gp = 12, top = 4;
-      const h = top + Q.length * (bh + gp) + 18;
-      sv.setAttribute('viewBox', `0 0 ${w} ${h}`); sv.setAttribute('height', h); sv.textContent = '';
-      const defs = el('defs', {}, sv), pat = el('pattern', { id: 'hatch', patternUnits: 'userSpaceOnUse', width: 5, height: 5, patternTransform: 'rotate(45)' }, defs);
-      el('rect', { width: 5, height: 5, fill: '#D0E6A5' }, pat); el('line', { x1: 0, y1: 0, x2: 0, y2: 5, stroke: '#6A9A2C', 'stroke-width': 2.4 }, pat);
-      const x0 = lw, x1 = w - 44, X = v => x0 + (x1 - x0) * v / 250;
-      el('line', { x1: x0, x2: x0, y1: 0, y2: h - 14, stroke: '#CFD4C7' }, sv);
-      Q.forEach((q, i) => {
-        const y = top + i * (bh + gp), g = el('g', {}, sv), bw = X(q[5]) - x0, r = Math.min(4, bw / 2);
-        el('text', { x: 0, y: y + 11, class: 'ink' }, g, q[0]);
-        el('text', { x: 0, y: y + 25 }, g, q[1]);
-        el('path', { d: `M${x0} ${y}h${bw - r}a${r} ${r} 0 0 1 ${r} ${r}v${bh - 2 * r}a${r} ${r} 0 0 1 -${r} ${r}h-${bw - r}z`, fill: q[2] === 'INT8' ? '#6A9A2C' : 'url(#hatch)' }, g);
-        el('text', { x: X(q[5]) + 6, y: y + 16, class: 'ink', style: 'font-weight:600' }, g, q[5]);
-        el('rect', { x: 0, y: y - gp / 2, width: w, height: bh + gp, fill: 'transparent' }, g);
-        const html = `<b>${q[0]}, ${q[1]}, ${q[2]}${q[2] === 'INT4' ? ' (planned)' : ''}</b><br>${q[5]} tokens/s · ${q[4]} ms to first token<br>${q[6]} mJ/token · ${q[7]} W · ${q[3]} mm²`;
-        g.addEventListener('mouseenter', ev => tip.show(html, ...relPos(fig, ev)));
-        g.addEventListener('mousemove', ev => tip.show(html, ...relPos(fig, ev)));
-        g.addEventListener('mouseleave', () => tip.hide());
-      });
-      el('text', { x: x1 + 44, y: h - 2, 'text-anchor': 'end' }, sv, 'tokens per second →');
-    }
-    draw(); addEventListener('resize', draw);
-  })();
-  document.getElementById('open-full').addEventListener('click', () => { document.getElementById('full').open = true; });
   // pilot request: composed in the visitor's own mail app; the site has no server
   const f = document.getElementById('pilot');
   f.addEventListener('submit', e => {
@@ -705,7 +614,6 @@ form.pilot .note { margin-top: -2px }
     const body = [`Work email: ${v('email')}`, `Company: ${v('company')}`, `Target workload: ${v('workload')}`, `Primary objective: ${v('objective')}`, v('notes') && `\n${v('notes')}`].filter(Boolean).join('\n');
     location.href = `mailto:hello@zenedgex.in?subject=${encodeURIComponent(`Design-partner pilot: ${v('company')}`)}&body=${encodeURIComponent(body)}`;
   });
-  if (location.hash === '#full') document.querySelector('.deep').open = true;
 })();
 </script>
 
