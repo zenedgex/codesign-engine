@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Atelier Studio on existing accelerators: where Gemmini and NVDLA lose time, the design gaps no setting of their own generators closes, and configurations measured on the RTL with their own benchmarks.">
+<meta property="og:title" content="Atelier on their benchmarks: Gemmini and NVDLA">
+<meta property="og:description" content="Atelier Studio on existing accelerators: where Gemmini and NVDLA lose time, the design gaps no setting of their own generators closes, and configurations measured on the RTL with their own benchmarks.">
+<meta property="og:image" content="https://zenedgex.in/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zenedgex.in/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}.steps .k, .card .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--amber) }
+.tag { font: 500 11px/1 var(--mono); letter-spacing: .06em; padding: 5px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); white-space: nowrap }
+.tag.m { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent) }
+.tag.p { color: #4B6FA8; border-color: rgba(75, 111, 168, .35) }
+.tag.r { color: var(--amber); border-color: rgba(244,188,114,.45) }
+tr.ours td { background: rgba(208,230,165,.18) }
+</style>
+<title>Atelier on their benchmarks: Gemmini and NVDLA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Sutra IP page: the same dark world as the rest of the site (lime accent). Hero,
+   what it is, the block diagram, features, how it scales, verified evidence, what is delivered,
+   status, contact. Every figure is a measured one; performance waits for timing closure. */
+:root {
+  --void: #FFFFFF; --slab: #F6F7F3; --slab-2: #EFF1EB; --slab-3: #E7EAE2;
+  --line: #E2E5DD; --line-2: #CFD4C7;
+  --text: #12161C; --muted: #4F5866; --faint: #6B7380;
+  --leaf: #A9CC72; --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C; --ok: #7FC8A9;
+  --display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box }
+html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
+body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased }
+.wrap { max-width: 1200px; margin-inline: auto }
+a { color: var(--green); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px }
+h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
+h1 { font-size: clamp(46px, 7vw, 100px); line-height: .94; font-weight: 770; font-stretch: 112%; letter-spacing: -.028em }
+h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.03; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
+h3 { font-size: 20px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
+p { margin: 0; max-width: 64ch }
+h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--green-deep), var(--green-2)); -webkit-background-clip: text; background-clip: text; color: transparent }
+.label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
+.label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
+
+.bar { position: sticky; top: 0; z-index: 20; margin-inline: -20px; padding: 14px 20px; background: color-mix(in srgb, var(--void) 78%, transparent); backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid var(--line) }
+.bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap }
+.mark { display: flex; align-items: center; gap: 10px; font: 700 15px/1 var(--display); font-stretch: 116%; letter-spacing: .02em; color: var(--text); text-decoration: none }
+.mark svg { width: 24px; height: 24px }
+.bar nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; align-items: center }
+.bar nav a { color: var(--muted); text-decoration: none }
+.bar nav a:hover, .bar nav a.on { color: var(--text) }
+.bar nav a.go { color: #11160B; background: linear-gradient(92deg, var(--leaf), var(--lime)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: center; padding-block: 110px 40px }
+.hero > * { min-width: 0 }
+.copy { display: flex; flex-direction: column; gap: 26px }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 12px }
+.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
+.sub { font: 500 clamp(18px, 1.7vw, 22px)/1.45 var(--body); max-width: 46ch }
+.chip { align-self: flex-start; font: 500 12.5px/1.3 var(--mono); color: var(--muted); border: 1px solid var(--line-2); background: var(--slab); padding: 9px 12px; border-radius: 999px }
+.chip b { color: var(--green); font-weight: 500 }
+.cta { display: flex; gap: 14px; flex-wrap: wrap }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 4px; font: 600 15px/1 var(--body); text-decoration: none }
+.btn.primary { background: linear-gradient(92deg, var(--leaf), var(--lime)); color: #11160B; box-shadow: 0 10px 40px -12px rgba(169, 204, 114, .55) }
+.btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
+.tiles { aspect-ratio: 1; max-width: 520px; width: 100%; justify-self: end; display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: radial-gradient(90% 90% at 70% 20%, rgba(169, 204, 114,.16), transparent 60%), var(--slab) }
+.tiles i { border-radius: 4px; border: 1px solid var(--line-2); background: var(--slab-2); animation: pulse 3.2s var(--ease) infinite; animation-delay: calc(var(--d) * 70ms) }
+@keyframes pulse { 0%, 100% { background: var(--slab-2); border-color: var(--line-2) } 12% { background: rgba(208, 230, 165,.55); border-color: var(--green) } 30% { background: rgba(169, 204, 114,.18); border-color: rgba(169, 204, 114,.5) } }
+
+section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40px }
+.head { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: end }
+.head > * { min-width: 0 }
+.head .body { color: var(--muted); font-size: 18px; display: flex; flex-direction: column; gap: 14px }
+.stack { display: flex; flex-direction: column; gap: 20px }
+.visual { background: radial-gradient(110% 90% at 50% 10%, var(--slab-2), var(--slab)); border: 1px solid var(--line); border-radius: 12px; padding: 22px }
+.visual svg { width: 100%; height: auto; display: block }
+.visual svg text { font-family: var(--mono) }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.card { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.card p { color: var(--muted); font-size: 15.5px }
+.card .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px }
+th { text-align: left; font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); padding: 0 16px 14px 0 }
+td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--muted); vertical-align: top }
+td:first-child { color: var(--text); white-space: nowrap }
+.tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
+.proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
+.metric { padding: 30px 22px 30px 0; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
+.metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
+.metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
+.jump { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px }
+.jump a { font: 500 13px/1 var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 13px; background: var(--slab) }
+.jump a:hover { color: var(--text); border-color: var(--green) }
+.fine { font-size: 14px; color: var(--faint); max-width: 96ch }
+.tlabel { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0 }
+.tlabel span { font: 500 11.5px/1 var(--mono); letter-spacing: .06em; padding: 6px 9px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); background: var(--void) }
+.tlabel span.m { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent) }
+.tlabel span.e { color: #4B6FA8; border-color: rgba(75, 111, 168, .35) }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab) }
+.steps > div { padding: 26px 22px; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); min-width: 0 }
+.steps > div:first-child { border-left: none }
+.steps p { color: var(--muted); font-size: 15px }
+.st { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; padding: 6px 8px; border-radius: 4px; align-self: flex-start }
+.st.done { color: #0B2A1E; background: var(--ok) }
+.st.now { color: #11160B; background: var(--lime) }
+.st.next { color: var(--muted); border: 1px solid var(--line-2) }
+.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--leaf) 28%, transparent), transparent 60%), var(--slab) }
+.close > * { min-width: 0 }
+.mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
+td.best { color: var(--green); font-weight: 600; position: relative }
+td.best::before { content: ""; position: absolute; inset: 7px -6px 7px auto; width: calc(100% + 4px); border-radius: 4px; background: rgba(208, 230, 165,.12); border: 1px solid rgba(208, 230, 165,.35); z-index: 0; pointer-events: none }
+.best-key { margin-top: -4px }
+.best-key .best { color: var(--green); font-weight: 600; padding: 2px 7px; border-radius: 4px; background: rgba(208, 230, 165,.12); border: 1px solid rgba(208, 230, 165,.35); margin-right: 6px }
+footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
+footer nav { display: flex; gap: 20px; flex-wrap: wrap }
+footer a { color: var(--muted); text-decoration: none }
+
+@media (max-width: 960px) {
+  .hero, .head, .close { grid-template-columns: minmax(0, 1fr); gap: 32px }
+  .hero { padding-block: 64px 0 }
+  .tiles { justify-self: start; max-width: 420px }
+  .grid3 { grid-template-columns: minmax(0, 1fr) }
+  .proof, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .metric:nth-child(3) { padding-left: 0; border-left: none }
+  .metric:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .steps > div:nth-child(3) { border-left: none }
+  .steps > div:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .close { padding: 36px 26px }
+  section { padding-block: 88px 0 }
+}
+@media (max-width: 560px) {
+  .proof, .steps { grid-template-columns: minmax(0, 1fr) }
+  .metric + .metric, .steps > div + div { padding-left: 0; border-left: none; border-top: 1px solid var(--line) }
+  .steps > div + div { padding-left: 22px }
+}
+@media (prefers-reduced-motion: reduce) { .tiles i { animation: none } }
+.fp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 28px }
+.fp figure { margin: 0 }
+.fp img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line, #E2E5DD) }
+.fp-key { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; font-size: 14px }
+.fp-key i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 8px; vertical-align: -1px }
+.fp-facts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 16px; margin: 0; font-size: 14px }
+.fp-facts dt { opacity: .7 }
+.fp-facts dd { margin: 0 }
+@media (max-width: 860px) { .fp { grid-template-columns: 1fr } .fp-key { grid-template-columns: 1fr } }
+.steps .k, .card .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--amber) }
+.tag { font: 500 11px/1 var(--mono); letter-spacing: .06em; padding: 5px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); white-space: nowrap }
+.tag.m { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent) }
+.tag.p { color: #4B6FA8; border-color: rgba(75, 111, 168, .35) }
+.tag.r { color: var(--amber); border-color: rgba(244,188,114,.45) }
+tr.ours td { background: rgba(208,230,165,.18) }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg>ZenEdgeX</a>
+    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a class="on" href="#top">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Contact us →</a></nav>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+  <div class="hero">
+    <div class="copy">
+      <p class="kicker">Existing accelerators · their own benchmarks</p>
+      <h1>Their chip. Their benchmark. <em>The gaps Atelier finds.</em></h1>
+      <p class="sub">Atelier Studio takes an accelerator we did not design and finds where its time goes: what the hardware needs, what the design loses, what its software adds. It searches the vendor's own design space for a better configuration, proposes the design dimensions that space is missing, and builds the pick with the vendor's own generator, to run the vendor's own benchmark on the RTL.</p>
+      <p class="chip"><b>Technical preview</b> · Gemmini (UC Berkeley) and NVDLA (NVIDIA), both open source · every figure labelled measured, fitted, predicted or estimate</p>
+      <div class="cta"><a class="btn primary" href="#gemmini">See Gemmini <span>→</span></a><a class="btn line" href="#nvdla">See NVDLA</a></div>
+    </div>
+    <div class="tiles" id="tiles" aria-hidden="true"></div>
+  </div>
+
+  <nav class="jump" aria-label="On this page"><a href="#how">How</a><a href="#gemmini">Gemmini</a><a href="#nvdla">NVDLA</a><a href="#method">Method</a></nav>
+  <div class="proof" id="keys" style="margin-top:12px"><div class="metric"><b>6.0×</b><span>a MobileNet-shape depthwise layer on Gemmini&#x27;s own RTL, mapped by Atelier instead of gemmini.h; output byte-identical <span class="tag m">measured on RTL</span></span></div><div class="metric"><b>83%</b><span>of a YOLOv8n frame on stock Gemmini is SiLU on the CPU: a design gap no generator parameter closes (10.15 cycles an element, measured) <span class="tag p">estimate</span></span></div><div class="metric"><b>2.2×</b><span>on Gemmini&#x27;s own ResNet-50 from a configuration of its own generator at 1.19× the area; built, measurement running <span class="tag p">predicted</span></span></div><div class="metric"><b>12×</b><span>on YOLOv8n from NVDLA&#x27;s design space at 1.7× the area of nv_small, beating NVIDIA&#x27;s nv_medium_1024_full at a third of its area <span class="tag p">estimate</span></span></div></div>
+
+  <section id="how">
+    <div class="head">
+      <div class="stack"><p class="label">How</p><h2>Find the gaps, <em>then prove them on their benchmark.</em></h2></div>
+      <div class="body"><p>Four steps in Atelier Studio, on the accelerator as its vendor ships it.</p></div>
+    </div>
+    <div class="steps">
+      <div><span class="k">01 / ANALYZE</span><h3>Where the time goes</h3><p>Layers measured on the RTL, set against the bound the hardware's description allows, and split: what the hardware needs, what it loses (design gaps), what its software adds (tool gaps).</p></div>
+      <div><span class="k">02 / EXPLORE</span><h3>Their design space</h3><p>Every configuration the vendor's generator builds, on the vendor's own benchmark, with its own software's mapping replayed for each (exact against the RTL's DMA counters). The gaps are ranked parameter by parameter.</p></div>
+      <div><span class="k">03 / PROPOSE</span><h3>Beyond their generator</h3><p>Where no parameter closes a gap, Atelier proposes the design dimension that would, and costs it: a depthwise mode, an activation table on the output path.</p></div>
+      <div><span class="k">04 / MEASURE</span><h3>Build and run</h3><p>The pick is built with the vendor's generator and runs the vendor's benchmark unchanged on its RTL: same network, weights, batch and correctness check, its own cycle printout as the result.</p></div>
+    </div>
+  </section>
+
+  <section id="gemmini">
+    <div class="head">
+      <div class="stack"><p class="label">Gemmini · UC Berkeley</p><h2>MobileNet and ResNet-50, <em>as Gemmini ships them.</em></h2></div>
+      <div class="body"><p>Gemmini is an open-source systolic-array generator from UC Berkeley, part of Chipyard. Its own benchmarks are gemmini-rocc-tests' imagenet/mobilenet.c and resnet50.c: four images, int8, through its own library, gemmini.h. Stock design: GemminiRocketConfig, a 16&times;16 mesh, 256&nbsp;KB scratchpad, 64&nbsp;KB accumulator and 128-bit DMA at 500&nbsp;MHz.</p></div>
+    </div>
+    <p class="fine" style="font-size:15.5px;color:var(--muted)">On the 19 layers measured on Gemmini&#x27;s RTL, about 79% of the time is what its own software (gemmini.h) adds: rows padded to whole DMA transfers, outputs written in small requests, array passes it does not need. The hardware needs about 18%; it loses about 8% more (its writes, idle lanes, a scratchpad too small for some layers). Fitted split of measured time; the model is within 5% of the total. <span class="tag p">fitted</span></p>
+<div class="stack" style="gap:14px;margin-top:34px"><h3>ResNet-50 <span class="fine">(imagenet/resnet50.c, 16.4 GMAC (4 images))</span></h3>
+<p class="fine">Stock design: about 74% of the array&#x27;s MACs (fitted).</p>
+<p class="fine" style="margin-top:4px">Hardware gaps Explore finds in Gemmini's own design space, one generator parameter at a time from the stock configuration:</p>
+<div class="tbl"><table><thead><tr><th>Parameter</th><th>Stock → best</th><th class="n">Speedup</th><th class="n">Area</th></tr></thead><tbody><tr><td>meshRows × meshColumns</td><td>16 → 32</td><td class="n">1.64×</td><td class="n">1.52×</td></tr><tr><td>dma_buswidth</td><td>128 → 256</td><td class="n">1.12×</td><td class="n">1.00×</td></tr><tr><td>acc_capacity_kib</td><td>64 → 128</td><td class="n">1.08×</td><td class="n">1.17×</td></tr><tr><td>sp_capacity_kib</td><td>256 → 1024</td><td class="n">1.07×</td><td class="n">2.98×</td></tr></tbody></table></div>
+<p class="fine">Explore's pick, all parameters together: <b>32 × 32 mesh, 128 KiB scratchpad, 64 KiB accumulator, 256-bit DMA and system bus</b>: <b>2.22×</b> at 1.19× the area <span class="tag p">predicted</span>. built with Gemmini&#x27;s generator; their ResNet-50 running on its RTL <span class="tag r">running</span></p>
+<p class="fine">Atelier&#x27;s compiler on the same hardware: 1.18× (explicit tiles, fitted).</p></div>
+<div class="stack" style="gap:14px;margin-top:34px"><h3>MobileNet <span class="fine">(imagenet/mobilenet.c, 1.20 GMAC (4 images))</span></h3>
+<p class="fine">Stock design: about 4% of the array&#x27;s MACs (fitted): 91% of the time is in 17 depthwise layers, which Gemmini runs one channel at a time.</p>
+<p class="fine" style="margin-top:4px">Hardware gaps Explore finds in Gemmini's own design space, one generator parameter at a time from the stock configuration:</p>
+<div class="tbl"><table><thead><tr><th>Parameter</th><th>Stock → best</th><th class="n">Speedup</th><th class="n">Area</th></tr></thead><tbody><tr><td>acc_capacity_kib</td><td>64 → 256</td><td class="n">1.04×</td><td class="n">1.50×</td></tr><tr><td>dma_buswidth</td><td>128 → 256</td><td class="n">1.01×</td><td class="n">1.00×</td></tr><tr><td>sp_capacity_kib</td><td>256 → 512</td><td class="n">1.00×</td><td class="n">1.66×</td></tr><tr><td>meshRows × meshColumns</td><td>16 → 32</td><td class="n">0.94×</td><td class="n">1.52×</td></tr></tbody></table></div>
+<p class="fine">No configuration of Gemmini&#x27;s generator gains more than 1.07× on MobileNet: its time is in a shape the array cannot use. That is a design gap outside the generator&#x27;s space.</p>
+<p class="fine" style="margin-top:4px">Beyond Gemmini's generator, Atelier proposes a depthwise mode (each array column takes its own channel) and costs it on the same model:</p>
+<div class="tbl"><table><thead><tr><th>Design</th><th class="n">Speedup on MobileNet</th><th class="n">Area vs stock</th></tr></thead><tbody><tr><td>depthwise mode, on the stock design</td><td class="n">6.4×</td><td class="n">1.02×</td></tr><tr><td>depthwise mode, 16 × 16, 128 KiB scratchpad, 256-bit DMA</td><td class="n">6.8×</td><td class="n">0.69×</td></tr><tr><td>depthwise mode, 32 × 32, 512 KiB scratchpad, 256 KiB accumulator</td><td class="n">12.1×</td><td class="n">2.75×</td></tr></tbody></table></div>
+<p class="fine"><span class="tag p">estimate</span> A proposed dimension needs an RTL change, which Atelier generates; it is a claim only once built and measured.</p>
+<p class="fine">Atelier&#x27;s compiler on the stock hardware: 6.2× predicted (each depthwise layer as dense blocks of 16 channels); one layer measured on the RTL: 6.0×, output identical.</p></div>
+<div class="stack" style="gap:14px;margin-top:34px"><h3>Measured so far</h3>
+<div class="tbl"><table><thead><tr><th>What</th><th>Quantity</th><th class="n">Result</th><th>Evidence</th><th>Note</th></tr></thead><tbody><tr><td>Depthwise rewrite, 56×56×32, 3×3 (dw_32)</td><td>639,210 → 107,242 cycles</td><td class="n"><b>6.0×</b></td><td><span class="tag m">measured on RTL</span></td><td>byte-identical to tiled_conv_dw_auto</td></tr><tr><td>32 × 32 build, 19 layers</td><td>DMA bytes</td><td class="n"><b>exact</b></td><td><span class="tag m">measured on RTL</span></td><td>the replay of Gemmini&#x27;s software equals the RTL&#x27;s DMA counters on every layer</td></tr><tr><td>32 × 32 build, cycles predicted from the 16 × 16</td><td>mean error</td><td class="n"><b>18.5%</b></td><td><span class="tag m">measured on RTL</span></td><td>57% worst; depthwise layers slower on 32 × 32 (0.75-0.89×)</td></tr><tr><td>SiLU on the Rocket core, an int8 table</td><td>cycles an element</td><td class="n"><b>10.15</b></td><td><span class="tag m">measured on RTL</span></td><td>51,200 elements, 519,826 cycles</td></tr></tbody></table></div>
+<p class="fine"><span class="tag r">running</span> Their MobileNet and ResNet-50 on the stock GemminiRocketConfig and on Atelier&#x27;s picks (built with Gemmini&#x27;s own generator) are running on the RTL. This table fills in only with measured totals that pass their own check.</p></div>
+  </section>
+
+  <section id="nvdla">
+    <div class="head">
+      <div class="stack"><p class="label">NVDLA · NVIDIA</p><h2>nv_small, <em>and the space around it.</em></h2></div>
+      <div class="body"><p>NVDLA is NVIDIA's open-source deep-learning accelerator, run here as Chipyard integrates nv_small. Each layer is mapped as NVIDIA's own compiler maps it, replayed exactly. NVIDIA publishes its own performance estimates for AlexNet, GoogLeNet and ResNet-50; the measured comparison against them is next.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>What</th><th>Result</th><th>Evidence</th><th>Detail</th></tr></thead><tbody><tr><td>Chipyard&#x27;s NVDLA memory port</td><td><b>fixed</b></td><td><span class="tag m">measured on RTL</span></td><td>the AXI to TileLink chain re-used a source ID and stopped every conv over a few hundred bytes; with the chain corrected, 8 of NVIDIA&#x27;s 14 nv_small conv tests pass with its golden CRC, up to 390,000 cycles</td></tr><tr><td>NVIDIA&#x27;s compiler, replayed</td><td><b>exact</b></td><td><span class="tag m">measured on RTL</span></td><td>the split, banks and DMA of every layer equal the prebuilt nvdla_compiler on its four split cases and NVIDIA&#x27;s nv_small AlexNet network</td></tr><tr><td>Convolutions from any shape</td><td><b>13 / 13</b></td><td><span class="tag m">measured on RTL</span></td><td>registers generated from a shape equal NVIDIA&#x27;s conv tests field by field; their golden outputs reproduced</td></tr></tbody></table></div>
+<div class="stack" style="gap:14px;margin-top:34px"><h3>YOLOv8n across NVDLA's design space</h3>
+<div class="tbl"><table><thead><tr><th>Configuration</th><th class="n">MACs / cycle</th><th>SiLU unit</th><th class="n">Frames / s</th><th class="n">mm²</th><th>From</th></tr></thead><tbody><tr><td>nv_small (stock)</td><td class="n">64</td><td>no</td><td class="n"><b>2.4</b></td><td class="n">0.051</td><td>NVIDIA&#x27;s</td></tr><tr><td>nv_small_256</td><td class="n">256</td><td>no</td><td class="n"><b>3.0</b></td><td class="n">0.108</td><td>NVIDIA&#x27;s</td></tr><tr><td>nv_medium_512</td><td class="n">512</td><td>no</td><td class="n"><b>3.3</b></td><td class="n">0.217</td><td>NVIDIA&#x27;s</td></tr><tr><td>nv_medium_1024_full</td><td class="n">1,024</td><td>yes</td><td class="n"><b>24.7</b></td><td class="n">0.258</td><td>NVIDIA&#x27;s</td></tr><tr><td>nv_large</td><td class="n">2,048</td><td>yes</td><td class="n"><b>44.1</b></td><td class="n">0.331</td><td>NVIDIA&#x27;s</td></tr><tr class="ours"><td>Atelier: atom 32 × 16, 16 banks × 256, 128-bit, SDP 16/cycle</td><td class="n">512</td><td>yes</td><td class="n"><b>29.1</b></td><td class="n">0.087</td><td>Atelier&#x27;s pick</td></tr><tr class="ours"><td>Atelier: nv_large&#x27;s array, half its buffer</td><td class="n">2,048</td><td>yes</td><td class="n"><b>44.1</b></td><td class="n">0.243</td><td>Atelier&#x27;s pick</td></tr></tbody></table></div>
+<p class="fine"><span class="tag p">estimate</span> YOLOv8n 640 at 500 MHz, estimates: each layer as NVIDIA&#x27;s compiler maps it (replayed exactly), timed at the units&#x27; nominal rates; SiLU on the output processor&#x27;s LUT where the configuration has one, else on the CPU at the measured rate. NVIDIA&#x27;s compiler leaves little on the table (98% of nv_small&#x27;s MACs used); the gaps are the hardware&#x27;s: no SiLU unit below nv_medium_1024_full, channel rounding at 64-wide atoms (49% of nv_large&#x27;s lanes idle on YOLOv8n), an output processor too narrow on nv_small_256.</p></div>
+  </section>
+
+  <section id="method">
+    <div class="head">
+      <div class="stack"><p class="label">Method</p><h2>What every number <em>stands on.</em></h2></div>
+      <div class="body"><p><b>Measured on RTL</b>: cycles from Verilator simulation of the RTL the vendor's generator built (Chipyard 1.15.0), with the benchmark's own check passing. <b>Fitted</b>: Atelier's cycle model of the vendor's software, checked on layers and configurations it was not fitted on. <b>Predicted / estimate</b>: the model before a build; area from ASAP7 7&nbsp;nm macro and cell figures; proposed design dimensions until built. <b>Running</b>: measurements under way. Vendors' networks, weights and numerics are run unchanged; nothing is re-quantized.</p></div>
+    </div>
+    <p class="fine">Gemmini and NVDLA are named only to identify the open-source designs and benchmarks measured here; ZenEdgeX is not affiliated with or endorsed by UC Berkeley or NVIDIA.</p>
+  </section>
+
+  <div class="close" id="contact">
+    <div class="stack">
+      <p class="label">Your accelerator</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring your NPU <em>and its benchmark.</em></h2>
+      <p style="color:var(--muted)">Send us your accelerator's description and profiles of a few layers. Atelier Studio shows where its time goes, which design and tool gaps cost the most, and the next generation worth building.</p>
+    </div>
+    <div class="mail"><code>hello@zenedgex.in</code></div>
+  </div>
+
+  <footer>
+    <span>© 2026 ZenEdgeX · Atelier is a technical preview</span>
+    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a href="#top">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">Contact us</a></nav>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const LINKS = { site: '../', ip: '../ip/', bench: '../benchmarks/', home: '../engine/', tech: '../technology/', demo: '../demo/' };
+  document.querySelectorAll('[data-to]').forEach(a => { a.href = LINKS[a.dataset.to]; });
+  const t = document.getElementById('tiles');
+  for (let i = 0; i < 64; i++) { const el = document.createElement('i'); el.style.setProperty('--d', (i % 8) + Math.floor(i / 8)); t.appendChild(el); }
+})();
+</script>
+
+</body>
+</html>
