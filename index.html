@@ -407,6 +407,16 @@ form.pilot .note { margin-top: -2px }
       <div><h3>Try it yourself</h3><p>Set targets and see the candidate designs that meet them.</p><a data-to="demo" href="#">Live demo →</a></div>
       <div><h3>Your workload</h3><p>Bring your model and constraints to a design-partner pilot.</p><a href="#pilot">Request a pilot →</a></div>
     </div>
+    <div class="stack" style="gap:14px;margin-top:48px">
+      <h3 style="font-size:22px">On accelerators we did not design</h3>
+      <p class="proofline">Atelier Studio took Gemmini (UC Berkeley) and NVDLA (NVIDIA), both open source, with their own benchmarks: it found where their time goes, the design gaps their own generators cannot close, and better configurations, then checked them on the RTL. <a data-to="bench" href="#">See the benchmarks →</a></p>
+    </div>
+    <div class="proof" style="margin-top:8px">
+      <div class="metric"><b>6.0&times;</b><span>faster on a MobileNet depthwise layer on Gemmini's own RTL, mapped by Atelier Studio instead of Gemmini's library; output identical</span><span class="ev rtl">RTL-measured</span></div>
+      <div class="metric"><b>79%</b><span>of Gemmini's measured time is added by its own software: the tool gap Atelier Studio separates from the design gap, layer by layer</span><span class="ev est">Model-fitted</span></div>
+      <div class="metric"><b>2.2&times;</b><span>on Gemmini's own ResNet-50 from a configuration of its own generator that Explore picked, at 1.19&times; the area; running on the RTL now</span><span class="ev est">Predicted</span></div>
+      <div class="metric"><b>12&times;</b><span>on YOLOv8n from NVDLA's design space over nv_small, ahead of NVIDIA's nv_medium_1024_full at a third of its area</span><span class="ev est">Model-estimated</span></div>
+    </div>
   </section>
 
   <section id="today">
