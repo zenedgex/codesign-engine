@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Proprio runs an unmodified vision-language-action robot policy faster and proves, tick by tick, that the actions are bit-identical to the policy as trained. Measured on SmolVLA, pi0.5 and GR00T N1.7.">
+<meta property="og:title" content="Proprio: exact inference for robot policies">
+<meta property="og:description" content="Proprio runs an unmodified vision-language-action robot policy faster and proves, tick by tick, that the actions are bit-identical to the policy as trained. Measured on SmolVLA, pi0.5 and GR00T N1.7.">
+<meta property="og:image" content="https://zenedgex.in/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zenedgex.in/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>Proprio: exact inference for robot policies · ZenEdgeX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Proprio page: the site's light world and lime accent. Hero, proof row, how it works, the three
+   result tables (single robot, speed versus drift, many robots), what the certificate records,
+   status, contact. Every figure on this page is a measurement, labelled. */
+:root {
+  --void: #FFFFFF; --slab: #F6F7F3; --slab-2: #EFF1EB; --slab-3: #E7EAE2;
+  --line: #E2E5DD; --line-2: #CFD4C7;
+  --text: #12161C; --muted: #4F5866; --faint: #6B7380;
+  --leaf: #A9CC72; --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C; --ok: #7FC8A9; --amber: #B7791F;
+  --display: 'Archivo', 'Arial Black', Arial, sans-serif;
+  --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box }
+html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
+html, body { margin: 0 }
+img { max-width: 100% }
+[hidden] { display: none !important }
+body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased }
+.wrap { max-width: 1200px; margin-inline: auto }
+a { color: var(--green); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px }
+h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
+h1 { font-size: clamp(46px, 7vw, 100px); line-height: .94; font-weight: 770; font-stretch: 112%; letter-spacing: -.028em }
+h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.03; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
+h3 { font-size: 20px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
+p { margin: 0; max-width: 64ch }
+h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--green-deep), var(--green-2)); -webkit-background-clip: text; background-clip: text; color: transparent }
+.label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
+.label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
+
+.bar { position: sticky; top: 0; z-index: 20; margin-inline: -20px; padding: 14px 20px; background: color-mix(in srgb, var(--void) 78%, transparent); backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid var(--line) }
+.bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap }
+.mark { display: flex; align-items: center; gap: 10px; font: 700 15px/1 var(--display); font-stretch: 116%; letter-spacing: .02em; color: var(--text); text-decoration: none }
+.mark svg { width: 24px; height: 24px }
+.bar nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; align-items: center }
+.bar nav a { color: var(--muted); text-decoration: none }
+.bar nav a:hover, .bar nav a.on { color: var(--text) }
+.bar nav a.go { color: #11160B; background: linear-gradient(92deg, var(--leaf), var(--lime)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: center; padding-block: 110px 40px }
+.hero > * { min-width: 0 }
+.copy { display: flex; flex-direction: column; gap: 26px }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 12px }
+.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
+.sub { font: 500 clamp(18px, 1.7vw, 22px)/1.45 var(--body); max-width: 46ch }
+.chip { align-self: flex-start; font: 500 12.5px/1.3 var(--mono); color: var(--muted); border: 1px solid var(--line-2); background: var(--slab); padding: 9px 12px; border-radius: 999px }
+.chip b { color: var(--green); font-weight: 500 }
+.cta { display: flex; gap: 14px; flex-wrap: wrap }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 4px; font: 600 15px/1 var(--body); text-decoration: none }
+.btn.primary { background: linear-gradient(92deg, var(--leaf), var(--lime)); color: #11160B; box-shadow: 0 10px 40px -12px rgba(169, 204, 114, .55) }
+.btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
+
+/* Hero visual: a control-tick strip. Eager launches as sparse ticks, the replay as one dense bar. */
+.tick { max-width: 520px; width: 100%; justify-self: end; border: 1px solid var(--line); border-radius: 14px; padding: 22px; background: radial-gradient(90% 90% at 70% 20%, rgba(169, 204, 114,.16), transparent 60%), var(--slab); display: grid; gap: 16px }
+.tick .row { display: grid; gap: 6px }
+.tick .row span { font: 500 11.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between }
+.tick .row span b { color: var(--text); font-weight: 500; letter-spacing: 0; text-transform: none }
+.strip { height: 22px; border-radius: 4px; border: 1px solid var(--line-2); background: var(--slab-2); position: relative; overflow: hidden }
+.strip i { position: absolute; top: 3px; bottom: 3px; border-radius: 2px; background: rgba(169, 204, 114,.65) }
+.strip.full i { background: linear-gradient(92deg, var(--leaf), var(--lime)) }
+.strip.gray i { background: var(--line-2) }
+.tick .foot { font: 400 13px/1.45 var(--body); color: var(--muted) }
+.tick .foot b { color: var(--green); font-weight: 600 }
+
+section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40px }
+.head { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: end }
+.head > * { min-width: 0 }
+.head .body { color: var(--muted); font-size: 18px; display: flex; flex-direction: column; gap: 14px }
+.stack { display: flex; flex-direction: column; gap: 20px }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.card { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.card p { color: var(--muted); font-size: 15.5px }
+.card .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px }
+th { text-align: left; font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); padding: 0 16px 14px 0 }
+td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--muted); vertical-align: top }
+td:first-child { color: var(--text); white-space: nowrap }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
+.tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
+.tbl table { min-width: 720px }
+tr.ours td { background: rgba(208,230,165,.18) }
+tr.ours td:first-child { color: var(--green-deep); font-weight: 600 }
+.proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
+.metric { padding: 30px 22px 30px 0; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
+.metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
+.metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
+.jump { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px }
+.jump a { font: 500 13px/1 var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 13px; background: var(--slab) }
+.jump a:hover { color: var(--text); border-color: var(--green) }
+.fine { font-size: 14px; color: var(--faint); max-width: 96ch }
+.tag { font: 500 11px/1 var(--mono); letter-spacing: .06em; padding: 5px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); white-space: nowrap }
+.tag.m { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent) }
+.tag.d { color: var(--amber); border-color: rgba(183,121,31,.4) }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab) }
+.steps > div { padding: 26px 22px; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); min-width: 0 }
+.steps > div:first-child { border-left: none }
+.steps p { color: var(--muted); font-size: 15px }
+.steps .k, .card .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
+.st { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; padding: 6px 8px; border-radius: 4px; align-self: flex-start }
+.st.done { color: #0B2A1E; background: var(--ok) }
+.st.now { color: #11160B; background: var(--lime) }
+.st.next { color: var(--muted); border: 1px solid var(--line-2) }
+.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--leaf) 28%, transparent), transparent 60%), var(--slab) }
+.close > * { min-width: 0 }
+.mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
+footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
+footer nav { display: flex; gap: 20px; flex-wrap: wrap }
+footer a { color: var(--muted); text-decoration: none }
+ul.plain { margin: 0; padding-left: 1.1em; color: var(--muted); max-width: 70ch; display: grid; gap: 8px }
+
+@media (max-width: 960px) {
+  .hero, .head, .close { grid-template-columns: minmax(0, 1fr); gap: 32px }
+  .hero { padding-block: 64px 0 }
+  .tick { justify-self: start; max-width: 420px }
+  .grid3 { grid-template-columns: minmax(0, 1fr) }
+  .proof, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .metric:nth-child(3) { padding-left: 0; border-left: none }
+  .metric:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .steps > div:nth-child(3) { border-left: none }
+  .steps > div:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .close { padding: 36px 26px }
+  section { padding-block: 88px 0 }
+}
+@media (max-width: 560px) {
+  .proof, .steps { grid-template-columns: minmax(0, 1fr) }
+  .metric + .metric, .steps > div + div { padding-left: 0; border-left: none; border-top: 1px solid var(--line) }
+  .steps > div + div { padding-left: 22px }
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" data-to="site" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg>ZenEdgeX</a>
+    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="on" href="#top">Proprio</a><a class="go" href="#contact">Contact us →</a></nav>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+  <div class="hero">
+    <div class="copy">
+      <p class="kicker">Proprio · physical AI inference</p>
+      <h1>The policy you validated. <em>Bit for bit, faster.</em></h1>
+      <p class="sub">Proprio runs an unmodified vision-language-action policy as a recorded device graph and proves, tick by tick, that the actions it produces are identical to the policy's own eager execution. If they are not identical, it refuses to deploy. Every run ships a Bitwise Certificate.</p>
+      <p class="chip"><b>Technical preview</b> · LeRobot checkpoints, unmodified · RTX 4090 · every figure measured</p>
+      <div class="cta"><a class="btn primary" href="#drift">Speed versus drift <span>→</span></a><a class="btn line" href="#rollout">Many robots per tick</a></div>
+    </div>
+    <div class="tick" aria-label="One control tick of SmolVLA: eager, replayed by Proprio, and the fastest compiler">
+      <div class="row"><span>Eager (LeRobot) <b>246 ms · GPU busy 17%</b></span><div class="strip"><i style="left:1%;width:1.2%"></i><i style="left:5%;width:.8%"></i><i style="left:9%;width:1.5%"></i><i style="left:14%;width:.7%"></i><i style="left:19%;width:1.1%"></i><i style="left:24%;width:.9%"></i><i style="left:30%;width:1.4%"></i><i style="left:36%;width:.8%"></i><i style="left:41%;width:1.2%"></i><i style="left:47%;width:.9%"></i><i style="left:53%;width:1.3%"></i><i style="left:59%;width:.7%"></i><i style="left:64%;width:1.1%"></i><i style="left:70%;width:1%"></i><i style="left:76%;width:1.4%"></i><i style="left:82%;width:.8%"></i><i style="left:88%;width:1.2%"></i><i style="left:94%;width:.9%"></i></div></div>
+      <div class="row"><span>Proprio exact <b>38.7 ms · GPU busy 83% · identical</b></span><div class="strip full"><i style="left:0;width:15.7%"></i></div></div>
+      <div class="row"><span>torch.compile max-autotune <b>26.6 ms · actions differ by 0.068</b></span><div class="strip gray"><i style="left:0;width:10.8%"></i></div></div>
+      <p class="foot">The same 450M-parameter policy, the same inputs, the same noise. The compiler is faster and <b>changes the robot's actions</b>; Proprio is 6.4× faster and changes nothing.</p>
+    </div>
+  </div>
+
+  <nav class="jump" aria-label="On this page"><a href="#how">How</a><a href="#single">Single robot</a><a href="#drift">Speed vs drift</a><a href="#rollout">Many robots</a><a href="#certificate">Certificate</a><a href="#status">Status</a></nav>
+  <div class="proof" id="keys" style="margin-top:12px"><div class="metric"><b>6.4×</b><span>SmolVLA, 246 → 38.7 ms per tick, 100 of 100 ticks bit-identical to eager <span class="tag m">measured</span></span></div><div class="metric"><b>2.7×</b><span>GR00T N1.7 (3B), 170 → 63.7 ms, 32 of 32 identical; pi0.5 2.7×, 100 of 100 <span class="tag m">measured</span></span></div><div class="metric"><b>14.8×</b><span>per robot with 16 SmolVLA robots on one GPU, every row identical to that robot's own single-robot run <span class="tag m">measured</span></span></div><div class="metric"><b>0</b><span>action error on every Proprio exact row; compilers, TF32 and cuDNN autotuning drift 0.01 to 0.3 on the same inputs <span class="tag m">measured</span></span></div></div>
+
+  <section id="how">
+    <div class="head">
+      <div class="stack"><p class="label">How</p><h2>Record the tick, <em>prove it, then deploy it.</em></h2></div>
+      <div class="body"><p>A policy's control tick is thousands of small GPU launches driven from Python; the GPU waits for the host most of the time. Compilers close that gap by re-tracing and re-fusing the model, which picks different kernels and changes the numbers. Proprio keeps the policy's own kernels and takes a different route.</p></div>
+    </div>
+    <div class="steps">
+      <div><span class="k">01 / RECORD</span><h3>The unmodified policy</h3><p>Proprio loads the checkpoint as LeRobot does, with no source edits, and records one control tick into a replayable device graph. The kernels in the graph are the kernels eager mode ran.</p></div>
+      <div><span class="k">02 / VERIFY</span><h3>Bit for bit, on held-out inputs</h3><p>Replayed actions are compared with eager actions on inputs the recording never saw, with fixed noise and seeds. Not close: identical, every byte of every action chunk.</p></div>
+      <div><span class="k">03 / GATE</span><h3>Refuse what is not identical</h3><p>A tick that cannot be proven identical is not deployed; Proprio falls back to the original path and says why. A non-identical tier is reported with its measured error, never as "exact".</p></div>
+      <div><span class="k">04 / CERTIFY</span><h3>A Bitwise Certificate per run</h3><p>Actions, identity count, error bounds, latency, device, driver, clocks, power state, seeds and a digest, signed. The document a safety review or a customer can check with a public key.</p></div>
+    </div>
+  </section>
+
+  <section id="single">
+    <div class="head">
+      <div class="stack"><p class="label">Single robot</p><h2>Three policy families, <em>three exact certificates.</em></h2></div>
+      <div class="body"><p>One robot, one GPU, the policy as its authors shipped it. Latency is the median wall time of a full control tick including the host-side pre- and post-processing; identity is counted per tick against eager with the same inputs and noise.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Policy</th><th>Parameters</th><th class="n">Eager p50</th><th class="n">Proprio p50</th><th class="n">Speedup</th><th>Bit-identical ticks</th><th>Evidence</th></tr></thead><tbody>
+      <tr class="ours"><td>SmolVLA</td><td>450M, fp32 under autocast</td><td class="n">241–246 ms</td><td class="n">36–39 ms</td><td class="n"><b>6.2–6.5×</b></td><td>100 / 100; identical across 6 fresh processes and 3 clock states</td><td><span class="tag m">measured</span></td></tr>
+      <tr class="ours"><td>pi0.5</td><td>3.3B, bf16</td><td class="n">266 ms</td><td class="n">98 ms</td><td class="n"><b>2.7×</b></td><td>100 / 100</td><td><span class="tag m">measured</span></td></tr>
+      <tr class="ours"><td>GR00T N1.7</td><td>3B, bf16, whole tick</td><td class="n">170–178 ms</td><td class="n">64–66 ms</td><td class="n"><b>2.7×</b></td><td>32 / 32</td><td><span class="tag m">measured</span></td></tr>
+    </tbody></table></div>
+    <p class="fine"><span class="tag m">measured</span> RTX 4090, torch 2.11, LeRobot 0.6 checkpoints (lerobot/smolvla_base, lerobot/pi05_base, nvidia/GR00T-N1.7-3B). Eager is LeRobot's own inference path with no changes. Ranges span several certificate runs on different days; identity never varied.</p>
+  </section>
+
+  <section id="drift">
+    <div class="head">
+      <div class="stack"><p class="label">Speed versus drift</p><h2>Every free speedup <em>moves the robot.</em></h2></div>
+      <div class="body"><p>The accelerations teams reach for first, measured on the same 100 ticks with the same inputs and noise, next to the exact tier. Action error is the largest change in any normalised action value of the chunk; 0.07 to 0.1 is the size of the step between two consecutive actions.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Policy</th><th>Mode</th><th class="n">p50</th><th class="n">Speedup</th><th>Rows identical</th><th class="n">Max action error</th><th class="n">Warm-up</th></tr></thead><tbody>
+      <tr><td>SmolVLA</td><td>eager (reference)</td><td class="n">246.1 ms</td><td class="n">1×</td><td>reference</td><td class="n"></td><td class="n">3.1 s</td></tr>
+      <tr class="ours"><td>SmolVLA</td><td>Proprio exact</td><td class="n">38.7 ms</td><td class="n"><b>6.36×</b></td><td><span class="tag m">100%</span></td><td class="n"><b>0</b></td><td class="n">2.5 s</td></tr>
+      <tr><td>SmolVLA</td><td>torch.compile, cudagraphs</td><td class="n">49.5 ms</td><td class="n">4.97×</td><td><span class="tag d">0%</span></td><td class="n">0.083</td><td class="n">58.0 s</td></tr>
+      <tr><td>SmolVLA</td><td>torch.compile, max-autotune</td><td class="n">26.6 ms</td><td class="n">9.24×</td><td><span class="tag d">0%</span></td><td class="n">0.068</td><td class="n">36.2 s</td></tr>
+      <tr><td>SmolVLA</td><td>TF32 matmul</td><td class="n">239.7 ms</td><td class="n">1.03×</td><td><span class="tag d">0%</span></td><td class="n">0.012</td><td class="n">3.1 s</td></tr>
+      <tr><td>SmolVLA</td><td>cuDNN benchmark</td><td class="n">242.5 ms</td><td class="n">1.01×</td><td><span class="tag d">0%</span></td><td class="n">0.100</td><td class="n">3.0 s</td></tr>
+      <tr><td>pi0.5 fp32</td><td>eager (reference)</td><td class="n">330.5 ms</td><td class="n">1×</td><td>reference</td><td class="n"></td><td class="n">3.6 s</td></tr>
+      <tr class="ours"><td>pi0.5 fp32</td><td>Proprio exact</td><td class="n">209.7 ms</td><td class="n"><b>1.58×</b></td><td><span class="tag m">100%</span></td><td class="n"><b>0</b></td><td class="n">3.5 s</td></tr>
+      <tr><td>pi0.5 fp32</td><td>torch.compile, max-autotune</td><td class="n">173.4 ms</td><td class="n">1.91×</td><td><span class="tag d">0%</span></td><td class="n">1.1e-05</td><td class="n">560.8 s</td></tr>
+      <tr><td>pi0.5 fp32</td><td>TF32 matmul</td><td class="n">280.9 ms</td><td class="n">1.18×</td><td><span class="tag d">0%</span></td><td class="n">0.0071</td><td class="n">3.1 s</td></tr>
+      <tr><td>pi0.5 fp32</td><td>cuDNN benchmark</td><td class="n">330.3 ms</td><td class="n">1.00×</td><td><span class="tag m">100%</span></td><td class="n">0</td><td class="n">4.3 s</td></tr>
+      <tr><td>pi0.5 fp32</td><td>bf16 weights</td><td class="n">272.2 ms</td><td class="n">1.21×</td><td><span class="tag d">0%</span></td><td class="n">0.305</td><td class="n">3.4 s</td></tr>
+    </tbody></table></div>
+    <p class="fine"><span class="tag m">measured</span> 100 ticks, 4 mixed instructions, fixed noise. On SmolVLA, cuDNN autotuning alone buys nothing and still moves actions by 0.1. The fastest row, max-autotune at 9.2×, drifts 0.068 and needs 36 s of warm-up against 2.5 s. A drift of any size means the deployed policy is not the one that was validated.</p>
+  </section>
+
+  <section id="rollout">
+    <div class="head">
+      <div class="stack"><p class="label">Many robots per tick</p><h2>Batch the fleet, <em>keep every robot's answer.</em></h2></div>
+      <div class="body"><p>Serving several robots or simulated environments per tick is the utilisation lever, but stock GPU kernels change their arithmetic with the batch size, so row i of a batched result is not what robot i gets alone. Proprio offers two tiers and certifies each row against that robot's own single-robot run.</p></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><span class="k">EXACT TIER</span><h3>Identical to the original policy</h3><p>Every row is bit-identical to the original eager policy run for that robot alone. The stock kernels stay in place. 12.5× per robot on SmolVLA at 16 robots.</p></div>
+      <div class="card"><span class="k">INVARIANT TIER</span><h3>Identical to its own single-robot run</h3><p>Batched matrix multiplications run on reduction-order-invariant kernels. Every row is bit-identical to the tier's single-robot run; its measured difference to stock eager is declared on the certificate. 14.8× per robot on SmolVLA.</p></div>
+      <div class="card"><span class="k">UTILISATION</span><h3>96% GPU busy at 16 robots</h3><p>One eager SmolVLA process keeps the GPU 17% busy; a single exact replay 83%; the batched tick 96% in both tiers (Nsight, RTX 4090). 55 to 67 robots per second on one card.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Policy</th><th class="n">Robots / tick</th><th>Tier</th><th>Rows identical</th><th class="n">Eager, one robot</th><th class="n">Proprio, per robot</th><th class="n">Speedup</th><th class="n">Declared diff vs eager</th></tr></thead><tbody>
+      <tr class="ours"><td>SmolVLA</td><td class="n">16</td><td>exact</td><td><span class="tag m">64 / 64</span></td><td class="n">240.5 ms</td><td class="n">19.3 ms</td><td class="n"><b>12.5×</b></td><td class="n">0</td></tr>
+      <tr class="ours"><td>SmolVLA</td><td class="n">16</td><td>invariant</td><td><span class="tag m">64 / 64</span></td><td class="n">227.2 ms</td><td class="n">15.3 ms</td><td class="n"><b>14.8×</b></td><td class="n">0.090</td></tr>
+      <tr class="ours"><td>pi0.5 fp32</td><td class="n">8</td><td>exact</td><td><span class="tag m">64 / 64</span></td><td class="n">314.9 ms</td><td class="n">174.7 ms</td><td class="n"><b>1.8×</b></td><td class="n">0</td></tr>
+      <tr class="ours"><td>pi0.5 fp32</td><td class="n">8</td><td>invariant</td><td><span class="tag m">64 / 64</span></td><td class="n">314.2 ms</td><td class="n">109.6 ms</td><td class="n"><b>2.9×</b></td><td class="n">0.041</td></tr>
+      <tr class="ours"><td>GR00T N1.7</td><td class="n">8</td><td>invariant</td><td><span class="tag m">64 / 64</span></td><td class="n">179.1 ms</td><td class="n">119.9 ms</td><td class="n"><b>1.5×</b></td><td class="n">0.209</td></tr>
+      <tr class="ours"><td>GR00T N1.7</td><td class="n">4</td><td>invariant</td><td><span class="tag m">32 / 32</span></td><td class="n">175.5 ms</td><td class="n">149.1 ms</td><td class="n"><b>1.2×</b></td><td class="n">0.209</td></tr>
+      <tr><td>GR00T N1.7</td><td class="n">4</td><td>exact</td><td><span class="tag m">32 / 32</span></td><td class="n">176.7 ms</td><td class="n">237.1 ms</td><td class="n">0.75×</td><td class="n">0</td></tr>
+    </tbody></table></div>
+    <p class="fine"><span class="tag m">measured</span> Rows compared against each robot's own single-robot run with its own observation, noise and seed. Where the invariant tier's declared difference comes from: its kernels sum each dot product in a fixed order whatever the batch size, cuBLAS chooses its order per problem shape; both are correct floating-point implementations whose roundings differ by a unit in the last place per layer and compound through the network. The certificate names which implementation was validated. A 3B-parameter model is already compute-bound at one robot on this GPU, so GR00T's headline stays the 64 ms exact single-robot tick; the exact tier's per-robot execution costs more than the batch saves there.</p>
+  </section>
+
+  <section id="certificate">
+    <div class="head">
+      <div class="stack"><p class="label">Bitwise Certificate</p><h2>What every number here <em>stands on.</em></h2></div>
+      <div class="body"><p>Each table row above comes from one certificate, a JSON document the engine writes after a run. The hosted certification service signs it with an Ed25519 key; anyone can verify a signed certificate with the public key.</p></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><span class="k">RESULT</span><h3>Identity and error</h3><p>Per-tick eager and engine actions, the count of bit-identical ticks or rows, max and mean absolute error, the reference used (original eager or same-tier single-robot) and, for a non-exact tier, the declared difference to eager.</p></div>
+      <div class="card"><span class="k">TIMING</span><h3>Latency and split</h3><p>p50 and p99 of both paths, the host pre- and post-processing share, the captured share of the tick, per-robot cost and batch size for rollout runs.</p></div>
+      <div class="card"><span class="k">ENVIRONMENT</span><h3>What it ran on</h3><p>GPU, driver, torch build, clocks, power state and active throttle reasons at the time of the run, thread count, seeds and noise seed, weight-precision manifest, licence tier, digest and signature.</p></div>
+    </div>
+  </section>
+
+  <section id="status">
+    <div class="head">
+      <div class="stack"><p class="label">Status</p><h2>Where Proprio <em>stands today.</em></h2></div>
+      <div class="body"><p>In plain language, for teams deciding whether to try it.</p></div>
+    </div>
+    <div class="steps">
+      <div><span class="st done">done</span><h3>Exact single-robot tick</h3><p>SmolVLA, pi0.5 and GR00T N1.7 certified bit-identical on an RTX 4090, 2.7 to 6.5× faster than LeRobot eager, including the host side of the tick.</p></div>
+      <div><span class="st done">done</span><h3>Exact multi-robot rollout</h3><p>Two certified tiers at 4 to 16 robots per GPU on all three policy families, 96% GPU busy on SmolVLA.</p></div>
+      <div><span class="st now">now</span><h3>Design partners</h3><p>Evaluation licences for teams running LeRobot policies on NVIDIA GPUs: a certificate on your checkpoint and your inputs within a day of access.</p></div>
+      <div><span class="st next">next</span><h3>Jetson and other GPUs</h3><p>Jetson Thor and data-centre cards; the method does not depend on the card, only the speedups do.</p></div>
+    </div>
+  </section>
+
+  <div class="close" id="contact">
+    <div class="stack">
+      <p class="label">Your policy</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Send a checkpoint, <em>get a certificate.</em></h2>
+      <p style="color:var(--muted)">Tell us the policy, the GPU and the control rate you need. We return a Bitwise Certificate on your checkpoint and your observations: the speedup, and the proof that nothing else changed.</p>
+    </div>
+    <div class="mail"><code>hello@zenedgex.in</code></div>
+  </div>
+
+  <footer>
+    <span>© 2026 ZenEdgeX · Proprio is a technical preview</span>
+    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#top">Proprio</a><a href="#contact">Contact us</a></nav>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const LINKS = { site: '../', ip: '../ip/', bench: '../benchmarks/', home: '../engine/', tech: '../technology/', demo: '../demo/', proprio: '../proprio/' };
+  document.querySelectorAll('[data-to]').forEach(a => { a.href = LINKS[a.dataset.to]; });
+})();
+</script>
+
+</body>
+</html>

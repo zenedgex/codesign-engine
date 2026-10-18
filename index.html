@@ -276,7 +276,7 @@ form.pilot .note { margin-top: -2px }
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg>ZenEdgeX</a>
-    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a class="go" href="#contact">Contact us →</a></nav>
+    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a data-to="proprio" href="#">Proprio</a><a class="go" href="#contact">Contact us →</a></nav>
   </div>
 </header>
 
@@ -482,13 +482,13 @@ form.pilot .note { margin-top: -2px }
 
   <footer>
     <span>© 2026 ZenEdgeX · Atelier Studio and Sutra are technical previews: <a href="#today">what you can do today</a></span>
-    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a href="#contact">Contact us</a></nav>
+    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a data-to="proprio" href="#">Proprio</a><a href="#contact">Contact us</a></nav>
   </footer>
 </div>
 
 <script>
 (() => {
-  const LINKS = { site: './', ip: 'ip/', bench: 'benchmarks/', home: 'engine/', tech: 'technology/', demo: 'demo/' };
+  const LINKS = { site: './', ip: 'ip/', bench: 'benchmarks/', home: 'engine/', tech: 'technology/', demo: 'demo/', proprio: 'proprio/' };
   document.querySelectorAll('[data-to]').forEach(a => { a.href = LINKS[a.dataset.to]; });
   const ip = document.querySelector('.offer.ip .fig'), sw = document.querySelector('.offer.sw .fig');
   for (let i = 0; i < 36; i++) ip.appendChild(document.createElement('i'));
