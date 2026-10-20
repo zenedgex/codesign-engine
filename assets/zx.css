@@ -153,7 +153,7 @@ th { letter-spacing: .1em !important }
 .zx-hero__teaser > div { max-width: 1480px; margin: 0 auto; padding: 0 var(--zx-pad); display: flex; flex-direction: column; gap: 22px }
 .zx-hero .kicker { color: var(--leaf) !important; font: 500 12px/1 var(--mono) !important }
 .zx-hero .kicker::before { background: linear-gradient(90deg, var(--leaf), var(--lime)) !important }
-.zx-hero h1 { margin: 0; color: #fff; font-size: clamp(40px, 4.6vw, 60px); line-height: 1.08; font-weight: 700; letter-spacing: -.05em; max-width: 13ch; text-shadow: 0 0 20px rgba(0, 0, 0, .7) }
+.zx-hero h1 { margin: 0; color: #fff; font-size: clamp(52px, 7.4vw, 112px); line-height: 1; font-weight: 700; letter-spacing: -.055em; text-wrap: balance; text-shadow: 0 0 28px rgba(0, 0, 0, .65) }
 .zx-hero h1 em { background: linear-gradient(35deg, var(--leaf), var(--lime) 60%, #EAF4D3); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none }
 .zx-hero .sub { color: rgba(255, 255, 255, .9); font: 400 clamp(16px, 1.35vw, 19px)/1.55 var(--body); max-width: 58ch; text-shadow: 0 0 12px rgba(0, 0, 0, .8) }
 .zx-hero .proofline { color: rgba(236, 240, 232, .78); border-left-color: var(--leaf); font-size: 14.5px; max-width: 70ch; font-style: italic }
@@ -161,8 +161,6 @@ th { letter-spacing: .1em !important }
 .zx-hero .btn.line { background: rgba(236, 240, 232, .12) !important; color: #fff !important; backdrop-filter: blur(6px) }
 .zx-hero .btn.line:hover { background: rgba(236, 240, 232, .2) !important }
 .zx-hero .btn.primary { box-shadow: 0 10px 40px -10px rgba(169, 204, 114, .55) !important }
-.zx-hero__pos { position: absolute; right: var(--zx-pad); bottom: 18px; display: flex; gap: 12px; font: 400 11.5px/1 var(--mono); color: rgba(236, 240, 232, .55); font-variant-numeric: tabular-nums }
-.zx-hero__pos sub { color: rgba(255, 255, 255, .85) }
 
 body.zx-home .zx-header { position: fixed; left: 0; right: 0; background: transparent; border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; transition: background .3s, border-color .3s }
 body.zx-home .zx-header:not(.is-solid) .zx-logo, body.zx-home .zx-header:not(.is-solid) .zx-icon-btn { color: #fff }
@@ -196,8 +194,7 @@ body.zx-home .wrap { max-width: 1416px !important; padding: 0 var(--zx-pad) }
   .zx-main .hero:has(> canvas) .hero-copy { padding: 56px 20px 36px !important }
   .zx-pager { grid-template-columns: minmax(0, 1fr) }
   .zx-pager a.next { grid-column: 1 }
-  .zx-hero__pos { display: none }
-  .zx-hero { height: auto; min-height: 100svh; max-height: none; display: flex; flex-direction: column; justify-content: flex-end }
+    .zx-hero { height: auto; min-height: 100svh; max-height: none; display: flex; flex-direction: column; justify-content: flex-end }
   .zx-hero__teaser { position: relative; bottom: auto; padding: 150px 0 84px }
   .zx-hero__teaser > div { gap: 18px }
 }
@@ -208,7 +205,7 @@ body.zx-home .wrap { max-width: 1416px !important; padding: 0 var(--zx-pad) }
 /* home hero copy, Zensical's teaser: headline, one line, a note, two pills */
 .zx-hero__sub { margin: 0; color: #fff; font: 400 clamp(16px, 1.3vw, 18.5px)/1.55 var(--body); max-width: 48ch; text-shadow: 0 0 10px rgba(0, 0, 0, .8) }
 .zx-hero__note { margin: 0; color: rgba(236, 240, 232, .72); font: italic 400 14px/1.5 var(--body); max-width: 60ch }
-.zx-hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px }
+.zx-hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px }
 .zx-btn { display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 999px; font: 600 14.5px/1 var(--body); text-decoration: none; color: #fff; background: rgba(236, 240, 232, .12); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .2s, transform .2s }
 .zx-btn:hover { background: rgba(236, 240, 232, .2) }
 .zx-btn--primary { color: #0E1309; background: linear-gradient(35deg, var(--green-2), var(--leaf) 60%, var(--lime)); box-shadow: 0 10px 36px -12px rgba(169, 204, 114, .6) }
