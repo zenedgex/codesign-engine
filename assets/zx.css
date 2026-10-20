@@ -1,0 +1,236 @@
+/* ZenEdgeX site shell: header, tabs, sidebar with the page's sections, search, pager, footer and the
+   home hero. Loaded after each page's own styles, so the tokens below restyle every page's components;
+   page-specific layout stays in each page. */
+:root {
+  --void: #FFFFFF; --paper: #FFFFFF;
+  --slab: #F8F9F7; --panel: #F8F9F7;
+  --slab-2: #F1F3EF; --panel-2: #F1F3EF;
+  --slab-3: #E8EBE5;
+  --line: #E5E8E2; --rule: #E5E8E2;
+  --line-2: #D2D7CE; --dim: #C3C9D1;
+  --text: #111418; --ink: #111418;
+  --muted: #4A515C; --ink-soft: #4A515C;
+  --faint: #69707B;
+  --leaf: #A9CC72; --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C;
+  --hl: #EEF5E0; --tint: #EEF4E3;
+  --display: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+  --night: #090B0A;
+  --zx-head: 56px;
+  --zx-pad: 32px;
+  color-scheme: light;
+}
+html { scroll-padding-top: calc(var(--zx-head) + 20px); background: var(--void) }
+body { padding: 0 !important; margin: 0; font-family: var(--body); font-feature-settings: "cv11", "ss01"; letter-spacing: -.006em; -webkit-font-smoothing: antialiased }
+body.zx-lock { overflow: hidden }
+
+/* ---------- type: Inter throughout, tight and bold like a docs system */
+h1, h2, h3 { font-family: var(--display); font-stretch: normal !important }
+.zx-main h1 { font-size: clamp(36px, 4.4vw, 58px); line-height: 1.06; font-weight: 700; letter-spacing: -.045em; max-width: 20ch }
+h2 { font-weight: 700; letter-spacing: -.035em; line-height: 1.12 }
+.zx-main h2 { font-size: clamp(26px, 2.7vw, 38px) }
+h3 { font-weight: 600; letter-spacing: -.015em }
+h1 em, h2 em { background: linear-gradient(35deg, var(--green-deep), var(--green-2) 70%, #8BB548); -webkit-background-clip: text; background-clip: text; color: transparent }
+.label, .kicker, .eyebrow { letter-spacing: .12em !important }
+.label::after { background: var(--line) !important }
+a { color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 3px }
+code, kbd, .mono { font-family: var(--mono) }
+
+/* buttons become pills */
+.btn { border-radius: 999px !important; padding: 13px 22px !important; font: 600 14.5px/1 var(--body) !important; letter-spacing: -.005em; transition: transform .2s, box-shadow .2s, background-color .2s }
+.btn.primary { background: linear-gradient(35deg, var(--green-2), var(--leaf)) !important; color: #0E1309 !important; box-shadow: 0 8px 28px -12px rgba(74, 122, 22, .55) !important }
+.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -12px rgba(74, 122, 22, .7) !important }
+.btn.line { background: var(--slab-2) !important; border-color: transparent !important; color: var(--text) !important }
+.btn.line:hover { background: var(--slab-3) !important }
+
+/* ---------- header */
+.zx-header { position: sticky; top: 0; z-index: 40; height: var(--zx-head); background: color-mix(in srgb, var(--void) 86%, transparent); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--line) }
+.zx-header__row { max-width: 1480px; height: 100%; margin: 0 auto; padding: 0 var(--zx-pad); display: flex; align-items: center; gap: 14px }
+.zx-logo { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font: 700 18px/1 var(--body); letter-spacing: -.03em }
+.zx-logo svg { width: 26px; height: 26px; flex: none }
+.zx-header__end { margin-left: auto; display: flex; align-items: center; gap: 10px }
+.zx-search-btn { display: inline-flex; align-items: center; gap: 10px; height: 36px; min-width: 220px; padding: 0 8px 0 12px; border: 1px solid transparent; border-radius: 8px; background: var(--slab-2); color: var(--muted); font: 400 14px/1 var(--body); cursor: pointer; transition: background .2s, border-color .2s }
+.zx-search-btn:hover { background: var(--slab-3) }
+.zx-search-btn svg { width: 17px; height: 17px; flex: none }
+.zx-search-btn kbd { margin-left: auto; font: 500 11.5px/1 var(--mono); color: var(--faint); padding: 5px 6px; border-radius: 5px; background: var(--void); border: 1px solid var(--line) }
+.zx-pill { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; background: linear-gradient(35deg, var(--green-2), var(--leaf)); color: #0E1309; font: 600 14px/1 var(--body); text-decoration: none; white-space: nowrap }
+.zx-pill:hover { filter: brightness(1.05) }
+.zx-icon-btn { display: none; width: 36px; height: 36px; margin-left: -8px; border: 0; border-radius: 8px; background: none; color: var(--text); cursor: pointer; align-items: center; justify-content: center }
+.zx-icon-btn:hover { background: var(--slab-2) }
+.zx-icon-btn svg { width: 22px; height: 22px }
+.zx-header .progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--green-2), var(--leaf)) }
+
+/* tabs: scroll away under the sticky header, as in the reference */
+.zx-tabs { border-bottom: 1px solid var(--line); background: var(--void) }
+.zx-tabs__in { max-width: 1480px; margin: 0 auto; padding: 0 calc(var(--zx-pad) - 12px); display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none }
+.zx-tabs a { position: relative; padding: 13px 12px 12px; font: 450 14px/1 var(--body); color: var(--muted); text-decoration: none; white-space: nowrap; transition: color .2s }
+.zx-tabs a:hover { color: var(--text) }
+.zx-tabs a[aria-current="page"] { color: var(--text); font-weight: 550 }
+.zx-tabs a[aria-current="page"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--text) }
+
+/* ---------- shell: sidebar + content */
+.zx-shell { max-width: 1480px; margin: 0 auto; padding: 0 var(--zx-pad); display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: 52px; align-items: start }
+.zx-main { min-width: 0; padding: 36px 0 0 }
+.zx-main > .wrap, .zx-main .wrap { max-width: none !important; margin-inline: 0 }
+.zx-side { position: sticky; top: var(--zx-head); max-height: calc(100vh - var(--zx-head)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 30px 6px 40px 0 }
+.zx-side__head { display: none }
+.zx-nav { display: flex; flex-direction: column; gap: 1px }
+.zx-nav__group { margin: 22px 0 6px; padding: 0 10px; font: 600 13px/1.2 var(--body); color: var(--text); letter-spacing: -.005em }
+.zx-nav__link { display: flex; align-items: center; gap: 11px; padding: 7px 10px; border-radius: 7px; color: var(--muted); font: 400 14px/1.3 var(--body); text-decoration: none; transition: background .15s, color .15s }
+.zx-nav__link svg { width: 17px; height: 17px; flex: none; stroke: currentColor; opacity: .8 }
+.zx-nav__link .ext { width: 14px; height: 14px; margin-left: auto; opacity: .55 }
+.zx-nav__link:hover { color: var(--text); background: var(--slab) }
+.zx-nav__link[aria-current="page"] { background: var(--tint); color: var(--green-deep); font-weight: 600 }
+.zx-nav__link[aria-current="page"] svg { opacity: 1 }
+.zx-toc { list-style: none; margin: 6px 0 8px 18px; padding: 0 0 0 10px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 1px }
+.zx-toc a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--faint); font: 400 13.5px/1.35 var(--body); text-decoration: none; position: relative; transition: color .15s }
+.zx-toc a:hover { color: var(--text) }
+.zx-toc a.is-active { color: var(--green-deep); font-weight: 550 }
+.zx-toc a.is-active::before { content: ""; position: absolute; left: -11px; top: 6px; bottom: 6px; width: 2px; border-radius: 2px; background: var(--green-2) }
+.zx-scrim { position: fixed; inset: 0; z-index: 59; background: rgba(9, 11, 10, .42); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .25s }
+
+/* the page's own section menus are replaced by the sidebar on wide screens */
+#rail { display: none !important }
+@media (min-width: 1100px) { .zx-main nav.jump { display: none !important } }
+
+/* ---------- restyle shared page components to the docs look */
+.zx-main section, body.zx-home .wrap > section { padding-block: 104px 0 }
+.zx-main .hero { padding-block: 40px 16px }
+.offer, .fbox, .wlc, .cards > div, .today > div, .facts > div, .checks li, .legend > div, .ident > div, .viz, .tbl, .deep, .close, .steps { border-radius: 12px !important }
+.cards > div, .wlc, .today > div, .facts > div { transition: border-color .2s, box-shadow .2s }
+.cards > div:hover, .wlc:hover { border-color: var(--line-2); box-shadow: 0 6px 24px -14px rgba(17, 20, 24, .25) }
+.proof { border-color: var(--line) }
+.metric b { font-weight: 700 !important; letter-spacing: -.04em !important }
+.fbox .name, .ident b, .steps b, .deep > summary { letter-spacing: -.02em }
+th { letter-spacing: .1em !important }
+
+/* engine and technology: the full-bleed heroes sit inside the content column as a panel */
+.zx-main .hero:has(> canvas) { margin-inline: 0 !important; min-height: 600px !important; border: 1px solid var(--line); border-radius: 16px; padding-block: 0 }
+.zx-main .hero:has(> canvas) .hero-copy { padding: 88px 44px 52px !important; max-width: none !important }
+
+/* ---------- pager and footer */
+.zx-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 96px; padding-top: 28px; border-top: 1px solid var(--line) }
+.zx-pager a { display: flex; align-items: center; gap: 14px; padding: 10px 4px; color: var(--text); text-decoration: none }
+.zx-pager a.next { justify-content: flex-end; text-align: right; grid-column: 2 }
+.zx-pager a span { display: flex; flex-direction: column; gap: 4px }
+.zx-pager small { font: 400 12.5px/1 var(--body); color: var(--faint) }
+.zx-pager b { font: 500 17px/1.2 var(--body); letter-spacing: -.02em }
+.zx-pager svg { width: 20px; height: 20px; flex: none; transition: transform .2s }
+.zx-pager a.prev:hover svg { transform: translateX(-3px) }
+.zx-pager a.next:hover svg { transform: translateX(3px) }
+.zx-footer { margin-top: 40px; background: var(--slab-2); border-top: 1px solid var(--line) }
+.zx-footer__in { max-width: 1480px; margin: 0 auto; padding: 26px var(--zx-pad) 30px }
+.zx-footer footer { margin: 0 !important; padding: 0 !important; border: 0 !important; display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; font-size: 13px !important; color: var(--faint) !important; max-width: none !important }
+.zx-footer footer.zx-plain { display: block; line-height: 1.6 }
+.zx-footer footer a { color: var(--muted); text-decoration: none }
+.zx-footer footer a:hover { color: var(--text) }
+.zx-footer footer nav { display: flex; gap: 18px; flex-wrap: wrap }
+.zx-footer__meta { display: block; margin-top: 10px; font: 400 12px/1.4 var(--body); color: var(--faint) }
+
+/* ---------- search dialog */
+.zx-search { position: fixed; inset: 0; z-index: 80; display: flex; justify-content: center; align-items: flex-start; padding: 10vh 16px 16px; background: rgba(9, 11, 10, .45); backdrop-filter: blur(3px) }
+.zx-search[hidden] { display: none }
+.zx-search__box { width: 100%; max-width: 640px; max-height: 72vh; display: flex; flex-direction: column; background: var(--void); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 30px 80px -24px rgba(9, 11, 10, .5); overflow: hidden }
+.zx-search__field { display: flex; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid var(--line) }
+.zx-search__field svg { width: 19px; height: 19px; color: var(--faint); flex: none }
+.zx-search__field input { flex: 1; min-width: 0; height: 56px; border: 0; outline: 0; background: none; font: 400 17px/1 var(--body); color: var(--text) }
+.zx-search__field kbd { font: 500 11.5px/1 var(--mono); color: var(--faint); padding: 5px 6px; border-radius: 5px; border: 1px solid var(--line) }
+.zx-search__list { list-style: none; margin: 0; padding: 8px; overflow-y: auto }
+.zx-search__list a { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 8px; text-decoration: none; color: var(--text) }
+.zx-search__list a small { font: 500 11.5px/1.2 var(--mono); color: var(--faint); letter-spacing: .02em }
+.zx-search__list a b { font: 600 15px/1.3 var(--body); letter-spacing: -.01em }
+.zx-search__list a span { font: 400 13.5px/1.45 var(--body); color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.zx-search__list a[aria-selected="true"], .zx-search__list a:hover { background: var(--tint) }
+.zx-search__list mark { background: none; color: var(--green-deep); font-weight: 650 }
+.zx-search__empty { padding: 22px 16px; color: var(--faint); font-size: 14px }
+
+/* ---------- home: dark hero with the attractor, header laid over it */
+.zx-hero { display: block; position: relative; height: 100vh; height: 100svh; min-height: 560px; background: var(--night); overflow: hidden; color: #fff; isolation: isolate }
+.zx-hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: -2 }
+.zx-hero__shade { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, rgba(9, 11, 10, .72) 0%, rgba(9, 11, 10, .35) 42%, transparent 66%), linear-gradient(0deg, rgba(9, 11, 10, .75) 0%, transparent 46%) }
+.zx-hero__teaser { position: absolute; left: 0; right: 0; bottom: clamp(56px, 10vh, 104px) }
+.zx-hero__teaser > div { max-width: 1480px; margin: 0 auto; padding: 0 var(--zx-pad); display: flex; flex-direction: column; gap: 22px }
+.zx-hero .kicker { color: var(--leaf) !important; font: 500 12px/1 var(--mono) !important }
+.zx-hero .kicker::before { background: linear-gradient(90deg, var(--leaf), var(--lime)) !important }
+.zx-hero h1 { margin: 0; color: #fff; font-size: clamp(40px, 4.6vw, 60px); line-height: 1.08; font-weight: 700; letter-spacing: -.05em; max-width: 13ch; text-shadow: 0 0 20px rgba(0, 0, 0, .7) }
+.zx-hero h1 em { background: linear-gradient(35deg, var(--leaf), var(--lime) 60%, #EAF4D3); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none }
+.zx-hero .sub { color: rgba(255, 255, 255, .9); font: 400 clamp(16px, 1.35vw, 19px)/1.55 var(--body); max-width: 58ch; text-shadow: 0 0 12px rgba(0, 0, 0, .8) }
+.zx-hero .proofline { color: rgba(236, 240, 232, .78); border-left-color: var(--leaf); font-size: 14.5px; max-width: 70ch; font-style: italic }
+.zx-hero .proofline b { color: var(--lime) }
+.zx-hero .btn.line { background: rgba(236, 240, 232, .12) !important; color: #fff !important; backdrop-filter: blur(6px) }
+.zx-hero .btn.line:hover { background: rgba(236, 240, 232, .2) !important }
+.zx-hero .btn.primary { box-shadow: 0 10px 40px -10px rgba(169, 204, 114, .55) !important }
+.zx-hero__pos { position: absolute; right: var(--zx-pad); bottom: 18px; display: flex; gap: 12px; font: 400 11.5px/1 var(--mono); color: rgba(236, 240, 232, .55); font-variant-numeric: tabular-nums }
+.zx-hero__pos sub { color: rgba(255, 255, 255, .85) }
+
+body.zx-home .zx-header { position: fixed; left: 0; right: 0; background: transparent; border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; transition: background .3s, border-color .3s }
+body.zx-home .zx-header:not(.is-solid) .zx-logo, body.zx-home .zx-header:not(.is-solid) .zx-icon-btn { color: #fff }
+body.zx-home .zx-header:not(.is-solid) .zx-icon-btn:hover { background: rgba(255, 255, 255, .1) }
+body.zx-home .zx-header:not(.is-solid) .zx-search-btn { background: rgba(236, 240, 232, .1); color: rgba(255, 255, 255, .8); backdrop-filter: blur(6px) }
+body.zx-home .zx-header:not(.is-solid) .zx-search-btn kbd { background: transparent; border-color: rgba(255, 255, 255, .18); color: rgba(255, 255, 255, .6) }
+body.zx-home .zx-header.is-solid { background: color-mix(in srgb, var(--void) 86%, transparent); border-bottom-color: var(--line); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px) }
+body.zx-home .zx-tabs { position: absolute; top: var(--zx-head); left: 0; right: 0; z-index: 30; background: transparent; border-bottom-color: rgba(255, 255, 255, .1) }
+body.zx-home .zx-tabs a { color: rgba(255, 255, 255, .72) }
+body.zx-home .zx-tabs a:hover, body.zx-home .zx-tabs a[aria-current="page"] { color: #fff }
+body.zx-home .zx-tabs a[aria-current="page"]::after { background: #fff }
+body.zx-home .wrap { max-width: 1416px !important; padding: 0 var(--zx-pad) }
+
+/* ---------- responsive */
+@media (max-width: 1099px) {
+  .zx-icon-btn { display: inline-flex }
+  .zx-shell { grid-template-columns: minmax(0, 1fr); gap: 0 }
+  .zx-side { position: fixed; z-index: 60; top: 0; left: 0; bottom: 0; width: min(310px, 86vw); max-height: none; padding: 0 12px 32px; background: var(--void); border-right: 1px solid var(--line); transform: translateX(-102%); transition: transform .28s cubic-bezier(.2, .7, .2, 1), box-shadow .28s }
+  .zx-side__head { display: flex; align-items: center; height: var(--zx-head); padding: 0 10px; margin-bottom: 4px; border-bottom: 1px solid var(--line) }
+  body.zx-drawer .zx-side { transform: none; box-shadow: 20px 0 60px -30px rgba(9, 11, 10, .4) }
+  body.zx-drawer .zx-scrim { opacity: 1; pointer-events: auto }
+    }
+@media (min-width: 1100px) { body.zx-home .zx-side, body.zx-home .zx-scrim { display: none } }
+@media (max-width: 760px) {
+  :root { --zx-pad: 16px }
+  .zx-tabs { display: none }
+  .zx-search-btn { min-width: 0; width: 36px; padding: 0; justify-content: center }
+  .zx-search-btn span, .zx-search-btn kbd { display: none }
+  .zx-main { padding-top: 20px }
+  .zx-main section, body.zx-home .wrap > section { padding-block: 72px 0 }
+  .zx-main .hero:has(> canvas) .hero-copy { padding: 56px 20px 36px !important }
+  .zx-pager { grid-template-columns: minmax(0, 1fr) }
+  .zx-pager a.next { grid-column: 1 }
+  .zx-hero__pos { display: none }
+  .zx-hero { height: auto; min-height: 100svh; max-height: none; display: flex; flex-direction: column; justify-content: flex-end }
+  .zx-hero__teaser { position: relative; bottom: auto; padding: 150px 0 84px }
+  .zx-hero__teaser > div { gap: 18px }
+}
+@media (max-width: 420px) { .zx-pill { padding: 0 12px; font-size: 13px } }
+@media (prefers-reduced-motion: reduce) { .zx-side { transition: none } }
+.zx-search__field input::-webkit-search-cancel-button { display: none }
+
+/* home hero copy, Zensical's teaser: headline, one line, a note, two pills */
+.zx-hero__sub { margin: 0; color: #fff; font: 400 clamp(16px, 1.3vw, 18.5px)/1.55 var(--body); max-width: 48ch; text-shadow: 0 0 10px rgba(0, 0, 0, .8) }
+.zx-hero__note { margin: 0; color: rgba(236, 240, 232, .72); font: italic 400 14px/1.5 var(--body); max-width: 60ch }
+.zx-hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px }
+.zx-btn { display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 999px; font: 600 14.5px/1 var(--body); text-decoration: none; color: #fff; background: rgba(236, 240, 232, .12); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: background .2s, transform .2s }
+.zx-btn:hover { background: rgba(236, 240, 232, .2) }
+.zx-btn--primary { color: #0E1309; background: linear-gradient(35deg, var(--green-2), var(--leaf) 60%, var(--lime)); box-shadow: 0 10px 36px -12px rgba(169, 204, 114, .6) }
+.zx-btn--primary:hover { background: linear-gradient(35deg, var(--green-2), var(--leaf) 60%, var(--lime)); transform: translateY(-1px) }
+body.zx-home { background: var(--night); overflow-x: hidden }
+
+/* page heads and project cards (projects/ and contact/) */
+.zx-page-head { display: flex; flex-direction: column; gap: 14px; padding: 12px 0 36px }
+.zx-page-head h1 { margin: 0 }
+.zx-lead { margin: 0; max-width: 62ch; color: var(--muted); font-size: 18px; line-height: 1.6 }
+.zx-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px }
+.zx-card { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--void); color: var(--text); text-decoration: none; transition: border-color .2s, box-shadow .2s }
+.zx-card:hover { border-color: var(--line-2); box-shadow: 0 8px 28px -16px rgba(17, 20, 24, .3) }
+.zx-card__head { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line) }
+.zx-card__head svg { width: 22px; height: 22px; flex: none; color: var(--green) }
+.zx-card__head h2, .zx-card__head b { margin: 0; font: 650 19px/1.25 var(--body); letter-spacing: -.02em }
+.zx-card__head h2 a { color: inherit; text-decoration: none }
+.zx-card__head h2 a:hover { color: var(--green-deep) }
+.zx-card .zx-card__meta { margin: 0; font: 500 11.5px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint) }
+.zx-card p { margin: 0; color: var(--muted); font-size: 15.5px; line-height: 1.55 }
+.zx-card__links { list-style: none; margin: auto 0 0; padding: 8px 0 0; display: flex; flex-wrap: wrap; gap: 8px }
+.zx-card__links a { display: inline-block; padding: 6px 12px; border-radius: 999px; background: var(--slab-2); color: var(--text); font: 500 13.5px/1 var(--body); text-decoration: none }
+.zx-card__links a:hover { background: var(--tint); color: var(--green-deep) }
+.zx-cards--compact + section { padding-top: 56px }
+.zx-card--link p:last-child { color: var(--green-deep); font-weight: 550 }

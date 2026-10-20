@@ -30,3 +30,10 @@ Watch the walkthrough: https://zenedgex.in/demo/
 
 This repository holds the website and the released package only. Proprietary preview; do not
 redistribute.
+
+## Website navigation
+
+The header, tabs, sidebar, previous/next links, footer links, the project cards on `projects/` and
+the contact cards on `contact/` are generated from the project list in `tools/build_nav.py`. To add
+a project, create its page(s) with the `<!--zx:...-->` markers (copy any project page), add an entry
+to `PROJECTS`, and run `python3 tools/build_nav.py`.

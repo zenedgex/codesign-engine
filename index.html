@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="ZenEdgeX Atelier Studio explores AI accelerator architectures and compiler mappings against your workload and your performance, power and area targets.">
-<meta property="og:title" content="ZenEdgeX Atelier: the best AI chip for your workload">
-<meta property="og:description" content="ZenEdgeX Atelier Studio explores AI accelerator architectures and compiler mappings against your workload and your performance, power and area targets.">
+<meta name="description" content="ZenEdgeX builds tools and IP that make AI faster, leaner and verifiable, from the chip to the data center and the robot.">
+<meta property="og:title" content="ZenEdgeX: engineering the systems AI runs on">
+<meta property="og:description" content="ZenEdgeX builds tools and IP that make AI faster, leaner and verifiable, from the chip to the data center and the robot.">
 <meta property="og:image" content="https://zenedgex.in/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -14,618 +14,62 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>ZenEdgeX Atelier: the best AI chip for your workload</title>
+<title>ZenEdgeX: engineering the systems AI runs on</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap">
-<style>
-:root {
-  --void: #FFFFFF; --slab: #F6F7F3; --slab-2: #EFF1EB; --slab-3: #E7EAE2;
-  --line: #E2E5DD; --line-2: #CFD4C7;
-  --text: #12161C; --muted: #4F5866; --faint: #6B7380;
-  --leaf: #A9CC72; --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C; --sky: #4B6FA8;
-  --display: 'Archivo', 'Arial Black', Arial, sans-serif;
-  --body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
-  --mono: 'Geist Mono', 'SFMono-Regular', Menlo, monospace;
-  --ease: cubic-bezier(.2, .7, .2, 1);
-  color-scheme: light;
-}
-* { box-sizing: border-box }
-html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
-body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased }
-.wrap { max-width: 1200px; margin-inline: auto }
-a { color: var(--green); text-underline-offset: 3px }
-:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px }
-h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
-h1 { font-size: clamp(46px, 7.4vw, 108px); line-height: .93; font-weight: 770; font-stretch: 112%; letter-spacing: -.028em; max-width: 13ch }
-h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.03; font-weight: 720; font-stretch: 110%; letter-spacing: -.02em }
-h3 { font-size: 20px; font-weight: 650; font-stretch: 106%; line-height: 1.2 }
-p { margin: 0; max-width: 64ch }
-h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--green-deep), var(--green-2)); -webkit-background-clip: text; background-clip: text; color: transparent }
-.label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
-.label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
-
-.bar { position: sticky; top: 0; z-index: 20; margin-inline: -20px; padding: 14px 20px; background: color-mix(in srgb, var(--void) 78%, transparent); backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid var(--line) }
-.bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap }
-.mark { display: flex; align-items: center; gap: 10px; font: 700 15px/1 var(--display); font-stretch: 116%; letter-spacing: .02em; color: var(--text); text-decoration: none }
-.mark svg { width: 24px; height: 24px }
-.bar nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; align-items: center }
-.bar nav a { color: var(--muted); text-decoration: none }
-.bar nav a:hover { color: var(--text) }
-.bar nav a.go { color: #11160B; background: linear-gradient(92deg, var(--leaf), var(--lime)); padding: 8px 14px; border-radius: 999px; font-weight: 600 }
-
-.hero { position: relative; padding-block: 130px 70px; display: flex; flex-direction: column; gap: 28px }
-.hero::before { content: ""; position: absolute; inset: 0 -20px; background: radial-gradient(700px 480px at 85% 20%, rgba(169, 204, 114,.16), transparent 60%), radial-gradient(500px 400px at 10% 90%, rgba(134,167,216,.07), transparent 60%); pointer-events: none; z-index: -1 }
-.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 12px }
-.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
-.sub { font: 500 clamp(18px, 1.8vw, 23px)/1.45 var(--body); max-width: 52ch }
-.cta { display: flex; gap: 14px; flex-wrap: wrap }
-.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 4px; font: 600 15px/1 var(--body); text-decoration: none }
-.btn.primary { background: linear-gradient(92deg, var(--leaf), var(--lime)); color: #11160B; box-shadow: 0 10px 40px -12px rgba(169, 204, 114, .55) }
-.btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
-
-.offers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px }
-.offer { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; padding: 40px 36px 36px; display: flex; flex-direction: column; gap: 18px; min-width: 0; background: var(--slab); text-decoration: none; color: inherit; transition: border-color .3s, transform .35s var(--ease) }
-.offer:hover { border-color: rgba(208, 230, 165,.45); transform: translateY(-3px) }
-.offer.ip { background: radial-gradient(90% 80% at 100% 0%, rgba(169, 204, 114,.20), transparent 60%), var(--slab) }
-.offer.sw { background: radial-gradient(90% 80% at 100% 0%, rgba(134,167,216,.14), transparent 60%), var(--slab) }
-.offer .tag { font: 500 11.5px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--green) }
-.offer.sw .tag { color: var(--sky) }
-.offer h2 { font-size: clamp(32px, 3.6vw, 48px) }
-.offer p { color: var(--muted) }
-.offer ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15.5px }
-.offer li { display: flex; gap: 12px; align-items: baseline }
-.offer li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--leaf); flex: none; transform: translateY(-2px) }
-.offer.sw li::before { background: var(--sky) }
-.offer .go { margin-top: auto; padding-top: 8px; font: 600 15px/1 var(--body); color: var(--text) }
-.offer .go span { color: var(--green) }
-.offer.sw .go span { color: var(--sky) }
-.proofline { font-size: 15.5px; color: var(--muted); max-width: 70ch; border-left: 2px solid var(--leaf); padding-left: 14px }
-.proofline b { color: var(--green); font-weight: 500 }
-.offer .fig { height: 120px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; margin-bottom: 4px }
-.offer .fig i { border-radius: 3px; background: var(--slab-3); border: 1px solid var(--line-2) }
-.offer.ip .fig i:nth-child(5n+2), .offer.ip .fig i:nth-child(7n) { background: rgba(208, 230, 165,.5); border-color: var(--green) }
-.offer.sw .fig { display: flex; align-items: flex-end; gap: 6px }
-.offer.sw .fig i { flex: 1; border-radius: 3px 3px 0 0 }
-
-section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40px }
-.head { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: end }
-.head > * { min-width: 0 }
-.head .body { color: var(--muted); font-size: 18px; display: flex; flex-direction: column; gap: 14px }
-.stack { display: flex; flex-direction: column; gap: 20px }
-.flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr) auto minmax(0, 1fr); gap: 16px; align-items: center }
-.flow > * { min-width: 0 }
-.fbox { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 22px; display: flex; flex-direction: column; gap: 10px }
-.fbox .t { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--faint) }
-.fbox ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15.5px }
-.fbox li { display: flex; gap: 10px; align-items: center }
-.fbox li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--leaf); flex: none }
-.fbox.mid { background: radial-gradient(120% 120% at 50% 0%, rgba(134,167,216,.16), transparent 70%), var(--slab-2); border-color: rgba(134,167,216,.35) }
-.fbox.mid li::before { background: var(--sky) }
-.fbox.out { background: radial-gradient(120% 120% at 50% 0%, rgba(169, 204, 114,.22), transparent 70%), var(--slab-2); border-color: rgba(208, 230, 165,.35) }
-.fbox .name { font: 740 21px/1.1 var(--display); font-stretch: 110% }
-.arrow { color: var(--green); font: 600 22px/1 var(--mono) }
-.proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
-.metric { padding: 30px 22px 30px 0; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
-.metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
-.metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); font-stretch: 112%; letter-spacing: -.01em }
-.metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
-.fine { font-size: 14px; color: var(--faint); max-width: 96ch }
-.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--leaf) 28%, transparent), transparent 60%), radial-gradient(60% 100% at 0% 100%, rgba(134,167,216,.08), transparent 60%), var(--slab) }
-.close > * { min-width: 0 }
-.mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
-.wl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
-.wlc { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 28px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
-.wlc .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
-.wlc p { color: var(--muted); font-size: 15.5px }
-.wlc b { color: var(--text); font-weight: 500 }
-@media (max-width: 960px) { .wl { grid-template-columns: minmax(0, 1fr) } }
-table { width: 100%; border-collapse: collapse; font-size: 15.5px }
-th { text-align: left; font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); padding: 0 16px 14px 0 }
-td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--muted); vertical-align: top }
-td:first-child { color: var(--text); white-space: nowrap }
-.tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
-td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
-td.best { color: var(--green); font-weight: 600; position: relative }
-td.best::before { content: ""; position: absolute; inset: 7px -6px 7px auto; width: calc(100% + 4px); border-radius: 4px; background: rgba(208, 230, 165,.12); border: 1px solid rgba(208, 230, 165,.35); z-index: 0; pointer-events: none }
-.best-key { margin-top: -4px }
-.best-key .best { color: var(--green); font-weight: 600; padding: 2px 7px; border-radius: 4px; background: rgba(208, 230, 165,.12); border: 1px solid rgba(208, 230, 165,.35); margin-right: 6px }
-footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
-footer nav { display: flex; gap: 20px; flex-wrap: wrap }
-footer a { color: var(--muted); text-decoration: none }
-
-@media (max-width: 960px) {
-  .offers, .head, .close { grid-template-columns: minmax(0, 1fr); gap: 28px }
-  .hero { padding-block: 80px 40px }
-  .flow { grid-template-columns: minmax(0, 1fr) }
-  .arrow { justify-self: center; transform: rotate(90deg) }
-  .proof { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-  .metric:nth-child(3) { padding-left: 0; border-left: none }
-  .metric:nth-child(n+3) { border-top: 1px solid var(--line) }
-  .offer, .close { padding: 32px 24px }
-  section { padding-block: 88px 0 }
-}
-@media (max-width: 560px) {
-  .proof { grid-template-columns: minmax(0, 1fr) }
-  .metric + .metric { padding-left: 0; border-left: none; border-top: 1px solid var(--line) }
-}
-
-/* Business story first, engineering proof second: hero; who is who; the problem; the joint search and how
-   it differs; who it is for; what it is worth; the proof with an evidence legend; what you can do today;
-   pilot request. The full validation sits in one collapsible block under the proof. */
-.ident { display: grid; grid-template-columns: minmax(0, .8fr) auto minmax(0, 1.1fr) auto minmax(0, 1.1fr); gap: 14px; align-items: stretch; margin-bottom: 18px }
-.ident > div { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; min-width: 0 }
-.ident .k { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--faint) }
-.ident b { font: 720 19px/1.15 var(--display); font-stretch: 108% }
-.ident span:last-child { font-size: 14.5px; color: var(--muted); line-height: 1.45 }
-.ident .arrow { align-self: center; font-size: 13px; font-family: var(--mono); color: var(--faint); background: none; border: 0; padding: 0; text-align: center; white-space: nowrap }
-.checks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px }
-.checks li { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px 20px 52px; position: relative; font-size: 16.5px }
-.checks li::before { content: ""; position: absolute; left: 22px; top: 25px; width: 14px; height: 8px; border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg) }
-.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab); counter-reset: st }
-.steps li { padding: 24px 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; position: relative; counter-increment: st }
-.steps li + li { border-left: 1px solid var(--line) }
-.steps li::before { content: "0" counter(st); font: 500 11.5px/1 var(--mono); letter-spacing: .14em; color: var(--green) }
-.steps li:last-child { background: radial-gradient(120% 120% at 50% 0%, rgba(169, 204, 114, .26), transparent 70%), var(--slab-2) }
-.steps b { font: 680 17px/1.2 var(--display); font-stretch: 106% }
-.steps span { font-size: 14px; color: var(--muted); line-height: 1.45 }
-.cmp td { color: var(--text); white-space: normal }
-.cmp td:first-child { color: var(--muted); width: 42% }
-.cmp th:last-child { color: var(--green) }
-.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px }
-.cards > div { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 26px 24px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
-.cards h3 { font-size: 18px }
-.cards p { font-size: 15px; color: var(--muted) }
-.note { font-size: 14px; color: var(--faint) }
-.ev { display: inline-flex; align-items: center; gap: 7px; font: 500 10.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 6px 9px; border-radius: 999px; border: 1px solid; white-space: nowrap; width: max-content; vertical-align: middle }
-.ev::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor }
-.ev.rtl { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent); background: color-mix(in srgb, var(--lime) 30%, transparent) }
-.ev.int { color: #2D6A5C; border-color: rgba(45, 106, 92, .35); background: rgba(127, 200, 169, .16) }
-.ev.est { color: var(--sky); border-color: rgba(75, 111, 168, .35); background: rgba(134, 167, 216, .14) }
-.ev.pd { color: #5E4A96; border-color: rgba(94, 74, 150, .35); background: rgba(150, 130, 210, .12) }
-.legend { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px }
-.legend > div { border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
-.legend p { font-size: 14px; color: var(--muted); line-height: 1.5 }
-.proof .metric .ev { margin-top: 2px; font-size: 10.5px; line-height: 1 }
-.wlc .ev { margin-top: auto }
-.deep { border: 1px solid var(--line); border-radius: 12px; background: var(--slab) }
-.deep > summary { cursor: pointer; list-style: none; padding: 22px 26px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 650 17px/1.3 var(--display); font-stretch: 106% }
-.deep > summary::-webkit-details-marker { display: none }
-.deep > summary::after { content: "+"; font: 500 22px/1 var(--mono); color: var(--green) }
-.deep[open] > summary::after { content: "−" }
-.deep > summary span { display: block; font: 400 14px/1.4 var(--body); color: var(--muted); margin-top: 4px }
-.deep .inner { padding: 0 26px 40px; background: var(--void); border-top: 1px solid var(--line); border-radius: 0 0 12px 12px }
-.deep .inner section { padding-block: 56px 0 }
-.today { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
-.today > div, .facts > div { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 26px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
-.today .k, .facts .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--green) }
-.today > div:nth-child(2) .k { color: var(--sky) }
-.today > div:nth-child(3) .k { color: var(--faint) }
-.today ul, .facts ul { margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--muted) }
-.today li b, .facts li b { color: var(--text); font-weight: 500 }
-.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
-.facts p { font-size: 15px; color: var(--muted) }
-.close.cta2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start }
-.acts { display: flex; flex-direction: column; gap: 12px; margin-top: 8px }
-.act { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--void); text-decoration: none; color: var(--text) }
-.act b { font-weight: 600 }
-.act span { font-size: 14px; color: var(--muted) }
-.act.on { border-color: var(--leaf); box-shadow: inset 3px 0 0 var(--leaf) }
-form.pilot { background: var(--void); border: 1px solid var(--line); border-radius: 10px; padding: 26px; display: grid; gap: 14px }
-form.pilot h3 { font-size: 19px }
-form.pilot label { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; color: var(--muted) }
-form.pilot input, form.pilot select, form.pilot textarea { font: 400 15px/1.4 var(--body); color: var(--text); background: var(--slab); border: 1px solid var(--line-2); border-radius: 6px; padding: 11px 12px; width: 100% }
-form.pilot textarea { min-height: 76px; resize: vertical }
-form.pilot .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px }
-form.pilot button { justify-self: start; border: 0; cursor: pointer }
-form.pilot .note { margin-top: -2px }
-@media (max-width: 960px) {
-  .ident { grid-template-columns: minmax(0, 1fr) }
-  .ident .arrow { display: none }
-  .checks, .legend, .cards, .today, .facts, .close.cta2, form.pilot .two { grid-template-columns: minmax(0, 1fr) }
-  .steps { grid-template-columns: minmax(0, 1fr) }
-  .steps li + li { border-left: none; border-top: 1px solid var(--line) }
-}
-@media (min-width: 961px) and (max-width: 1100px) { .cards, .legend { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
-/* visuals: the Explore-at-work hero and the design-space scatter */
-.hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 48px; align-items: center }
-.hero-copy { display: flex; flex-direction: column; gap: 28px; min-width: 0 }
-.hero h1 { font-size: clamp(44px, 6vw, 92px) }
-.hero-art { margin: 0; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
-.hero-art canvas { width: 100%; aspect-ratio: 10 / 9; display: block }
-.hero-stat { font: 500 12.5px/1.45 var(--mono); color: var(--green); min-height: 2.9em }
-.hero-art figcaption { font: 400 12px/1.5 var(--mono); color: var(--faint) }
-.viz { position: relative; margin: 0; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 26px 28px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
-.viz-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px }
-.viz-head h3 { font-size: 19px }
-.viz-head p { font-size: 15px; color: var(--muted); margin-top: 6px }
-.viz svg { display: block; width: 100%; overflow: visible }
-.viz svg text { font-family: var(--mono); font-size: 11.5px; fill: var(--faint) }
-.viz svg text.ink { fill: var(--text); font-family: var(--body); font-size: 13px }
-.viz figcaption { font-size: 13.5px; color: var(--faint); line-height: 1.5 }
-.keys { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13.5px; color: var(--muted) }
-.keys span { display: inline-flex; align-items: center; gap: 8px }
-.keys i { width: 10px; height: 10px; border-radius: 50%; display: inline-block }
-.keys .ok { background: #6A9A2C }
-.keys .miss { border: 1.5px solid #A3AAB4; background: var(--slab) }
-.keys .pick { background: #6A9A2C; box-shadow: 0 0 0 2px var(--slab), 0 0 0 4px var(--text) }
-.keys .int8 { width: 18px; border-radius: 2px; background: #6A9A2C }
-.keys .int4 { width: 18px; border-radius: 2px; background: repeating-linear-gradient(135deg, #6A9A2C 0 2px, #D0E6A5 2px 5px) }
-.keys .sq { width: 12px; height: 12px; border-radius: 2px }
-.tip { position: absolute; z-index: 5; pointer-events: none; background: var(--text); color: #F6F7F3; font: 400 12.5px/1.45 var(--body); padding: 8px 11px; border-radius: 6px; max-width: 260px; box-shadow: 0 8px 24px -10px rgba(18, 22, 28, .5) }
-.tip b { font-weight: 600 }
-.tv > summary { cursor: pointer; font-size: 13.5px; color: var(--green); width: max-content }
-.tv .tbl { margin-top: 12px; max-height: 320px; overflow: auto; background: var(--void); padding: 12px 18px }
-.tv table { font-size: 13.5px }
-.tv td { padding: 8px 14px 8px 0 }
-.viz2 { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 16px }
-.fpfig img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line-2) }
-@media (max-width: 960px) {
-  .hero { grid-template-columns: minmax(0, 1fr); gap: 28px }
-  .hero-art { max-width: 380px; width: 100% }
-  .viz2 { grid-template-columns: minmax(0, 1fr) }
-  .viz { padding: 22px 18px }
-  .viz-head { flex-direction: column }
-}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/zx.css">
 </head>
-<body>
-
-
-<header class="bar">
-  <div class="wrap">
-    <a class="mark" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg>ZenEdgeX</a>
-    <nav aria-label="Main"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a data-to="proprio" href="#">Proprio</a><a class="go" href="#contact">Contact us →</a></nav>
+<body class="zx-home">
+<!--zx:header-->
+<header class="zx-header">
+  <div class="zx-header__row">
+    <button class="zx-icon-btn zx-menu" type="button" aria-label="Open navigation" aria-controls="zx-side" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="zx-logo" href="./"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg><span>ZenEdgeX</span></a>
+    <div class="zx-header__end">
+      <button class="zx-search-btn" type="button" data-zx-search aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>⌘K</kbd></button>
+      <a class="zx-pill" href="contact/">Contact us</a>
+    </div>
   </div>
 </header>
+<nav class="zx-tabs" aria-label="Main"><div class="zx-tabs__in"><a href="./" aria-current="page">Home</a><a href="projects/">Projects</a><a href="contact/">Contact</a></div></nav>
+<!--/zx:header-->
+<!--zx:side-->
+<aside class="zx-side" id="zx-side" aria-label="Site">
+  <div class="zx-side__head"><a class="zx-logo" href="./"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg-side" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg-side)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg-side)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg-side)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg><span>ZenEdgeX</span></a></div>
+  <nav class="zx-nav" aria-label="Pages">
+    <a class="zx-nav__link" href="./" data-zx-page="Home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span>Home</span></a>
+    <a class="zx-nav__link" href="projects/" data-zx-page="Projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>All projects</span></a>
+    <p class="zx-nav__group">Atelier Studio</p>
+    <a class="zx-nav__link" href="engine/" data-zx-page="Atelier Studio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><span>Overview</span></a>
+    <a class="zx-nav__link" href="technology/" data-zx-page="Atelier Studio · Technology"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg><span>Technology</span></a>
+    <a class="zx-nav__link" href="benchmarks/" data-zx-page="Atelier Studio · Benchmarks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17V9"/></svg><span>Benchmarks</span></a>
+    <a class="zx-nav__link" href="demo/" data-zx-page="Atelier Studio · Live demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5.5 3.5-5.5 3.5z"/></svg><span>Live demo</span></a>
+    <p class="zx-nav__group">Sutra NPU IP</p>
+    <a class="zx-nav__link" href="ip/" data-zx-page="Sutra NPU IP"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg><span>Overview</span></a>
+    <p class="zx-nav__group">Proprio</p>
+    <a class="zx-nav__link" href="proprio/" data-zx-page="Proprio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/></svg><span>Overview</span></a>
+    <p class="zx-nav__group">Company</p>
+    <a class="zx-nav__link" href="contact/" data-zx-page="Contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20.5l1.5-5A8 8 0 1 1 21 12z"/></svg><span>Contact</span></a>
+    <a class="zx-nav__link" href="mailto:hello@zenedgex.in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>hello@zenedgex.in</span><svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+  </nav>
+</aside>
+<!--/zx:side-->
+<div class="zx-scrim"></div>
 
-<div class="wrap" id="top">
-  <div class="hero">
-   <div class="hero-copy">
-    <p class="kicker">AI chip design engine</p>
-    <h1>The best chip for <em>your workload.</em></h1>
-    <p class="sub">Atelier Studio explores AI accelerator architectures and compiler mappings against your workload and your performance, power and area targets. It validates supported functionality against reference models and uses simulation and implementation results to evaluate candidate designs.</p>
-    <p class="proofline"><b>Proof:</b> Sutra, an in-memory computing accelerator IP designed with Atelier Studio, checked against reference models in RTL simulation and evaluated using the ASAP7 predictive 7&nbsp;nm flow.</p>
-    <div class="cta"><a class="btn primary" href="#pilot">Request a pilot <span>→</span></a><a class="btn line" data-to="demo" href="#">Try the live demo</a></div>
-   </div>
-   <figure class="hero-art"><canvas id="die" aria-hidden="true"></canvas><p class="hero-stat" id="hero-stat" aria-live="off"></p><figcaption>Explore at work: 89 candidate designs for one vision workload, each drawn to its area with its engines inside, checked against at least 150 frames a second within 1.5&nbsp;W. The smallest that meets both is picked.</figcaption></figure>
-  </div>
+<main class="zx-hero" id="top">
+  <canvas id="zx-attractor" aria-hidden="true"></canvas>
+  <div class="zx-hero__shade" aria-hidden="true"></div>
+  <div class="zx-hero__teaser"><div>
+    <h1>Engineering the systems AI runs on</h1>
+    <p class="zx-hero__sub">ZenEdgeX builds tools and IP that make AI faster, leaner and verifiable, from the chip to the data center and the robot.</p>
+    <p class="zx-hero__note">Every figure we publish says how it was obtained: measured, simulated or estimated.</p>
+    <div class="zx-hero__cta"><a class="zx-btn zx-btn--primary" href="projects/">Explore projects</a><a class="zx-btn" href="contact/">Contact us</a></div>
+  </div></div>
+  <div class="zx-hero__pos" aria-hidden="true"></div>
+</main>
 
-  <div class="ident" aria-label="ZenEdgeX, Atelier Studio and Sutra">
-    <div><span class="k">The company</span><b>ZenEdgeX</b> <span>Builds the design engine and the accelerator IP.</span></div>
-    <div class="arrow" aria-hidden="true">builds →</div>
-    <div><span class="k">The product</span><b>Atelier Studio</b> <span>The design engine: from your workload and targets to candidate accelerator designs, with the evidence for each.</span></div>
-    <div class="arrow" aria-hidden="true">designs →</div>
-    <div><span class="k">What it produces</span><b>Sutra, Yantra, yours</b> <span>Accelerator IP: Sutra (in-memory computing) and Yantra (a systolic NPU), or your own RTL blocks.</span></div>
-  </div>
-
-  <div class="offers">
-    <a class="offer sw" data-to="home" href="#">
-      <div class="fig" aria-hidden="true"></div>
-      <span class="tag">The product · design engine</span>
-      <h2>Atelier Studio</h2>
-      <p>Searches accelerator architecture and compiler mapping together, against your requirements.</p>
-      <ul>
-        <li>From your workload and its token or frame rate, area, power and latency targets</li>
-        <li>Chooses engines, array and memories; generates the RTL</li>
-        <li>Validates supported functionality against reference models, in RTL simulation</li>
-        <li>Every figure labelled: estimate, simulation or implementation</li>
-      </ul>
-      <span class="go">Atelier Studio <span>→</span></span>
-    </a>
-    <a class="offer ip" data-to="ip" href="#">
-      <div class="fig" aria-hidden="true"></div>
-      <span class="tag">The proof · silicon IP it designed</span>
-      <h2>Sutra</h2>
-      <p>An in-memory computing AI accelerator for language and vision models at the edge.</p>
-      <ul>
-        <li>Sized by Atelier Studio for each workload</li>
-        <li>Scales from one engine to eight</li>
-        <li>Results match the reference model exactly</li>
-        <li>Delivered as RTL with its compiler, runtime and tests</li>
-      </ul>
-      <span class="go">Sutra IP <span>→</span></span>
-    </a>
-  </div>
-
-  <section id="problem">
-    <div class="head">
-      <div class="stack"><p class="label">The problem</p><h2>Stop choosing chip architectures <em>by guesswork.</em></h2></div>
-      <div class="body"><p>The decisions that shape an accelerator, its array, memories, dataflow, precision and how the compiler maps the model onto it, are made early, when the least evidence is available. Teams can afford to evaluate only a handful of candidates, and changing course after implementation starts costs months.</p><p>Atelier Studio lets you explore far more hardware configurations against your actual AI workloads, performance targets, area limits and power budget, before committing to expensive implementation cycles.</p></div>
-    </div>
-    <ul class="checks">
-      <li>Explore more design alternatives</li>
-      <li>Find better workload-to-hardware mappings</li>
-      <li>Reduce manual design-space exploration</li>
-      <li>Evaluate trade-offs with measurable evidence</li>
-    </ul>
-  </section>
-
-  <section id="solution">
-    <div class="head">
-      <div class="stack"><p class="label">What makes it different</p><h2>Explore the hardware and compiler <em>as one design space.</em></h2></div>
-      <div class="body"><p>Traditional workflows evaluate architecture, mapping and implementation in repeated engineering loops. Atelier Studio coordinates these decisions, so your workload requirements, the compiler mapping and implementation results all inform the search for candidate designs.</p><p>Today, Explore evaluates each candidate in the search range with its own compiler search and ranks them against your targets. You choose which design to take further; RTL simulation and implementation then check it.</p></div>
-    </div>
-    <ol class="steps">
-      <li><b>Workload and constraints</b> <span>Your model and its frame or token rate, power, area and latency targets</span></li>
-      <li><b>Candidate architectures</b> <span>Engines, array, memories and dataflow, from a reference architecture or your own RTL blocks</span></li>
-      <li><b>Compiler mapping</b> <span>For each candidate, the compiler builds that design's mapping space, searches it and compiles its best program</span></li>
-      <li><b>Evaluation in tiers</b> <span>Fast estimate, then the SoC model; RTL simulation, synthesis and floorplan for the designs worth it</span></li>
-      <li><b>Ranked designs</b> <span>The designs that meet your targets, ranked by what you care about most, each with its evidence</span></li>
-    </ol>
-    <figure class="viz" id="space">
-      <div class="viz-head"><div><h3>One workload, 89 candidate designs, one pick</h3><p>Targets: at least 150 frames per second within 1.5&nbsp;W, then the smallest area. <span id="space-sum"></span></p></div><span class="ev est">Model-estimated</span></div>
-      <div class="keys"><span><i class="ok"></i>meets both targets</span><span><i class="miss"></i>misses one or both</span><span><i class="pick"></i>picked: smallest area</span></div>
-      <svg id="scatter" role="img"></svg>
-      <div class="tip" hidden></div>
-      <figcaption>Each dot is a candidate Sutra configuration for one vision workload. Frame rate from the cycle model, checked against RTL simulation; area and power from models. Estimates, not silicon measurements. <a data-to="demo" href="#">Set your own targets in the live demo →</a></figcaption>
-      <details class="tv"><summary>View as a table</summary><div class="tbl"><table id="space-tbl"><thead><tr><th>Sutra configuration</th><th class="n">FPS</th><th class="n">mm²</th><th class="n">W</th><th>Against the targets</th></tr></thead><tbody></tbody></table></div></details>
-    </figure>
-    <div class="tbl"><table class="cmp"><thead><tr><th>Conventional workflow</th><th>With Atelier Studio</th></tr></thead><tbody>
-      <tr><td>Engineers hand-pick a few candidate architectures</td><td>Explore evaluates many candidate architectures against your workload and targets in one run</td></tr>
-      <tr><td>Compiler mapping is worked out after the hardware is fixed</td><td>Each candidate is compared with its own best compiler mapping, so architecture and mapping are judged together</td></tr>
-      <tr><td>Expensive implementation runs are needed to narrow the choices</td><td>Fast estimates, checked against RTL simulation, rank the candidates; simulation and implementation evaluate the ones you pick</td></tr>
-      <tr><td>Each round of results feeds the next manual iteration</td><td>Every candidate is compiled, timed and ranked in the same run; you choose from ranked designs with their evidence, then build and simulate</td></tr>
-    </tbody></table></div>
-  </section>
-
-  <section id="who">
-    <div class="head">
-      <div class="stack"><p class="label">Who it is for</p><h2>Built for teams <em>designing AI silicon.</em></h2></div>
-      <div class="body"><p>The teams we are building Atelier Studio for, and the problem each brings to it. We are looking for design partners in each.</p></div>
-    </div>
-    <div class="cards">
-      <div><h3>AI chip startups</h3><p>Explore accelerator architectures without evaluating every combination by hand.</p></div>
-      <div><h3>Semiconductor companies</h3><p>Fit new or existing accelerator IP to the workloads your customers run.</p></div>
-      <div><h3>System and edge-AI companies</h3><p>Weigh performance, power and area for a target deployment before choosing silicon.</p></div>
-      <div><h3>IP providers and design teams</h3><p>Generate workload-specific accelerator configurations with the validation evidence behind them.</p></div>
-    </div>
-  </section>
-
-  <section id="value">
-    <div class="head">
-      <div class="stack"><p class="label">Customer value</p><h2>Make better decisions <em>earlier.</em></h2></div>
-      <div class="body"><p>Atelier Studio moves architecture decisions to the point where they are still cheap to change, and backs each one with evidence you can check.</p></div>
-    </div>
-    <div class="cards">
-      <div><h3>Explore faster</h3><p>Many candidate designs evaluated in one run, each with its compiled program, instead of a few by hand.</p></div>
-      <div><h3>Better designs</h3><p>Architecture and mapping judged together, so the design that wins is the one your workload actually runs best on.</p></div>
-      <div><h3>Trade-offs you can see</h3><p>Performance, power and area side by side for every design, ranked by the target you care about.</p></div>
-      <div><h3>Less implementation risk</h3><p>The design you pick has its supported functionality checked against reference models in RTL simulation before implementation.</p></div>
-    </div>
-  </section>
-
-  <section id="proof">
-    <div class="head">
-      <div class="stack"><p class="label">Proof</p><h2>Proven on a real <em>accelerator design.</em></h2></div>
-      <div class="body"><p>Atelier Studio designed Sutra, an in-memory computing accelerator IP, for real language and vision models. Its supported functionality is checked against reference models in RTL simulation, and its blocks are evaluated using the ASAP7 predictive 7&nbsp;nm flow. Every result says whether it is measured or estimated, and what is still planned.</p></div>
-    </div>
-    <div class="cards">
-      <div><h3>The results</h3><p>What was validated, on which workloads, and what is estimated.</p><a data-to="ip" href="#">Sutra IP →</a></div>
-      <div><h3>How the search works</h3><p>Workload, architecture, compiler and implementation in one loop.</p><a data-to="tech" href="#">Technology →</a></div>
-      <div><h3>Try it yourself</h3><p>Set targets and see the candidate designs that meet them.</p><a data-to="demo" href="#">Live demo →</a></div>
-      <div><h3>Your workload</h3><p>Bring your model and constraints to a design-partner pilot.</p><a href="#pilot">Request a pilot →</a></div>
-    </div>
-    <div class="stack" style="gap:14px;margin-top:48px">
-      <h3 style="font-size:22px">On accelerators we did not design</h3>
-      <p class="proofline">Atelier Studio took Gemmini (UC Berkeley) and NVDLA (NVIDIA), both open source, with their own benchmarks: it found where their time goes, the design gaps their own generators cannot close, and better configurations, then checked them on the RTL. <a data-to="bench" href="#">See the benchmarks →</a></p>
-    </div>
-    <div class="proof" style="margin-top:8px">
-      <div class="metric"><b>6.0&times;</b><span>faster on a MobileNet depthwise layer on Gemmini's own RTL, mapped by Atelier Studio instead of Gemmini's library; output identical</span><span class="ev rtl">RTL-measured</span></div>
-      <div class="metric"><b>79%</b><span>of Gemmini's measured time is added by its own software: the tool gap Atelier Studio separates from the design gap, layer by layer</span><span class="ev est">Model-fitted</span></div>
-      <div class="metric"><b>2.2&times;</b><span>on Gemmini's own ResNet-50 from a configuration of its own generator that Explore picked, at 1.19&times; the area; running on the RTL now</span><span class="ev est">Predicted</span></div>
-      <div class="metric"><b>12&times;</b><span>on YOLOv8n from NVDLA's design space over nv_small, ahead of NVIDIA's nv_medium_1024_full at a third of its area</span><span class="ev est">Model-estimated</span></div>
-    </div>
-  </section>
-
-  <section id="today">
-    <div class="head">
-      <div class="stack"><p class="label">What you can do today</p><h2>Technical preview, <em>stated plainly.</em></h2></div>
-      <div class="body"><p>Atelier Studio and Sutra are technical previews. Here is what a partner can evaluate now, what we do together in a pilot, and what is still planned.</p></div>
-    </div>
-    <div class="today">
-      <div><span class="k">Available now</span><ul>
-        <li><b>Atelier Studio trial</b>, by invitation, on a Mac with Apple silicon</li>
-        <li>Projects from a reference architecture (Sutra, Yantra) or your own RTL as blocks</li>
-        <li>Explore from a workload and targets to ranked designs, each compiled and timed</li>
-        <li>Build the design you pick and simulate its RTL against the reference model</li>
-        <li>The <a data-to="demo" href="#">live demo</a> in your browser, no install</li>
-      </ul></div>
-      <div><span class="k">In a design-partner pilot</span><ul>
-        <li><b>Export of the design</b>: its RTL, file list and machine description, under license</li>
-        <li>Your workloads, targets and engines, explored with us</li>
-        <li>Synthesis and floorplan, on the open flow or on your flow and process kit</li>
-        <li>Sutra evaluation licenses</li>
-      </ul></div>
-      <div><span class="k">Planned</span><ul>
-        <li>Atelier Studio for Linux x86_64</li>
-        <li>Sutra: more of the language-model pipeline on chip</li>
-        <li>Sutra: lower-precision weights for language models</li>
-      </ul></div>
-    </div>
-    <div class="facts">
-      <div><span class="k">Inputs and outputs</span><ul>
-        <li><b>Workloads</b>: vision networks (ONNX), language models (Hugging Face config), matrix workloads</li>
-        <li><b>Targets</b>: frame or token rate, power, area, latency</li>
-        <li><b>Out</b>: RTL with its file list and machine description, the compiled program, and the evidence for each design</li>
-      </ul></div>
-      <div><span class="k">Deployment and your data</span><p>Atelier Studio runs on your machine: your models, projects and designs do not leave it. Exporting a design needs a license from ZenEdgeX; the terms for generated RTL are set in the pilot or license agreement.</p></div>
-      <div><span class="k">Foundry portability</span><p>The RTL and design constraints provide a starting point for evaluation in your target foundry flow; technology-specific memories, timing and physical implementation must be revalidated.</p></div>
-    </div>
-  </section>
-
-  <div class="close cta2" id="contact">
-    <div class="stack">
-      <p class="label">Talk to us</p>
-      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring your workload. <em>Let's explore the design space.</em></h2>
-      <p style="color:var(--muted)">Share your model, performance target, and power and area constraints. We'll discuss how Atelier Studio can evaluate the workload and identify promising accelerator configurations. For AI chip teams exploring a new accelerator or optimizing an existing architecture.</p>
-      <div class="acts">
-        <a class="act on" href="#pilot"><b>Request a design-partner pilot →</b> <span>You have a model, target constraints and a chip-design problem. We explore it with you and identify promising configurations.</span></a>
-        <a class="act" data-to="demo" href="#"><b>Explore the live demo →</b> <span>Set targets and see the designs that meet them, before you talk to anyone.</span></a>
-      </div>
-      <p class="note">Or write to <a href="mailto:hello@zenedgex.in">hello@zenedgex.in</a>.</p>
-    </div>
-    <form class="pilot" id="pilot" novalidate>
-      <h3>Request a design-partner pilot</h3>
-      <div class="two">
-        <label>Work email<input name="email" type="email" autocomplete="email" required></label>
-        <label>Company<input name="company" autocomplete="organization" required></label>
-      </div>
-      <label>Target workload<input name="workload" placeholder="e.g. object detection at 60 FPS, a 1B-parameter language model" required></label>
-      <label>Primary objective<select name="objective"><option>Performance</option><option>Power</option><option>Area</option><option selected>All three</option></select></label>
-      <label>Anything else (optional)<textarea name="notes" placeholder="Process node, timeline, your own engines or RTL"></textarea></label>
-      <button class="btn primary" type="submit">Prepare the request <span>→</span></button>
-      <p class="note">Opens the request in your own mail app, addressed to hello@zenedgex.in. Nothing is sent until you send it.</p>
-    </form>
-  </div>
-
-  <footer>
-    <span>© 2026 ZenEdgeX · Atelier Studio and Sutra are technical previews: <a href="#today">what you can do today</a></span>
-    <nav aria-label="Footer"><a data-to="home" href="#">Atelier</a><a data-to="ip" href="#">Sutra</a><a data-to="bench" href="#">Benchmarks</a><a data-to="tech" href="#">Technology</a><a data-to="demo" href="#">Live demo</a><a data-to="proprio" href="#">Proprio</a><a href="#contact">Contact us</a></nav>
-  </footer>
-</div>
-
-<script>
-(() => {
-  const LINKS = { site: './', ip: 'ip/', bench: 'benchmarks/', home: 'engine/', tech: 'technology/', demo: 'demo/', proprio: 'proprio/' };
-  document.querySelectorAll('[data-to]').forEach(a => { a.href = LINKS[a.dataset.to]; });
-  const ip = document.querySelector('.offer.ip .fig'), sw = document.querySelector('.offer.sw .fig');
-  for (let i = 0; i < 36; i++) ip.appendChild(document.createElement('i'));
-  [38, 62, 45, 80, 56, 92, 70, 100, 64, 84, 52, 74].forEach(h => { const b = document.createElement('i'); b.style.height = h + '%'; b.style.background = `linear-gradient(180deg, rgba(134,167,216,${.25 + h / 250}), rgba(134,167,216,.06))`; b.style.border = '1px solid rgba(134,167,216,.3)'; sw.appendChild(b); });
-  // ---------------------------------------------------------------- visuals
-  const NS = 'http://www.w3.org/2000/svg';
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const el = (tag, attrs, parent, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; };
-  const fmt = n => n.toLocaleString('en-US');
-  function tipper(fig) {
-    const tip = fig.querySelector('.tip');
-    return {
-      show(html, x, y) { tip.innerHTML = html; tip.hidden = false; const fw = fig.clientWidth, tw = tip.offsetWidth; tip.style.left = Math.min(Math.max(8, x + 14), fw - tw - 8) + 'px'; tip.style.top = Math.max(8, y - tip.offsetHeight - 12) + 'px'; },
-      hide() { tip.hidden = true; }
-    };
-  }
-  function relPos(fig, ev) { const r = fig.getBoundingClientRect(); return [ev.clientX - r.left, ev.clientY - r.top]; }
-
-  const NET = [["1 × 64×64, 8 b/cycle, 4 + 3 MB",261.2,3.71,1.62],["1 × 128×64, 8 b/cycle, 4 + 3 MB",362.1,3.96,2.6],["1 × 128×64, 8 b/cycle, 4 + 3 MB",281.3,3.9,2.17],["1 × 32×64, 8 b/cycle, 4 + 3 MB",188.7,3.68,1.18],["4 × 64×64, 8 b/cycle, 4 + 12 MB",731.2,14.45,5.14],["1 × 64×64, 8 b/cycle, 4 + 3 MB",254.1,3.67,1.57],["4 × 64×64, 8 b/cycle, 4 + 12 MB",1044.8,14.57,6.52],["1 × 16×64, 4 b/cycle, 4 + 4 MB",63.2,4.09,0.76],["1 × 32×64, 8 b/cycle, 4 + 3 MB",182.6,3.62,1.09],["1 × 32×32, 8 b/cycle, 2 + 3 MB",59.6,2.43,0.41],["4 × 64×64, 8 b/cycle, 4 + 12 MB",1044.8,14.57,6.51],["4 × 64×64, 8 b/cycle, 4 + 12 MB",731.2,14.45,5.13],["1 × 64×64, 2 b/cycle, 4 + 12 MB",103.7,6.75,1.1],["1 × 128×64, 8 b/cycle, 4 + 4 MB",362.1,4.31,2.61],["1 × 128×64, 8 b/cycle, 4 + 4 MB",281.3,4.25,2.18],["4 × 32×64, 8 b/cycle, 4 + 12 MB",404.0,14.03,2.97],["4 × 32×64, 8 b/cycle, 4 + 12 MB",634.3,14.09,3.92],["1 × 64×64, 4 b/cycle, 4 + 3 MB",181.2,3.63,1.29],["1 × 64×64, 4 b/cycle, 4 + 3 MB",158.4,3.6,1.18],["4 × 128×64, 8 b/cycle, 4 + 12 MB",729.3,15.18,6.84],["4 × 64×64, 8 b/cycle, 4 + 16 MB",1044.8,15.98,6.57],["4 × 64×64, 8 b/cycle, 4 + 16 MB",731.2,15.86,5.19],["1 × 128×64, 8 b/cycle, 4 + 3 MB",287.5,3.96,2.27],["1 × 128×64, 8 b/cycle, 4 + 3 MB",226.2,3.9,1.93],["1 × 32×64, 8 b/cycle, 4 + 3 MB",126.0,3.62,0.88],["4 × 64×64, 8 b/cycle, 4 + 12 MB",435.4,14.39,3.87],["4 × 128×64, 8 b/cycle, 4 + 12 MB",728.4,15.18,6.85],["1 × 32×64, 2 b/cycle, 4 + 3 MB",61.0,3.52,0.62],["1 × 16×32, 8 b/cycle, 1 + 3 MB",46.4,1.91,0.35],["1 × 64×64, 4 b/cycle, 4 + 3 MB",134.3,3.6,1.07],["1 × 64×64, 4 b/cycle, 4 + 3 MB",173.3,3.63,1.27],["1 × 64×64, 8 b/cycle, 4 + 3 MB",191.0,3.67,1.32],["1 × 32×32, 8 b/cycle, 1 + 3 MB",59.6,1.9,0.4],["4 × 16×64, 8 b/cycle, 4 + 12 MB",410.8,13.9,2.73],["1 × 64×64, 4 b/cycle, 2 + 3 MB",70.9,2.57,0.84],["1 × 64×64, 4 b/cycle, 2 + 3 MB",67.2,2.54,0.8],["1 × 32×64, 4 b/cycle, 1 + 12 MB",54.5,5.14,0.62],["1 × 64×64, 8 b/cycle, 4 + 3 MB",182.8,3.68,1.27],["1 × 128×64, 8 b/cycle, 2 + 3 MB",85.2,2.9,1.36],["1 × 128×64, 8 b/cycle, 2 + 3 MB",80.0,2.84,1.28],["1 × 64×64, 8 b/cycle, 2 + 3 MB",79.7,2.61,0.88],["1 × 64×64, 8 b/cycle, 2 + 3 MB",73.2,2.66,0.86],["4 × 32×64, 8 b/cycle, 4 + 12 MB",634.3,14.09,3.91],["4 × 32×64, 8 b/cycle, 4 + 16 MB",634.3,15.49,3.95],["1 × 32×32, 8 b/cycle, 1 + 3 MB",58.0,1.86,0.39],["2 × 16×64, 4 b/cycle, 4 + 16 MB",107.3,10.36,1.01],["1 × 64×64, 8 b/cycle, 2 + 3 MB",80.6,2.66,0.89],["1 × 64×64, 8 b/cycle, 2 + 3 MB",71.6,2.63,0.82],["1 × 32×64, 8 b/cycle, 1 + 3 MB",72.1,2.04,0.65],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.7,1.88,0.25],["1 × 32×32, 8 b/cycle, 1 + 3 MB",53.2,1.93,0.42],["1 × 64×64, 8 b/cycle, 4 + 3 MB",201.4,3.73,1.43],["1 × 128×64, 4 b/cycle, 4 + 3 MB",247.3,3.69,2.0],["1 × 128×64, 4 b/cycle, 4 + 3 MB",273.2,3.75,2.18],["1 × 32×64, 8 b/cycle, 4 + 3 MB",177.2,3.58,1.06],["1 × 64×64, 8 b/cycle, 4 + 3 MB",194.1,3.71,1.35],["1 × 32×32, 4 b/cycle, 1 + 12 MB",44.8,5.04,0.45],["1 × 32×64, 8 b/cycle, 2 + 3 MB",72.1,2.56,0.66],["1 × 32×32, 8 b/cycle, 1 + 3 MB",59.6,1.9,0.4],["1 × 32×64, 8 b/cycle, 2 + 3 MB",72.1,2.56,0.66],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.4,1.85,0.22],["1 × 128×64, 8 b/cycle, 4 + 3 MB",182.1,3.87,1.7],["1 × 64×64, 4 b/cycle, 4 + 3 MB",177.8,3.59,1.27],["2 × 32×64, 8 b/cycle, 4 + 12 MB",365.2,9.26,2.24],["1 × 64×64, 4 b/cycle, 4 + 3 MB",181.2,3.63,1.29],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.2,1.79,0.21],["1 × 32×32, 8 b/cycle, 1 + 4 MB",59.6,2.25,0.41],["1 × 32×16, 8 b/cycle, 1 + 3 MB",41.2,1.86,0.27],["1 × 32×32, 8 b/cycle, 2 + 3 MB",61.0,2.46,0.45],["1 × 64×64, 4 b/cycle, 2 + 3 MB",69.2,2.53,0.83],["1 × 32×16, 8 b/cycle, 1 + 3 MB",40.9,1.81,0.27],["1 × 128×32, 8 b/cycle, 2 + 3 MB",76.3,2.62,0.85],["1 × 64×64, 8 b/cycle, 2 + 6 MB",73.2,3.71,0.88],["1 × 32×32, 8 b/cycle, 1 + 3 MB",61.0,1.93,0.44],["1 × 64×64, 4 b/cycle, 4 + 3 MB",164.5,3.56,1.2],["1 × 64×64, 2 b/cycle, 2 + 3 MB",55.1,2.49,0.77],["1 × 64×64, 4 b/cycle, 4 + 3 MB",128.8,3.53,1.04],["1 × 64×64, 4 b/cycle, 2 + 3 MB",70.3,2.53,0.83],["1 × 16×16, 8 b/cycle, 1 + 3 MB",29.2,1.79,0.21],["1 × 32×64, 8 b/cycle, 4 + 3 MB",124.1,3.58,0.86],["1 × 64×64, 4 b/cycle, 4 + 3 MB",182.7,3.65,1.35],["2 × 64×64, 4 b/cycle, 4 + 8 MB",372.7,7.99,2.77],["1 × 64×32, 8 b/cycle, 1 + 3 MB",70.0,1.94,0.55],["1 × 64×64, 4 b/cycle, 4 + 3 MB",175.1,3.62,1.31],["1 × 16×32, 8 b/cycle, 2 + 8 MB",43.7,4.19,0.44],["1 × 32×64, 8 b/cycle, 4 + 3 MB",154.5,3.55,0.94],["1 × 32×32, 8 b/cycle, 1 + 3 MB",59.3,1.89,0.42],["1 × 32×64, 8 b/cycle, 4 + 3 MB",113.7,3.55,0.79],["2 × 64×64, 8 b/cycle, 4 + 6 MB",559.3,7.45,3.5]].map(([label, fps, area, power]) => ({ label, fps, area, power }));
-  // hero: Explore at work. The YOLOv8n designs charted below, each a tile sized to its area with its
-  // engines inside, checked in turn against the targets; the smallest that meets both is picked. Loops.
-  (function hero() {
-    const T = { fps: 150, pw: 1.5 }, meets = d => d.fps >= T.fps && d.power <= T.pw;
-    const items = NET.map(d => ({ ...d, eng: parseInt(d.label, 10) })).sort((a, b) => a.area - b.area);
-    const pick = items.filter(meets).sort((a, b) => a.area - b.area)[0], nOk = items.filter(meets).length;
-    const amax = Math.max(...items.map(d => d.area)), COLS = 10, ROWS = Math.ceil(items.length / COLS);
-    const STEP = 55, EVAL = STEP * items.length, REVEAL = EVAL + 500, PERIOD = REVEAL + 4200;
-    const cv = document.getElementById('die'), ctx = cv.getContext('2d'), stat = document.getElementById('hero-stat');
-    const rr = (x, y, w, h, r) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); };
-    const t0 = performance.now(); let visible = true, running = false, last = '';
-    function frame(now) {
-      running = false;
-      const dpr = Math.min(devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
-      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-      const t = reduce ? PERIOD - 1 : (now - t0) % PERIOD, cell = Math.min(w / COLS, h / ROWS);
-      const ox = (w - cell * COLS) / 2, oy = (h - cell * ROWS) / 2;
-      let checked = 0, ok = 0, pk = null;
-      items.forEach((d, i) => {
-        const te = i * STEP, done = t >= te + 120, live = t >= te && !done;
-        if (t >= te) { checked++; if (meets(d)) ok++; }
-        const s = cell * .86 * Math.max(.42, Math.sqrt(d.area / amax));
-        const cx = ox + (i % COLS + .5) * cell, cy = oy + (Math.floor(i / COLS) + .5) * cell, x = cx - s / 2, y = cy - s / 2;
-        const good = done && meets(d), bad = done && !meets(d), dim = t >= REVEAL && d !== pick;
-        ctx.globalAlpha = dim ? (good ? .55 : .5) : 1;
-        rr(x, y, s, s, Math.min(4, s * .18));
-        ctx.fillStyle = live ? '#D0E6A5' : good ? '#6A9A2C' : bad ? '#F6F7F3' : '#EEF0EB'; ctx.fill();
-        ctx.lineWidth = live ? 1.6 : 1; ctx.strokeStyle = live ? '#6A9A2C' : good ? '#6A9A2C' : bad ? '#C3C9D1' : '#DCE0D7'; ctx.stroke();
-        // engines inside the tile: 1, 2 side by side, 2x2, 4x2
-        const gx = d.eng >= 8 ? 4 : d.eng >= 2 ? 2 : 1, gy = d.eng >= 4 ? 2 : 1, pad = s * .16, ew = (s - 2 * pad) / gx, eh = (s - 2 * pad) / gy;
-        ctx.fillStyle = good ? 'rgba(246,247,243,.55)' : live ? 'rgba(106,154,44,.45)' : 'rgba(163,170,180,.45)';
-        for (let a = 0; a < gx; a++) for (let b = 0; b < gy; b++) ctx.fillRect(x + pad + a * ew + 1, y + pad + b * eh + 1, Math.max(1, ew - 2), Math.max(1, eh - 2));
-        ctx.globalAlpha = 1;
-        if (d === pick) pk = { cx, cy, s };
-      });
-      if (t >= REVEAL && pk) {
-        const k = reduce ? 1 : Math.min(1, (t - REVEAL) / 400);
-        ctx.globalAlpha = k; ctx.lineWidth = 2; ctx.strokeStyle = '#12161C';
-        ctx.beginPath(); ctx.arc(pk.cx, pk.cy, pk.s / 2 + 7, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1;
-      }
-      const msg = t < EVAL ? `Checking ${checked} of ${items.length} designs · ${ok} meet ${T.fps} FPS within ${T.pw} W`
-        : `${nOk} of ${items.length} meet ${T.fps} FPS within ${T.pw} W · picked: ${pick.label.split(',')[0]}, ${pick.area} mm²`;
-      if (msg !== last) { stat.textContent = msg; last = msg; }
-      if (!reduce && visible) { running = true; requestAnimationFrame(frame); }
-    }
-    const kick = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
-    kick();
-    new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) kick(); }).observe(cv);
-    addEventListener('resize', kick);
-  })();
-
-  // solution: every YOLOv8n design point from the demo's data; the targets pick one
-  (function space() {
-    const D = NET;
-    const T = { fps: 150, pw: 1.5 };
-    const meets = d => d.fps >= T.fps && d.power <= T.pw;
-    const ok = D.filter(meets).sort((a, b) => a.area - b.area), pick = ok[0];
-    const fig = document.getElementById('space'), sv = document.getElementById('scatter'), tip = tipper(fig);
-    const why = d => d === pick ? 'picked: smallest area that meets both' : meets(d) ? 'meets both targets' : d.fps < T.fps && d.power > T.pw ? 'misses both' : d.fps < T.fps ? `misses ${T.fps} FPS` : `misses ${T.pw} W`;
-    const line = d => `<b>${d.label}</b><br>${fmt(d.fps)} FPS · ${d.area} mm² · ${d.power} W<br>${why(d)}`;
-    function draw() {
-      const w = sv.clientWidth || 640, h = w < 520 ? 300 : 380;
-      sv.setAttribute('viewBox', `0 0 ${w} ${h}`); sv.setAttribute('height', h); sv.textContent = '';
-      const L = 46, R = w - 12, Tp = 10, B = h - 40;
-      const amin = 1.6, amax = 17, fmax = 1150;
-      const X = a => L + (R - L) * Math.log(a / amin) / Math.log(amax / amin), Y = f => B - (B - Tp) * f / fmax;
-      for (const f of [0, 250, 500, 750, 1000]) { el('line', { x1: L, x2: R, y1: Y(f), y2: Y(f), stroke: f ? '#E6E9E1' : '#CFD4C7' }, sv); el('text', { x: L - 8, y: Y(f) + 4, 'text-anchor': 'end' }, sv, fmt(f)); }
-      for (const a of [2, 4, 8, 16]) el('text', { x: X(a), y: B + 20, 'text-anchor': 'middle' }, sv, a);
-      el('text', { x: R, y: B + 34, 'text-anchor': 'end' }, sv, 'area, mm² (log scale) →');
-      el('text', { x: L, y: Tp - 0, 'text-anchor': 'start', dy: -2 }, sv, '↑ frames per second');
-      el('line', { x1: L, x2: R, y1: Y(T.fps), y2: Y(T.fps), stroke: '#4A7A16', 'stroke-dasharray': '5 5', 'stroke-width': 1.2 }, sv);
-      el('text', { x: R, y: Y(T.fps) - 7, 'text-anchor': 'end', fill: '#4A7A16', style: 'fill:#4A7A16' }, sv, `target ≥ ${T.fps} FPS`);
-      const order = [...D.filter(d => !meets(d)), ...D.filter(d => meets(d) && d !== pick)];
-      for (const d of order) {
-        const g = el('g', { class: 'pt' }, sv), cx = X(d.area), cy = Y(d.fps);
-        if (meets(d)) el('circle', { cx, cy, r: 4.5, fill: '#6A9A2C', stroke: '#F6F7F3', 'stroke-width': 2 }, g);
-        else el('circle', { cx, cy, r: 4, fill: '#F6F7F3', stroke: '#A3AAB4', 'stroke-width': 1.5 }, g);
-        hit(g, d, cx, cy);
-      }
-      const g = el('g', {}, sv), cx = X(pick.area), cy = Y(pick.fps);
-      el('circle', { cx, cy, r: 11, fill: 'none', stroke: '#12161C', 'stroke-width': 2 }, g);
-      el('circle', { cx, cy, r: 6, fill: '#6A9A2C', stroke: '#F6F7F3', 'stroke-width': 2 }, g);
-      // label in the empty upper left (small, fast designs do not exist), leader down to the pick
-      const lx = Math.max(L + 12, cx - 250), ly = Y(w < 520 ? 720 : 520);
-      el('line', { x1: lx + 20, y1: ly + 22, x2: cx - 6, y2: cy - 9, stroke: '#12161C', 'stroke-width': 1 }, g);
-      el('text', { x: lx, y: ly - 16, class: 'ink', style: 'font-weight:600' }, g, `Picked: ${pick.label.split(',')[0]}, ${pick.area} mm²`);
-      el('text', { x: lx, y: ly }, g, `${pick.fps} FPS · ${pick.power} W`);
-      hit(g, pick, cx, cy);
-    }
-    function hit(g, d, cx, cy) {
-      el('circle', { cx, cy, r: 10, fill: 'transparent' }, g);
-      g.addEventListener('mouseenter', ev => tip.show(line(d), ...relPos(fig, ev)));
-      g.addEventListener('mousemove', ev => tip.show(line(d), ...relPos(fig, ev)));
-      g.addEventListener('mouseleave', () => tip.hide());
-    }
-    draw(); addEventListener('resize', draw);
-    document.getElementById('space-sum').textContent = `${ok.length} of ${D.length} designs meet both; Atelier Studio picks ${pick.label.split(',')[0]} at ${pick.area} mm², ${pick.fps} FPS and ${pick.power} W.`;
-    sv.setAttribute('aria-label', `Scatter of ${D.length} candidate Sutra designs for one vision workload, frame rate against area. ${ok.length} meet at least ${T.fps} frames per second within ${T.pw} watts; the smallest of them, ${pick.label}, is picked.`);
-    const tb = document.querySelector('#space-tbl tbody');
-    for (const d of [...ok, ...D.filter(d => !meets(d)).sort((a, b) => b.fps - a.fps)]) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${d.label}</td><td class="n">${fmt(d.fps)}</td><td class="n">${d.area}</td><td class="n">${d.power}</td><td>${why(d)}</td>`;
-      tb.appendChild(tr);
-    }
-  })();
-
-  // pilot request: composed in the visitor's own mail app; the site has no server
-  const f = document.getElementById('pilot');
-  f.addEventListener('submit', e => {
-    e.preventDefault();
-    if (!f.reportValidity()) return;
-    const v = n => f.elements[n].value.trim();
-    const body = [`Work email: ${v('email')}`, `Company: ${v('company')}`, `Target workload: ${v('workload')}`, `Primary objective: ${v('objective')}`, v('notes') && `\n${v('notes')}`].filter(Boolean).join('\n');
-    location.href = `mailto:hello@zenedgex.in?subject=${encodeURIComponent(`Design-partner pilot: ${v('company')}`)}&body=${encodeURIComponent(body)}`;
-  });
-})();
-</script>
-
+<script src="assets/zx.js" defer></script>
+<script src="assets/hero.js" defer></script>
 </body>
 </html>
