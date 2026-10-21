@@ -199,7 +199,7 @@ ul.plain { margin: 0; padding-left: 1.1em; color: var(--muted); max-width: 70ch;
     <div class="copy">
       <p class="kicker">Proprio · physical AI inference</p>
       <h1>The policy you validated. <em>Bit for bit, faster.</em></h1>
-      <p class="sub">Proprio runs an unmodified vision-language-action policy as a recorded device graph and proves, tick by tick, that the actions it produces are identical to the policy's own eager execution. If they are not identical, it refuses to deploy. Every run ships a Bitwise Certificate.</p>
+      <p class="sub">Proprio runs an unmodified vision-language-action policy faster and proves, tick by tick, that the actions it produces are identical to the policy's own eager execution. If they are not identical, it refuses to deploy. Every run ships a Bitwise Certificate.</p>
       <p class="chip"><b>Technical preview</b> · LeRobot checkpoints, unmodified · RTX 4090 · every figure measured</p>
       <div class="cta"><a class="btn primary" href="#drift">Speed versus drift <span>→</span></a><a class="btn line" href="#rollout">Many robots per tick</a></div>
     </div>
@@ -216,12 +216,12 @@ ul.plain { margin: 0; padding-left: 1.1em; color: var(--muted); max-width: 70ch;
 
   <section id="how">
     <div class="head">
-      <div class="stack"><p class="label">How</p><h2>Record the tick, <em>prove it, then deploy it.</em></h2></div>
-      <div class="body"><p>A policy's control tick is thousands of small GPU launches driven from Python; the GPU waits for the host most of the time. Compilers close that gap by re-tracing and re-fusing the model, which picks different kernels and changes the numbers. Proprio keeps the policy's own kernels and takes a different route.</p></div>
+      <div class="stack"><p class="label">How</p><h2>Faster, <em>then proven identical.</em></h2></div>
+      <div class="body"><p>The usual ways to make a policy faster, compilers, lower precision and autotuning, change its arithmetic, so the robot's actions change too. Proprio makes the same policy faster without changing a single action, and proves it on every run.</p></div>
     </div>
     <div class="steps">
-      <div><span class="k">01 / RECORD</span><h3>The unmodified policy</h3><p>Proprio loads the checkpoint as LeRobot does, with no source edits, and records one control tick into a replayable device graph. The kernels in the graph are the kernels eager mode ran.</p></div>
-      <div><span class="k">02 / VERIFY</span><h3>Bit for bit, on held-out inputs</h3><p>Replayed actions are compared with eager actions on inputs the recording never saw, with fixed noise and seeds. Not close: identical, every byte of every action chunk.</p></div>
+      <div><span class="k">01 / LOAD</span><h3>The unmodified policy</h3><p>Proprio loads the checkpoint as LeRobot does, with no source edits, and prepares a faster run of the same policy.</p></div>
+      <div><span class="k">02 / VERIFY</span><h3>Bit for bit, on held-out inputs</h3><p>Proprio's actions are compared with eager actions on held-out inputs, with fixed noise and seeds. Not close: identical, every byte of every action chunk.</p></div>
       <div><span class="k">03 / GATE</span><h3>Refuse what is not identical</h3><p>A tick that cannot be proven identical is not deployed; Proprio falls back to the original path and says why. A non-identical tier is reported with its measured error, never as "exact".</p></div>
       <div><span class="k">04 / CERTIFY</span><h3>A Bitwise Certificate per run</h3><p>Actions, identity count, error bounds, latency, device, driver, clocks, power state, seeds and a digest, signed. The document a safety review or a customer can check with a public key.</p></div>
     </div>
@@ -268,9 +268,9 @@ ul.plain { margin: 0; padding-left: 1.1em; color: var(--muted); max-width: 70ch;
       <div class="body"><p>Serving several robots or simulated environments per tick is the utilisation lever, but stock GPU kernels change their arithmetic with the batch size, so row i of a batched result is not what robot i gets alone. Proprio offers two tiers and certifies each row against that robot's own single-robot run.</p></div>
     </div>
     <div class="grid3">
-      <div class="card"><span class="k">EXACT TIER</span><h3>Identical to the original policy</h3><p>Every row is bit-identical to the original eager policy run for that robot alone. The stock kernels stay in place. 12.5× per robot on SmolVLA at 16 robots.</p></div>
-      <div class="card"><span class="k">INVARIANT TIER</span><h3>Identical to its own single-robot run</h3><p>Batched matrix multiplications run on reduction-order-invariant kernels. Every row is bit-identical to the tier's single-robot run; its measured difference to stock eager is declared on the certificate. 14.8× per robot on SmolVLA.</p></div>
-      <div class="card"><span class="k">UTILISATION</span><h3>96% GPU busy at 16 robots</h3><p>One eager SmolVLA process keeps the GPU 17% busy; a single exact replay 83%; the batched tick 96% in both tiers (Nsight, RTX 4090). 55 to 67 robots per second on one card.</p></div>
+      <div class="card"><span class="k">EXACT TIER</span><h3>Identical to the original policy</h3><p>Every row is bit-identical to the original eager policy run for that robot alone. 12.5× per robot on SmolVLA at 16 robots.</p></div>
+      <div class="card"><span class="k">INVARIANT TIER</span><h3>Identical to its own single-robot run</h3><p>Every row is bit-identical to the tier's single-robot run; its measured difference to stock eager is declared on the certificate. 14.8× per robot on SmolVLA.</p></div>
+      <div class="card"><span class="k">UTILISATION</span><h3>96% GPU busy at 16 robots</h3><p>One eager SmolVLA process keeps the GPU 17% busy; a single exact run 83%; the batched tick 96% in both tiers (Nsight, RTX 4090). 55 to 67 robots per second on one card.</p></div>
     </div>
     <div class="tbl"><table><thead><tr><th>Policy</th><th class="n">Robots / tick</th><th>Tier</th><th>Rows identical</th><th class="n">Eager, one robot</th><th class="n">Proprio, per robot</th><th class="n">Speedup</th><th class="n">Declared diff vs eager</th></tr></thead><tbody>
       <tr class="ours"><td>SmolVLA</td><td class="n">16</td><td>exact</td><td><span class="tag m">64 / 64</span></td><td class="n">240.5 ms</td><td class="n">19.3 ms</td><td class="n"><b>12.5×</b></td><td class="n">0</td></tr>
@@ -281,7 +281,7 @@ ul.plain { margin: 0; padding-left: 1.1em; color: var(--muted); max-width: 70ch;
       <tr class="ours"><td>GR00T N1.7</td><td class="n">4</td><td>invariant</td><td><span class="tag m">32 / 32</span></td><td class="n">175.5 ms</td><td class="n">149.1 ms</td><td class="n"><b>1.2×</b></td><td class="n">0.209</td></tr>
       <tr><td>GR00T N1.7</td><td class="n">4</td><td>exact</td><td><span class="tag m">32 / 32</span></td><td class="n">176.7 ms</td><td class="n">237.1 ms</td><td class="n">0.75×</td><td class="n">0</td></tr>
     </tbody></table></div>
-    <p class="fine"><span class="tag m">measured</span> Rows compared against each robot's own single-robot run with its own observation, noise and seed. Where the invariant tier's declared difference comes from: its kernels sum each dot product in a fixed order whatever the batch size, cuBLAS chooses its order per problem shape; both are correct floating-point implementations whose roundings differ by a unit in the last place per layer and compound through the network. The certificate names which implementation was validated. A 3B-parameter model is already compute-bound at one robot on this GPU, so GR00T's headline stays the 64 ms exact single-robot tick; the exact tier's per-robot execution costs more than the batch saves there.</p>
+    <p class="fine"><span class="tag m">measured</span> Rows compared against each robot's own single-robot run with its own observation, noise and seed. Both tiers are correct floating-point implementations; the certificate declares the invariant tier's measured difference to eager and names which implementation was validated. A 3B-parameter model is already compute-bound at one robot on this GPU, so GR00T's headline stays the 64 ms exact single-robot tick; the exact tier's per-robot execution costs more than the batch saves there.</p>
   </section>
 
   <section id="certificate">
@@ -291,7 +291,7 @@ ul.plain { margin: 0; padding-left: 1.1em; color: var(--muted); max-width: 70ch;
     </div>
     <div class="grid3">
       <div class="card"><span class="k">RESULT</span><h3>Identity and error</h3><p>Per-tick eager and engine actions, the count of bit-identical ticks or rows, max and mean absolute error, the reference used (original eager or same-tier single-robot) and, for a non-exact tier, the declared difference to eager.</p></div>
-      <div class="card"><span class="k">TIMING</span><h3>Latency and split</h3><p>p50 and p99 of both paths, the host pre- and post-processing share, the captured share of the tick, per-robot cost and batch size for rollout runs.</p></div>
+      <div class="card"><span class="k">TIMING</span><h3>Latency and split</h3><p>p50 and p99 of both paths, the host pre- and post-processing share, per-robot cost and batch size for rollout runs.</p></div>
       <div class="card"><span class="k">ENVIRONMENT</span><h3>What it ran on</h3><p>GPU, driver, torch build, clocks, power state and active throttle reasons at the time of the run, thread count, seeds and noise seed, weight-precision manifest, licence tier, digest and signature.</p></div>
     </div>
   </section>

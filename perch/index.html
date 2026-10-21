@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
-/* Perch page: the site's light world and lime accent. Hero with a live GPU residency card, proof row,
-   the stack (vLLM as shipped beside Perch), how a model steps off and back, measured results, what is in
+/* Perch page: the site's light world and lime accent. Hero with a models-per-GPU card, proof row,
+   the stack (vLLM as shipped beside Perch), what you get, measured results, what is in
    a release, trying it, status, contact. Every figure on this page is a measurement, labelled. */
 :root {
   --void: #FFFFFF; --slab: #F6F7F3; --slab-2: #EFF1EB; --slab-3: #E7EAE2;
@@ -65,8 +65,7 @@ h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--gree
 .btn.primary { background: linear-gradient(92deg, var(--leaf), var(--lime)); color: #11160B; box-shadow: 0 10px 40px -12px rgba(169, 204, 114, .55) }
 .btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
 
-/* Hero visual: two GPUs, ten models each; three are awake at a time, the rest parked in host memory.
-   The awake set moves as traffic moves. */
+/* Hero visual: how many 7B models one GPU serves, with plain colocation and with Perch. */
 .gpus { max-width: 520px; width: 100%; justify-self: end; border: 1px solid var(--line); border-radius: 14px; padding: 22px; background: radial-gradient(90% 90% at 70% 20%, rgba(169, 204, 114, .16), transparent 60%), var(--slab); display: grid; gap: 16px }
 .gpu { display: grid; gap: 8px }
 .gpu > span { font: 500 11.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between }
@@ -241,21 +240,21 @@ footer a { color: var(--muted); text-decoration: none }
       <p class="chip"><b>Evaluation release 0.1.1</b> · unmodified vLLM 0.31 · 2× H200 NVL · every figure measured</p>
       <div class="cta"><a class="btn primary" href="https://github.com/zenedgex/perch-releases/releases/latest">Download the evaluation <span>→</span></a><a class="btn line" href="#stack">See the stack</a></div>
     </div>
-    <div class="gpus" aria-label="Two GPUs, ten models each; three are awake on each GPU at a time and the rest are parked in host memory">
-      <div class="gpu"><span>GPU 0 <b>10 models · 3 awake</b></span><div class="slots" data-gpu="0"></div></div>
-      <div class="gpu"><span>GPU 1 <b>10 models · 3 awake</b></span><div class="slots" data-gpu="1"></div></div>
-      <div class="key"><span><i class="on"></i>awake on the GPU</span><span><i></i>parked in host memory</span></div>
-      <p class="foot">Plain colocation fits 3 to 4 such 7B models on an 80 GB-class card. Perch served <b>10 per GPU</b>, moving weights in and out as traffic moved.</p>
+    <div class="gpus" aria-label="7B models served per 80 GB-class GPU: 3 to 4 with plain colocation, 10 with Perch">
+      <div class="gpu"><span>Plain colocation <b>3 to 4 models per GPU</b></span><div class="slots" data-n="4"></div></div>
+      <div class="gpu"><span>With Perch <b>10 models per GPU</b></span><div class="slots" data-n="10"></div></div>
+      <div class="key"><span><i class="on"></i>a model served</span><span><i></i>no room</span></div>
+      <p class="foot">Qwen2.5-7B models on an 80 GB-class card. Perch served <b>10 per GPU</b> at 98.1% of tokens on time, with no answers cut off.</p>
     </div>
   </div>
 
-  <nav class="jump" aria-label="On this page"><a href="#stack">The stack</a><a href="#how">How</a><a href="#results">Results</a><a href="#release">The release</a><a href="#licensing">Licensing</a><a href="#try">Try it</a><a href="#status">Status</a></nav>
-  <div class="proof" id="keys" style="margin-top:12px"><div class="metric"><b>3×</b><span>fewer GPUs: 6 models on 2 GPUs, 99.9 to 100% of tokens on time, no answers lost <span class="tag m">measured</span></span></div><div class="metric"><b>10×</b><span>fewer GPUs: 20 models on 2 GPUs, 98.1% of tokens on time, none cut off <span class="tag m">measured</span></span></div><div class="metric"><b>0.33 s</b><span>for a 7B model to leave the GPU, 0.29 s to come back <span class="tag m">measured</span></span></div><div class="metric"><b>0</b><span>answers cut off; stock vLLM sleep/wake on the same traffic cut off 183 of 840 <span class="tag m">measured</span></span></div></div>
+  <nav class="jump" aria-label="On this page"><a href="#stack">The stack</a><a href="#get">What you get</a><a href="#results">Results</a><a href="#release">The release</a><a href="#licensing">Licensing</a><a href="#try">Try it</a><a href="#status">Status</a></nav>
+  <div class="proof" id="keys" style="margin-top:12px"><div class="metric"><b>3×</b><span>fewer GPUs: 6 models on 2 GPUs, 99.9 to 100% of tokens on time, no answers lost <span class="tag m">measured</span></span></div><div class="metric"><b>10×</b><span>fewer GPUs: 20 models on 2 GPUs, 98.1% of tokens on time, none cut off <span class="tag m">measured</span></span></div><div class="metric"><b>Same</b><span>outputs as serving each model alone; same OpenAI-compatible API, same unmodified vLLM <span class="tag m">measured</span></span></div><div class="metric"><b>0</b><span>answers cut off; stock vLLM sharing the GPUs cut off 183 of 840 on the same traffic <span class="tag m">measured</span></span></div></div>
 
   <section id="stack">
     <div class="head">
-      <div class="stack"><p class="label">What we are building</p><h2>A residency layer <em>beneath vLLM.</em></h2></div>
-      <div class="body"><p>Perch sits between your clients and unmodified vLLM. Clients keep calling the same OpenAI-compatible API; vLLM keeps running your models; Perch decides which models hold each GPU at any moment.</p><p>A plugin in each vLLM engine lets a model's weights step off the GPU and back in a fraction of a second. Requests that were in flight keep their state and resume token-identical.</p></div>
+      <div class="stack"><p class="label">What we are building</p><h2>One new layer. <em>Nothing else changes.</em></h2></div>
+      <div class="body"><p>Perch sits between your clients and unmodified vLLM. Clients keep calling the same OpenAI-compatible API, vLLM keeps running your models, and each GPU serves many more of them while first-token and per-token deadlines hold.</p></div>
     </div>
     <figure class="layers-fig">
       <div class="fig-head"><div><b>The Perch stack</b><span>Same API. Same vLLM. More models per GPU.</span></div></div>
@@ -286,11 +285,11 @@ footer a { color: var(--muted); text-decoration: none }
 <text x="8" y="524" class="st-cap">or not. Long-tail catalogs pay for idle cards.</text>
 </svg><div class="st-compact"><p class="st-h"><b>vLLM as shipped</b><span>One model per GPU</span></p><svg class="layers-mini" viewBox="245 96 390 377" aria-hidden="true"><defs><filter id="glow-plain" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="plain-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="plain-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="plain-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="rgba(255,255,255,.04)" stroke="rgba(220,228,214,.32)" stroke-width="1.6" stroke-dasharray="5 5" opacity="1" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#plain-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="rgba(255,255,255,.04)" stroke="rgba(220,228,214,.32)" stroke-width="1.6" stroke-dasharray="5 5" opacity="1" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#plain-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/></svg><ol class="layers-key"><li class=""><b>Your clients</b><span>OpenAI-compatible API</span></li><li class=""><b>A router</b><span>One endpoint per model</span></li><li class=""><b>vLLM</b><span>One engine, one model</span></li><li class=""><b>GPU</b><span>Memory held by one model</span></li></ol><p class="st-c">Each model keeps a GPU whether it is busy or not. Long-tail catalogs pay for idle cards.</p></div></div>
 <div class="st-col"><svg class="layers" viewBox="0 0 640 560" role="img" aria-labelledby="perch-t perch-d">
-<title id="perch-t">With Perch: A residency layer</title>
-<desc id="perch-d">Your clients, OpenAI API, unchanged; Perch, Gateway, agent, scheduler; vLLM, Unmodified, perch-engine plugin; GPUs, Many models per card</desc>
+<title id="perch-t">With Perch: One new layer</title>
+<desc id="perch-d">Your clients, OpenAI API, unchanged; Perch, Many models, deadlines held; vLLM, Unmodified; GPUs, Many models per card</desc>
 <defs><filter id="glow-perch" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="perch-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="perch-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="perch-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs>
 <text x="8" y="34" class="st-title">With Perch</text>
-<text x="8" y="62" class="st-kicker">A residency layer</text>
+<text x="8" y="62" class="st-kicker">One new layer</text>
 <ellipse cx="440" cy="312" rx="250" ry="190" fill="url(#perch-halo)"/>
 <rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
 <rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
@@ -301,33 +300,33 @@ footer a { color: var(--muted); text-decoration: none }
 <text x="8" y="224" class="st-detail base">OpenAI API, unchanged</text>
 <line x1="125" y1="200" x2="268" y2="200" class="st-lead base"/>
 <text x="8" y="261" class="st-name hi">Perch</text>
-<text x="8" y="280" class="st-detail hi">Gateway, agent, scheduler</text>
+<text x="8" y="280" class="st-detail hi">Many models, deadlines held</text>
 <line x1="62" y1="256" x2="268" y2="256" class="st-lead hi"/>
 <text x="8" y="317" class="st-name base">vLLM</text>
-<text x="8" y="336" class="st-detail base">Unmodified, perch-engine plugin</text>
+<text x="8" y="336" class="st-detail base">Unmodified</text>
 <line x1="52" y1="312" x2="268" y2="312" class="st-lead base"/>
 <text x="8" y="373" class="st-name base">GPUs</text>
 <text x="8" y="392" class="st-detail base">Many models per card</text>
 <line x1="52" y1="368" x2="268" y2="368" class="st-lead base"/>
-<text x="8" y="500" class="st-cap">Perch decides which models hold each GPU,</text>
-<text x="8" y="524" class="st-cap">moves weights in a fraction of a second,</text>
-<text x="8" y="548" class="st-cap">and keeps every paused answer.</text>
-</svg><div class="st-compact"><p class="st-h"><b>With Perch</b><span>A residency layer</span></p><svg class="layers-mini" viewBox="245 96 390 377" aria-hidden="true"><defs><filter id="glow-perch" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="perch-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="perch-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="perch-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs><ellipse cx="440" cy="312" rx="250" ry="190" fill="url(#perch-halo)"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="#A9CC72" stroke="none" stroke-width="1.6" opacity="0.55" vector-effect="non-scaling-stroke" filter="url(#glow-perch)"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="url(#perch-hi)" stroke="rgba(208,230,165,.95)" stroke-width="1.6" opacity="0.88" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/></svg><ol class="layers-key"><li class=""><b>Your clients</b><span>OpenAI API, unchanged</span></li><li class="hi"><b>Perch</b><span>Gateway, agent, scheduler</span></li><li class=""><b>vLLM</b><span>Unmodified, perch-engine plugin</span></li><li class=""><b>GPUs</b><span>Many models per card</span></li></ol><p class="st-c">Perch decides which models hold each GPU, moves weights in a fraction of a second, and keeps every paused answer.</p></div></div>
+<text x="8" y="500" class="st-cap">Each GPU serves many more models,</text>
+<text x="8" y="524" class="st-cap">first-token and per-token deadlines hold,</text>
+<text x="8" y="548" class="st-cap">and no answer is lost.</text>
+</svg><div class="st-compact"><p class="st-h"><b>With Perch</b><span>One new layer</span></p><svg class="layers-mini" viewBox="245 96 390 377" aria-hidden="true"><defs><filter id="glow-perch" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="perch-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="perch-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="perch-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs><ellipse cx="440" cy="312" rx="250" ry="190" fill="url(#perch-halo)"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="#A9CC72" stroke="none" stroke-width="1.6" opacity="0.55" vector-effect="non-scaling-stroke" filter="url(#glow-perch)"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="url(#perch-hi)" stroke="rgba(208,230,165,.95)" stroke-width="1.6" opacity="0.88" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/></svg><ol class="layers-key"><li class=""><b>Your clients</b><span>OpenAI API, unchanged</span></li><li class="hi"><b>Perch</b><span>Many models, deadlines held</span></li><li class=""><b>vLLM</b><span>Unmodified</span></li><li class=""><b>GPUs</b><span>Many models per card</span></li></ol><p class="st-c">Each GPU serves many more models, first-token and per-token deadlines hold, and no answer is lost.</p></div></div>
       </div>
-      <figcaption>Perch is the only new layer. vLLM is not forked: the perch-engine plugin registers through vLLM's own plugin interface. Clients never call the engines directly.</figcaption>
+      <figcaption>Perch is the only new layer. vLLM is not forked, and your clients and models stay as they are.</figcaption>
     </figure>
   </section>
 
-  <section id="how">
+  <section id="get">
     <div class="head">
-      <div class="stack"><p class="label">How</p><h2>Models step off the GPU <em>and come back in time.</em></h2></div>
-      <div class="body"><p>Long-tail catalogs leave most models idle most of the time, yet each one holds a GPU. Perch keeps only the models that are busy on the GPU and parks the rest in host memory, without losing a request.</p></div>
+      <div class="stack"><p class="label">What you get</p><h2>Fewer GPUs <em>for the same catalog.</em></h2></div>
+      <div class="body"><p>Long-tail catalogs leave most models idle most of the time, yet each one holds a GPU. Perch lets those models share GPUs without giving up latency or answers.</p></div>
     </div>
     <div class="steps">
-      <div><span class="k">01 / PLACE</span><h3>Decide what is awake</h3><p>The agent on each node tracks every model's traffic and deadlines and decides which models hold GPU memory now.</p></div>
-      <div><span class="k">02 / PARK</span><h3>Step off in 0.33 s</h3><p>When another model needs the memory, a model's weights move to pinned host memory. Its KV pool stays on the GPU.</p></div>
-      <div><span class="k">03 / HOLD</span><h3>Keep paused requests</h3><p>Requests that were mid-answer pause with their state intact. Nothing is cut off and nothing is recomputed.</p></div>
-      <div><span class="k">04 / RESTORE</span><h3>Back in 0.29 s, on time</h3><p>Perch restores a parked model before its paused requests would miss their first-token or per-token deadline. The answer resumes token-identical.</p></div>
+      <div><span class="k">MORE MODELS</span><h3>10 per GPU</h3><p>Where plain colocation fits 3 to 4 7B models on an 80 GB-class card, Perch served 10.</p></div>
+      <div><span class="k">DEADLINES</span><h3>Held, as you set them</h3><p>You set the first-token and per-token targets; Perch plans every GPU around them.</p></div>
+      <div><span class="k">NO LOST ANSWERS</span><h3>Nothing cut off</h3><p>Every answer completes, and it is the same answer the model gives when it runs alone.</p></div>
+      <div><span class="k">NO CHANGES</span><h3>Same API, same vLLM</h3><p>Clients keep the OpenAI-compatible API; vLLM stays unmodified; your models stay as they are.</p></div>
     </div>
   </section>
 
@@ -339,9 +338,9 @@ footer a { color: var(--muted); text-decoration: none }
     <div class="tbl"><table><thead><tr><th>Setup</th><th class="n">Tokens on time</th><th>Answers lost</th><th class="n">GPUs vs one model per GPU</th></tr></thead><tbody>
       <tr class="ours"><td>Perch, 6 models on 2 GPUs</td><td class="n">99.9–100%</td><td>0</td><td class="n"><b>3× fewer</b></td></tr>
       <tr class="ours"><td>Perch, 20 models on 2 GPUs (10 per GPU)</td><td class="n">98.1%</td><td>0 cut off, 4 of 752 timed out</td><td class="n"><b>10× fewer</b></td></tr>
-      <tr><td>Stock vLLM sleep/wake, 6 models on 2 GPUs</td><td class="n">84.1%</td><td><span class="tag d">183 of 840 cut off</span></td><td class="n">–</td></tr>
+      <tr><td>Stock vLLM sharing the GPUs, 6 models on 2 GPUs</td><td class="n">84.1%</td><td><span class="tag d">183 of 840 cut off</span></td><td class="n">–</td></tr>
     </tbody></table></div>
-    <p class="fine"><span class="tag m">measured</span> Same traffic for every row. A 7B model leaves the GPU in about 0.33 s and comes back in about 0.29 s, and outputs are identical with and without being parked mid-answer. With the memory budget of an 80 GB-class card, plain colocation fits 3 to 4 such models per GPU; Perch served 10.</p>
+    <p class="fine"><span class="tag m">measured</span> Same traffic for every row; the stock row uses vLLM's own built-in way of sharing a GPU between models. Outputs with Perch are identical to each model served alone. With the memory budget of an 80 GB-class card, plain colocation fits 3 to 4 such models per GPU; Perch served 10.</p>
   </section>
 
   <section id="release">
@@ -350,10 +349,10 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="body"><p>Linux binaries and compiled wheels for x86_64 and aarch64 (Grace). Perch is proprietary software: free to evaluate, licensed for pilots and production.</p></div>
     </div>
     <div class="grid4">
-      <div class="card"><code>perch-agent</code><h3>One per GPU node</h3><p>The scheduler and the OpenAI-compatible endpoint. Moves weights in and out, restores before deadlines, exports Prometheus metrics.</p></div>
-      <div class="card"><code>perch-engine</code><h3>The vLLM plugin</h3><p>Compiled, no fork of vLLM. Paused requests keep their state and resume token-identical.</p></div>
+      <div class="card"><code>perch-agent</code><h3>One per GPU node</h3><p>The OpenAI-compatible endpoint your clients call, with status and Prometheus metrics.</p></div>
+      <div class="card"><code>perch-engine</code><h3>For vLLM</h3><p>A compiled vLLM plugin. No fork of vLLM.</p></div>
       <div class="card"><code>perch-gateway</code><h3>Across nodes</h3><p>Routes clients to the right node, from a static list or Kubernetes pods.</p></div>
-      <div class="card"><code>perch-sim</code><h3>Before you buy GPUs</h3><p>Replays your own request log through the same scheduler to estimate how many models fit at your deadlines.</p></div>
+      <div class="card"><code>perch-sim</code><h3>Before you buy GPUs</h3><p>Estimates from your own request log how many of your models fit per GPU at your deadlines.</p></div>
     </div>
   </section>
 
@@ -363,7 +362,7 @@ footer a { color: var(--muted); text-decoration: none }
       <div class="body"><p>Perch runs without a key in evaluation mode, large enough to measure the gain on your own models. A signed licence key from ZenEdgeX lifts the limits for a pilot or for production. Your models, prompts and traffic stay yours: Perch sends nothing to ZenEdgeX.</p></div>
     </div>
     <div class="lic">
-      <div class="card"><span class="k">EVALUATION · NO KEY</span><h3>2 GPUs, 4 models per GPU</h3><p>Per host, on hardware you control, to measure Perch with your own models and traffic. The agent refuses a larger configuration and the plugin refuses a fifth engine on a GPU. Not for production traffic.</p></div>
+      <div class="card"><span class="k">EVALUATION · NO KEY</span><h3>2 GPUs, 4 models per GPU</h3><p>Per host, on hardware you control, to measure Perch with your own models and traffic. Not for production traffic.</p></div>
       <div class="card"><span class="k">PILOT · KEY</span><h3>Limits lifted, for a pilot</h3><p>A signed key for a defined pilot on your fleet, under a pilot agreement with ZenEdgeX.</p></div>
       <div class="card"><span class="k">PRODUCTION · KEY</span><h3>Serving your customers</h3><p>Production and commercial use need a production key, under a licence agreement with ZenEdgeX.</p></div>
     </div>
@@ -376,26 +375,21 @@ perch-agent --check-licence                              <span class="c"># /stat
   <section id="try">
     <div class="head">
       <div class="stack"><p class="label">Try it</p><h2>Fifteen minutes <em>on one GPU node.</em></h2></div>
-      <div class="body"><p>Download the bundle for your CPU from the <a href="https://github.com/zenedgex/perch-releases/releases/latest">latest release</a>, install it into the Python that runs vLLM, start your engines with sleep mode, and point clients at the agent.</p></div>
+      <div class="body"><p>Download the bundle for your CPU from the <a href="https://github.com/zenedgex/perch-releases/releases/latest">latest release</a>, install it on each GPU node, and point your clients at Perch. The install guide covers starting your vLLM engines and the agent configuration.</p></div>
     </div>
     <div class="try">
 <pre class="cmd"><span class="c"># install (per GPU node)</span>
 tar xzf perch-0.1.1-linux-x86_64.tar.gz &amp;&amp; cd perch-0.1.1
 sudo PYTHON=$(which python3) ./install.sh     <span class="c"># asks you to accept the licence</span>
 
-<span class="c"># one vLLM server per (GPU, model), with sleep mode</span>
-VLLM_SERVER_DEV_MODE=1 CUDA_VISIBLE_DEVICES=0 vllm serve Qwen/Qwen2.5-7B-Instruct \
-  --served-model-name qwen-7b --port 9001 --enable-sleep-mode --gpu-memory-utilization 0.14
-
-<span class="c"># the agent, then the usual OpenAI call</span>
-perch-agent --config agent.toml --park-all
+<span class="c"># start Perch, then call it like any OpenAI endpoint</span>
+perch-agent --config agent.toml
 curl localhost:8080/v1/completions -H 'content-type: application/json' \
   -d '{"model": "qwen-7b", "prompt": "Hello", "max_tokens": 32}'</pre>
       <div class="tbl" style="padding:20px 22px"><table style="min-width:0"><thead><tr><th>You need</th><th></th></tr></thead><tbody>
         <tr><td>OS / CPU</td><td>Linux, x86_64 or aarch64 (Grace)</td></tr>
         <tr><td>GPU</td><td>NVIDIA, Ampere or newer</td></tr>
         <tr><td>Engine</td><td>vLLM 0.31, Python 3.10 to 3.12</td></tr>
-        <tr><td>Host RAM</td><td>About 15 GB per parked 7B model</td></tr>
         <tr><td>Without a key</td><td>Up to 2 GPUs and 4 models per GPU per host</td></tr>
       </tbody></table></div>
     </div>
@@ -411,7 +405,7 @@ curl localhost:8080/v1/completions -H 'content-type: application/json' \
       <div><span class="st done">done</span><h3>Many models per GPU</h3><p>10 Qwen2.5-7B models per H200 at 98.1% of tokens on time, no answers cut off.</p></div>
       <div><span class="st done">done</span><h3>Evaluation release</h3><p>Version 0.1.1 for Linux x86_64 and aarch64: the agent, plugin, gateway and simulator, with licence keys for pilots and production.</p></div>
       <div><span class="st now">now</span><h3>Design partners</h3><p>Providers serving many fine-tuned or long-tail models: send a two-week request log and get a capacity report for your catalog.</p></div>
-      <div><span class="st next">limits</span><h3>Today's scope</h3><p>NVIDIA GPUs and vLLM only; engines run with vLLM's dev endpoints on; perch-sim over-estimates attainment by about 2 to 3 points.</p></div>
+      <div><span class="st next">limits</span><h3>Today's scope</h3><p>NVIDIA GPUs and vLLM only. perch-sim estimates run 2 to 3 points optimistic; plan with that margin.</p></div>
     </div>
   </section>
 
@@ -440,22 +434,11 @@ curl localhost:8080/v1/completions -H 'content-type: application/json' \
 
 <script>
 (() => {
-  // the residency card: three models awake per GPU; the awake set shifts every few seconds as traffic would
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const gpus = [...document.querySelectorAll('.slots')].map(el => {
-    const cells = Array.from({ length: 10 }, () => el.appendChild(document.createElement('i')));
-    return { cells, awake: el.dataset.gpu === '0' ? [0, 3, 7] : [1, 5, 8] };
+  // the models-per-GPU card: filled slots are models served, the rest of a 10-slot GPU has no room
+  document.querySelectorAll('.slots').forEach(el => {
+    const n = +el.dataset.n;
+    for (let i = 0; i < 10; i++) { const c = el.appendChild(document.createElement('i')); if (i < n) c.className = 'on'; }
   });
-  const paint = () => gpus.forEach(g => g.cells.forEach((c, i) => c.classList.toggle('on', g.awake.includes(i))));
-  paint();
-  if (reduce) return;
-  setInterval(() => {
-    const g = gpus[Math.random() < .5 ? 0 : 1];
-    const out = g.awake[(Math.random() * 3) | 0];
-    const free = [...Array(10).keys()].filter(i => !g.awake.includes(i));
-    g.awake = g.awake.map(i => (i === out ? free[(Math.random() * free.length) | 0] : i));
-    paint();
-  }, 1600);
 })();
 </script>
 
