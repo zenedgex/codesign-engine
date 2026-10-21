@@ -155,6 +155,8 @@ tr.ours td:first-child { color: var(--green-deep); font-weight: 600 }
 
 pre.cmd { margin: 0; overflow-x: auto; background: var(--night); color: #DDE5D6; border-radius: 10px; padding: 20px 22px; font: 400 14px/1.65 var(--mono); border: 1px solid var(--night-line) }
 pre.cmd .c { color: #7E8A7B }
+.lic { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.lic .k { font: 500 11.5px/1 var(--mono); letter-spacing: .14em; color: var(--green) }
 .try { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 16px; align-items: start }
 .try > * { min-width: 0 }
 .close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--leaf) 28%, transparent), transparent 60%), var(--slab) }
@@ -166,7 +168,8 @@ footer a { color: var(--muted); text-decoration: none }
 
 @media (max-width: 1100px) { .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
 @media (max-width: 960px) {
-  .hero, .head, .close, .try { grid-template-columns: minmax(0, 1fr); gap: 32px }
+  .hero, .head, .close, .try, .lic { grid-template-columns: minmax(0, 1fr); gap: 32px }
+  .lic { gap: 16px }
   .hero { padding-block: 64px 0 }
   .gpus { justify-self: start; max-width: 460px }
   .layers-grid { grid-template-columns: minmax(0, 1fr); gap: 36px }
@@ -235,7 +238,7 @@ footer a { color: var(--muted); text-decoration: none }
       <p class="kicker">Perch · multi-model LLM serving</p>
       <h1>More models per GPU. <em>No lost answers.</em></h1>
       <p class="sub">Perch runs beneath unmodified vLLM and lets each GPU serve many models while holding first-token and per-token deadlines. Your clients keep the same OpenAI-compatible API.</p>
-      <p class="chip"><b>Evaluation release 0.1.0</b> · unmodified vLLM 0.31 · 2× H200 NVL · every figure measured</p>
+      <p class="chip"><b>Evaluation release 0.1.1</b> · unmodified vLLM 0.31 · 2× H200 NVL · every figure measured</p>
       <div class="cta"><a class="btn primary" href="https://github.com/zenedgex/perch-releases/releases/latest">Download the evaluation <span>→</span></a><a class="btn line" href="#stack">See the stack</a></div>
     </div>
     <div class="gpus" aria-label="Two GPUs, ten models each; three are awake on each GPU at a time and the rest are parked in host memory">
@@ -246,7 +249,7 @@ footer a { color: var(--muted); text-decoration: none }
     </div>
   </div>
 
-  <nav class="jump" aria-label="On this page"><a href="#stack">The stack</a><a href="#how">How</a><a href="#results">Results</a><a href="#release">The release</a><a href="#try">Try it</a><a href="#status">Status</a></nav>
+  <nav class="jump" aria-label="On this page"><a href="#stack">The stack</a><a href="#how">How</a><a href="#results">Results</a><a href="#release">The release</a><a href="#licensing">Licensing</a><a href="#try">Try it</a><a href="#status">Status</a></nav>
   <div class="proof" id="keys" style="margin-top:12px"><div class="metric"><b>3×</b><span>fewer GPUs: 6 models on 2 GPUs, 99.9 to 100% of tokens on time, no answers lost <span class="tag m">measured</span></span></div><div class="metric"><b>10×</b><span>fewer GPUs: 20 models on 2 GPUs, 98.1% of tokens on time, none cut off <span class="tag m">measured</span></span></div><div class="metric"><b>0.33 s</b><span>for a 7B model to leave the GPU, 0.29 s to come back <span class="tag m">measured</span></span></div><div class="metric"><b>0</b><span>answers cut off; stock vLLM sleep/wake on the same traffic cut off 183 of 840 <span class="tag m">measured</span></span></div></div>
 
   <section id="stack">
@@ -344,7 +347,7 @@ footer a { color: var(--muted); text-decoration: none }
   <section id="release">
     <div class="head">
       <div class="stack"><p class="label">The release</p><h2>Four parts, <em>one per job.</em></h2></div>
-      <div class="body"><p>Linux binaries and compiled wheels for x86_64 and aarch64 (Grace). Perch is proprietary software, offered under an evaluation licence.</p></div>
+      <div class="body"><p>Linux binaries and compiled wheels for x86_64 and aarch64 (Grace). Perch is proprietary software: free to evaluate, licensed for pilots and production.</p></div>
     </div>
     <div class="grid4">
       <div class="card"><code>perch-agent</code><h3>One per GPU node</h3><p>The scheduler and the OpenAI-compatible endpoint. Moves weights in and out, restores before deadlines, exports Prometheus metrics.</p></div>
@@ -354,6 +357,22 @@ footer a { color: var(--muted); text-decoration: none }
     </div>
   </section>
 
+  <section id="licensing">
+    <div class="head">
+      <div class="stack"><p class="label">Licensing</p><h2>Evaluate free. <em>Key for pilots and production.</em></h2></div>
+      <div class="body"><p>Perch runs without a key in evaluation mode, large enough to measure the gain on your own models. A signed licence key from ZenEdgeX lifts the limits for a pilot or for production. Your models, prompts and traffic stay yours: Perch sends nothing to ZenEdgeX.</p></div>
+    </div>
+    <div class="lic">
+      <div class="card"><span class="k">EVALUATION · NO KEY</span><h3>2 GPUs, 4 models per GPU</h3><p>Per host, on hardware you control, to measure Perch with your own models and traffic. The agent refuses a larger configuration and the plugin refuses a fifth engine on a GPU. Not for production traffic.</p></div>
+      <div class="card"><span class="k">PILOT · KEY</span><h3>Limits lifted, for a pilot</h3><p>A signed key for a defined pilot on your fleet, under a pilot agreement with ZenEdgeX.</p></div>
+      <div class="card"><span class="k">PRODUCTION · KEY</span><h3>Serving your customers</h3><p>Production and commercial use need a production key, under a licence agreement with ZenEdgeX.</p></div>
+    </div>
+<pre class="cmd"><span class="c"># install a key for the user that runs vLLM and the agent</span>
+mkdir -p ~/.perch &amp;&amp; cp acme.license ~/.perch/license    <span class="c"># or PERCH_LICENSE=&lt;key&gt;</span>
+perch-agent --check-licence                              <span class="c"># /status also shows the active licence</span></pre>
+    <p class="fine">The installer asks you to accept the <a href="https://github.com/zenedgex/perch-releases/blob/main/EVALUATION-LICENSE.md">evaluation licence</a> before it installs anything. Pilot and production keys: <a href="mailto:hello@zenedgex.in">hello@zenedgex.in</a>.</p>
+  </section>
+
   <section id="try">
     <div class="head">
       <div class="stack"><p class="label">Try it</p><h2>Fifteen minutes <em>on one GPU node.</em></h2></div>
@@ -361,8 +380,8 @@ footer a { color: var(--muted); text-decoration: none }
     </div>
     <div class="try">
 <pre class="cmd"><span class="c"># install (per GPU node)</span>
-tar xzf perch-0.1.0-linux-x86_64.tar.gz &amp;&amp; cd perch-0.1.0
-sudo PYTHON=$(which python3) ./install.sh
+tar xzf perch-0.1.1-linux-x86_64.tar.gz &amp;&amp; cd perch-0.1.1
+sudo PYTHON=$(which python3) ./install.sh     <span class="c"># asks you to accept the licence</span>
 
 <span class="c"># one vLLM server per (GPU, model), with sleep mode</span>
 VLLM_SERVER_DEV_MODE=1 CUDA_VISIBLE_DEVICES=0 vllm serve Qwen/Qwen2.5-7B-Instruct \
@@ -377,6 +396,7 @@ curl localhost:8080/v1/completions -H 'content-type: application/json' \
         <tr><td>GPU</td><td>NVIDIA, Ampere or newer</td></tr>
         <tr><td>Engine</td><td>vLLM 0.31, Python 3.10 to 3.12</td></tr>
         <tr><td>Host RAM</td><td>About 15 GB per parked 7B model</td></tr>
+        <tr><td>Without a key</td><td>Up to 2 GPUs and 4 models per GPU per host</td></tr>
       </tbody></table></div>
     </div>
     <p class="fine">Full guide: <a href="https://github.com/zenedgex/perch-releases/blob/main/INSTALL.md">INSTALL.md</a>. Checksums are in SHA256SUMS on the release.</p>
@@ -389,7 +409,7 @@ curl localhost:8080/v1/completions -H 'content-type: application/json' \
     </div>
     <div class="steps">
       <div><span class="st done">done</span><h3>Many models per GPU</h3><p>10 Qwen2.5-7B models per H200 at 98.1% of tokens on time, no answers cut off.</p></div>
-      <div><span class="st done">done</span><h3>Evaluation release</h3><p>Version 0.1.0 for Linux x86_64 and aarch64, with the agent, plugin, gateway and simulator.</p></div>
+      <div><span class="st done">done</span><h3>Evaluation release</h3><p>Version 0.1.1 for Linux x86_64 and aarch64: the agent, plugin, gateway and simulator, with licence keys for pilots and production.</p></div>
       <div><span class="st now">now</span><h3>Design partners</h3><p>Providers serving many fine-tuned or long-tail models: send a two-week request log and get a capacity report for your catalog.</p></div>
       <div><span class="st next">limits</span><h3>Today's scope</h3><p>NVIDIA GPUs and vLLM only; engines run with vLLM's dev endpoints on; perch-sim over-estimates attainment by about 2 to 3 points.</p></div>
     </div>

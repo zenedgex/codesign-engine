@@ -1,10 +1,12 @@
-# ZenEdgeX Atelier
+# ZenEdgeX
 
-The best chip for your workload.
+Faster AI, by design. The website, https://zenedgex.in/
 
-- **Atelier** (formerly CodeSign Engine): designs AI accelerators around your workload and your area, power and performance targets: https://zenedgex.in/engine/
-- **Sutra**, the proof: a digital in-memory-compute accelerator IP with a RISC-V control core, designed by Atelier for YOLOv8n: https://zenedgex.in/ip/
-- Live demo: https://zenedgex.in/demo/
+- **Perch**: many more models per GPU beneath unmodified vLLM, no lost answers: https://zenedgex.in/perch/
+  (evaluation release: https://github.com/zenedgex/perch-releases)
+- **Proprio**: exact, faster inference for robot policies, certified bit for bit: https://zenedgex.in/proprio/
+- **Atelier Studio**: designs AI accelerators around your workload and your area, power and performance targets: https://zenedgex.in/engine/
+- **Sutra**: a digital in-memory-compute accelerator IP with a RISC-V control core, designed by Atelier: https://zenedgex.in/ip/
 - Contact: hello@zenedgex.in
 
 ## Try Atelier Studio

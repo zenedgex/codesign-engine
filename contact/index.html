@@ -93,34 +93,36 @@ form.pilot .note { margin-top: -2px }
 <div class="zx-cards zx-cards--compact">
   <a class="zx-card zx-card--link" href="../perch/#contact"><div class="zx-card__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01M11 7.5h6M11 16.5h6"/></svg><b>Perch</b></div><p class="zx-card__meta">LLM serving</p><p>Send a request log, get a capacity report →</p></a>
   <a class="zx-card zx-card--link" href="../proprio/#contact"><div class="zx-card__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/></svg><b>Proprio</b></div><p class="zx-card__meta">Robot inference</p><p>Send a checkpoint, get a certificate →</p></a>
-  <a class="zx-card zx-card--link" href="#pilot"><div class="zx-card__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><b>Atelier Studio</b></div><p class="zx-card__meta">Chip design</p><p>Request a design-partner pilot →</p></a>
+  <a class="zx-card zx-card--link" href="../engine/#contact"><div class="zx-card__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><b>Atelier Studio</b></div><p class="zx-card__meta">Chip design</p><p>Request a design-partner pilot →</p></a>
   <a class="zx-card zx-card--link" href="../ip/#contact"><div class="zx-card__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg><b>Sutra NPU IP</b></div><p class="zx-card__meta">Silicon IP</p><p>Run your workload on Sutra →</p></a>
 </div>
 <!--/zx:contacts-->
 
-  <section id="atelier">
+  <section id="talk">
   <div class="close cta2" id="contact" style="margin-top:0">
     <div class="stack">
       <p class="label">Talk to us</p>
-      <h2 style="font-size:clamp(30px,3.6vw,48px)">Bring your workload. <em>Let's explore the design space.</em></h2>
-      <p style="color:var(--muted)">Share your model, performance target, and power and area constraints. We'll discuss how Atelier Studio can evaluate the workload and identify promising accelerator configurations. For AI chip teams exploring a new accelerator or optimizing an existing architecture.</p>
-      <div class="acts">
-        <a class="act on" href="#pilot"><b>Request a design-partner pilot →</b> <span>You have a model, target constraints and a chip-design problem. We explore it with you and identify promising configurations.</span></a>
-        <a class="act" href="../demo/"><b>Explore the live demo →</b> <span>Set targets and see the designs that meet them, before you talk to anyone.</span></a>
-      </div>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Tell us what you run. <em>We'll show what changes.</em></h2>
+      <p style="color:var(--muted)">Pick the project, say what you serve, deploy or design today and what you need it to do. We reply with what an evaluation or pilot would look like for you.</p>
       <p class="note">Or write to <a href="mailto:hello@zenedgex.in">hello@zenedgex.in</a>.</p>
     </div>
     <form class="pilot" id="pilot" novalidate>
-      <h3>Request a design-partner pilot</h3>
+      <h3>Start a conversation</h3>
       <div class="two">
         <label>Work email<input name="email" type="email" autocomplete="email" required></label>
         <label>Company<input name="company" autocomplete="organization" required></label>
       </div>
-      <label>Target workload<input name="workload" placeholder="e.g. object detection at 60 FPS, a 1B-parameter language model" required></label>
-      <label>Primary objective<select name="objective"><option>Performance</option><option>Power</option><option>Area</option><option selected>All three</option></select></label>
-      <label>Anything else (optional)<textarea name="notes" placeholder="Process node, timeline, your own engines or RTL"></textarea></label>
-      <button class="btn primary" type="submit">Prepare the request <span>→</span></button>
-      <p class="note">Opens the request in your own mail app, addressed to hello@zenedgex.in. Nothing is sent until you send it.</p>
+      <label>Project<select name="project" id="project">
+<!--zx:projopts-->
+        <option value="perch" data-hint="The models you serve, your GPUs, and your first-token and per-token targets" selected>Perch</option>
+        <option value="proprio" data-hint="The policy, the GPU and the control rate you need">Proprio</option>
+        <option value="atelier-studio" data-hint="Your model, and its frame or token rate, power and area targets">Atelier Studio</option>
+        <option value="sutra" data-hint="The model to run on Sutra and the rate it needs">Sutra NPU IP</option>
+<!--/zx:projopts-->
+      </select></label>
+      <label>What you need<textarea name="need" id="need" required></textarea></label>
+      <button class="btn primary" type="submit">Prepare the email <span>→</span></button>
+      <p class="note">Opens the message in your own mail app, addressed to hello@zenedgex.in. Nothing is sent until you send it.</p>
     </form>
   </div>
   </section>
@@ -139,14 +141,18 @@ form.pilot .note { margin-top: -2px }
   </footer></div></div>
 <script>
 (() => {
-  // pilot request: composed in the visitor's own mail app; the site has no server
-  const f = document.getElementById('pilot');
+  // the request is composed in the visitor's own mail app; the site has no server
+  const f = document.getElementById('pilot'), sel = document.getElementById('project'), need = document.getElementById('need');
+  // a project named in the link (contact/#perch) is preselected
+  const hint = () => { need.placeholder = sel.selectedOptions[0].dataset.hint || ''; };
+  const pick = () => { const want = location.hash.slice(1); if ([...sel.options].some(o => o.value === want)) { sel.value = want; hint(); } };
+  sel.addEventListener('change', hint); addEventListener('hashchange', pick); hint(); pick();
   f.addEventListener('submit', e => {
     e.preventDefault();
     if (!f.reportValidity()) return;
-    const v = n => f.elements[n].value.trim();
-    const body = [`Work email: ${v('email')}`, `Company: ${v('company')}`, `Target workload: ${v('workload')}`, `Primary objective: ${v('objective')}`, v('notes') && `\n${v('notes')}`].filter(Boolean).join('\n');
-    location.href = `mailto:hello@zenedgex.in?subject=${encodeURIComponent(`Design-partner pilot: ${v('company')}`)}&body=${encodeURIComponent(body)}`;
+    const v = n => f.elements[n].value.trim(), name = sel.selectedOptions[0].textContent;
+    const body = [`Work email: ${v('email')}`, `Company: ${v('company')}`, `Project: ${name}`, '', v('need')].join('\n');
+    location.href = `mailto:hello@zenedgex.in?subject=${encodeURIComponent(`${name}: ${v('company')}`)}&body=${encodeURIComponent(body)}`;
   });
 })();
 </script>

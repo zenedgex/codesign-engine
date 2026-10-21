@@ -18,6 +18,7 @@ PROJECTS = [
         "area": "LLM serving", "status": "Evaluation release",
         "blurb": "Runs beneath unmodified vLLM and lets each GPU serve many models while holding first-token and per-token deadlines. Measured 10 models per GPU, no answers lost.",
         "contact": ("perch/#contact", "Send a request log, get a capacity report"),
+        "hint": "The models you serve, your GPUs, and your first-token and per-token targets",
         "pages": [("perch/", "Overview", "server")],
     },
     {
@@ -25,13 +26,15 @@ PROJECTS = [
         "area": "Robot inference", "status": "Technical preview",
         "blurb": "Runs an unmodified vision-language-action robot policy faster and proves, tick by tick, that the actions are bit-identical to the policy as trained.",
         "contact": ("proprio/#contact", "Send a checkpoint, get a certificate"),
+        "hint": "The policy, the GPU and the control rate you need",
         "pages": [("proprio/", "Overview", "bot")],
     },
     {
         "id": "atelier-studio", "name": "Atelier Studio", "icon": "sparkles",
         "area": "Chip design", "status": "Technical preview",
         "blurb": "AI-powered chip design exploration. Design better chips, faster, with architecture and compiler optimized together for your workloads.",
-        "contact": ("contact/#pilot", "Request a design-partner pilot"),
+        "contact": ("engine/#contact", "Request a design-partner pilot"),
+        "hint": "Your model, and its frame or token rate, power and area targets",
         "pages": [("engine/", "Overview", "sparkles"), ("technology/", "Technology", "layers"),
                   ("benchmarks/", "Benchmarks", "chart"), ("demo/", "Live demo", "play")],
     },
@@ -40,6 +43,7 @@ PROJECTS = [
         "area": "Silicon IP", "status": "Evaluation preview",
         "blurb": "A digital in-memory-compute AI accelerator IP for language and vision models at the edge, with a RISC-V control core, generated and verified for your model.",
         "contact": ("ip/#contact", "Run your workload on Sutra"),
+        "hint": "The model to run on Sutra and the rate it needs",
         "pages": [("ip/", "Overview", "cpu")],
     },
 ]
@@ -165,6 +169,12 @@ def contact_cards(rel):
     return '<div class="zx-cards zx-cards--compact">\n' + "\n".join(cards) + "\n</div>"
 
 
+def project_options():
+    # the first project is the default choice
+    return "\n".join(f'        <option value="{p["id"]}" data-hint="{p["hint"]}"{" selected" if i == 0 else ""}>{p["name"]}</option>'
+                     for i, p in enumerate(PROJECTS))
+
+
 def fill(s, name, body):
     pat = re.compile(rf"<!--zx:{name}-->.*?<!--/zx:{name}-->", re.S)
     if not pat.search(s):
@@ -185,6 +195,7 @@ def main():
         s = fill(s, "footnav", footnav(rel))
         s = fill(s, "projects", project_cards(rel))
         s = fill(s, "contacts", contact_cards(rel))
+        s = fill(s, "projopts", project_options())
         f.write_text(s)
         print("built", f.relative_to(SITE))
 
