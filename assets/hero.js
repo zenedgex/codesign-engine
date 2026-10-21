@@ -49,6 +49,85 @@
       },
       dt: .0065, view: { el: .4, dist: 3.0, fov: 46, n: 1400, l: 560, gain: .26, tail: .4, bloom: .75 }, sx: .04, sy: .34,
     },
+    // computed on the GPU: every point's position is a function of its index and the time
+    // the ZenEdgeX mark: a slowly turning cloud of light gathers into the 3x3 grid, holds, and lets go
+    mark: {
+      proc: { prim: 'points', count: [60000, 26000], swing: .26, still: 6, vs: `
+void main() {
+  float id = float(gl_VertexID), t = uTime;
+  float a = h1(id), b = h1(id + 3.7), c = h1(id + 9.1), d = h1(id + 15.3), e = h1(id + 21.9);
+  // the mark: three filled cells on the diagonal take 70% of the points, the six outlined cells the rest
+  bool filled = a < 0.7;
+  vec2 cell;
+  if (filled) { float k = floor(b * 3.0); cell = vec2(2.0 - k, k); }
+  else { float k = floor(b * 6.0); cell = k < 1.0 ? vec2(0, 0) : k < 2.0 ? vec2(1, 0) : k < 3.0 ? vec2(0, 1) : k < 4.0 ? vec2(2, 1) : k < 5.0 ? vec2(1, 2) : vec2(2, 2); }
+  vec2 ctr = vec2((cell.x - 1.0) * 0.62, (1.0 - cell.y) * 0.62);
+  float hs = filled ? 0.24 : 0.205;
+  vec2 q;
+  if (filled) q = (vec2(c, d) * 2.0 - 1.0) * hs;
+  else { float u = c * 4.0, s = fract(u) * 2.0 - 1.0; q = (u < 1.0 ? vec2(s, -1.0) : u < 2.0 ? vec2(1.0, s) : u < 3.0 ? vec2(-s, 1.0) : vec2(-1.0, -s)) * hs; }
+  // filled cells are solid blocks with depth; outlines are thin frames
+  vec3 target = vec3(ctr.x + q.x, (e - 0.5) * (filled ? 0.48 : 0.04), ctr.y + q.y);
+  // the cloud: a turning ellipsoid with a slow shimmer
+  vec3 r = (vec3(h1(id + 31.0), h1(id + 47.0), h1(id + 59.0)) * 2.0 - 1.0) * vec3(2.7, 1.7, 1.45) * pow(h1(id + 71.0), 0.35);
+  float ang = t * 0.06 + r.z * 0.25;
+  vec3 cloud = vec3(r.x * cos(ang) - r.y * sin(ang), r.x * sin(ang) + r.y * cos(ang), r.z);
+  cloud += 0.12 * vec3(sin(t * 0.7 + r.z * 3.0 + a * 6.28), sin(t * 0.6 + r.x * 2.7), sin(t * 0.5 + r.y * 3.1 + c * 6.28));
+  // cycle of 14 s: gather (staggered per point), hold, release, drift
+  float ph = mod(t + 1.0, 14.0), lag = (c + d) * 0.7;
+  float m = smoothstep(0.0, 3.2, ph - lag) * (1.0 - smoothstep(8.5, 11.5, ph - lag * 0.6));
+  m = m * m * (3.0 - 2.0 * m);
+  // one point in seven never joins the mark: ambient dust around it
+  float dust = step(0.86, h1(id + 83.0));
+  m *= 1.0 - dust;
+  vec3 p = mix(cloud, target + 0.006 * vec3(sin(t * 2.0 + id), 0.0, cos(t * 1.7 + id)), m);
+  vec4 cp = place(p);
+  gl_Position = cp;
+  gl_PointSize = max(1.0, mix(2.6, filled ? 2.0 : 1.8, m) * uPx * (5.0 / cp.w));
+  vCol = mix(ramp(e), filled ? mix(uC1, uC2, e) : mix(uC0, uC1, e * 0.6), m);
+  vA = mix((0.35 + 0.65 * e) * (1.0 - dust * 0.5), filled ? 0.75 : 0.6, m);
+}` },
+      view: { el: .2, dist: 5.2, fov: 40, gain: .5, bloom: .75 }, sx: .34, sy: .18,
+    },
+    // light pulses racing along the lanes of a die toward the viewer, floor and ceiling, with cross traffic
+    streams: {
+      proc: { prim: 'lines', count: [16000, 7000], swing: .12, still: 4, vs: `
+void main() {
+  float id = float(gl_VertexID >> 1), head = float(gl_VertexID & 1), t = uTime;
+  float a = h1(id), b = h1(id + 5.3), c = h1(id + 11.7), d = h1(id + 19.1), e = h1(id + 27.3);
+  bool across = b < 0.2, lane = b > 0.985, roof = false;
+  float speed = mix(1.0, 7.5, c * c), L = 15.0;
+  float s = lane ? L : mod(d * L + t * speed, L);
+  float tail = lane ? L : mix(0.25, 1.5, c);
+  float u = s - (1.0 - head) * tail;
+  float z = roof ? 1.15 : -0.55;
+  vec3 p = across ? vec3(-7.5 + u, 1.0 + floor(a * 40.0) * 0.32, z) : vec3((floor(a * 96.0) - 48.0) * 0.105, 13.5 - u, z);
+  vec4 cp = place(p);
+  gl_Position = cp;
+  vCol = mix(ramp(c), uC2, c * c * 0.6);
+  float fog = exp(-max(p.y, 0.0) * 0.12) * smoothstep(-1.2, 0.4, p.y);
+  vA = (lane ? 0.012 : head * (0.35 + 0.9 * c)) * fog * (roof ? 0.4 : 1.0) * (across ? 0.7 : 1.0);
+}` },
+      view: { el: .13, dist: 2.0, fov: 58, gain: .9, bloom: .8 }, sx: 0, sy: .12,
+    },
+    // a lattice of points rippling with crossing waves, crests lit
+    waves: {
+      proc: { prim: 'points', count: [72000, 30000], swing: .18, still: 3, vs: `
+void main() {
+  float id = float(gl_VertexID), t = uTime;
+  float cols = uSmall > 0.5 ? 200.0 : 360.0, rows = floor(float(uCount) / cols);
+  float gx = mod(id, cols), gy = floor(id / cols);
+  float x = (gx / (cols - 1.0) - 0.5) * 14.0, y = gy / (rows - 1.0) * 16.0 - 1.0;
+  float h = 0.22 * sin(0.55 * x + t * 0.5) * cos(0.35 * y - t * 0.3) + 0.12 * sin(0.9 * (x * 0.6 + y) - t * 0.9) + 0.06 * sin(1.7 * x - 1.3 * y + t * 1.3);
+  vec4 cp = place(vec3(x, y, h - 0.6));
+  gl_Position = cp;
+  gl_PointSize = max(1.0, 2.0 * uPx * (2.6 / cp.w));
+  float crest = smoothstep(-0.15, 0.3, h);
+  vCol = mix(uC0, uC2, crest);
+  vA = (0.2 + 0.95 * crest) * exp(-max(y, 0.0) * 0.09) * smoothstep(-1.0, 0.6, y) * (1.0 - smoothstep(5.0, 7.0, abs(x)));
+}` },
+      view: { el: .2, dist: 2.6, fov: 54, gain: .16, bloom: .65 }, sx: 0, sy: 0,
+    },
   };
 
   // ---------------------------------------------------------------- camera maths
@@ -88,11 +167,11 @@
       p[2] += dt / 6 * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2]);
     };
     // probe: where the attractor lives, how big it is, and how fast a trail moves across it
-    const R = S.flow ? [1, 0, 0, 0, 1, 0, 0, 0, 1] : toZ(S.up);
+    const R = S.flow || S.proc ? [1, 0, 0, 0, 1, 0, 0, 0, 1] : toZ(S.up);
     let center = [0, 0, 0], scale = 1, SUB = 1, pool = [];
     const rot = (p, o) => { o[0] = R[0] * p[0] + R[1] * p[1] + R[2] * p[2]; o[1] = R[3] * p[0] + R[4] * p[1] + R[5] * p[2]; o[2] = R[6] * p[0] + R[7] * p[1] + R[8] * p[2]; };
     const norm = (p, o) => { rot([p[0] - center[0], p[1] - center[1], p[2] - center[2]], o); o[0] *= scale; o[1] *= scale; o[2] *= scale; };
-    if (S.flow) SUB = 1;
+    if (S.flow || S.proc) SUB = 1;
     else {
       const p = S.start.slice(), pts = [];
       for (let i = 0; i < 4000; i++) rk4(p, S.dt);
@@ -124,8 +203,9 @@
     const lost = p => { if (S.flow) return p[0] > 3.1; const v = view3(p); return !(Math.abs(v[0]) < 5 && Math.abs(v[1]) < 5 && Math.abs(v[2]) < 5); };
 
     // ------------------------------------------------------------ camera
-    const cam = { az: S.flow ? -1.5708 : 2.2, el: O.el, dist: O.dist, paz: 0, pel: 0, tpaz: 0, tpel: 0 };
-    if (O.interactive) addEventListener('pointermove', e => { cam.tpaz = (e.clientX / innerWidth - .5) * (S.flow ? .18 : .35); cam.tpel = (e.clientY / innerHeight - .5) * .16; }, { passive: true });
+    const front = S.flow || S.proc;
+    const cam = { az: front ? -1.5708 : 2.2, el: O.el, dist: O.dist, paz: 0, pel: 0, tpaz: 0, tpel: 0 };
+    if (O.interactive) addEventListener('pointermove', e => { cam.tpaz = (e.clientX / innerWidth - .5) * (front ? .18 : .35); cam.tpel = (e.clientY / innerHeight - .5) * .16; }, { passive: true });
     const reach = (w, h) => cam.dist * (w / h < 1 ? Math.min(2.1, Math.pow(h / w, .75)) : 1);
     const view = (w, h) => {
       const az = cam.az + cam.paz, el = cam.el + cam.pel, d = reach(w, h);
@@ -133,7 +213,7 @@
       return mul(persp(O.fov * Math.PI / 180, w / h, .05, 50), lookAt(eye, [0, 0, 0], [0, 0, 1]));
     };
     // landscape: the shape sits right of the copy; portrait: above it
-    const shift = (w, h) => (w / h > 1.1 ? [O.sx, O.sy] : [0, S.flow ? .5 : .42]);
+    const shift = (w, h) => (w / h > 1.1 ? [O.sx, O.sy] : [0, S.flow ? .5 : S.proc ? (S.sx ? .4 : 0) : .42]);
 
     let gl = null;
     try { gl = cv.getContext('webgl2', { antialias: false, alpha: false, premultipliedAlpha: false, powerPreference: 'high-performance' }); } catch { gl = null; }
@@ -156,8 +236,28 @@
       const H = '#version 300 es\nprecision highp float;\nprecision highp int;\n';
       const QUAD = H + 'out vec2 vUv;\nvoid main(){ vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2)); vUv = p; gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0); }';
 
-      let lines, down, up, comp;
+      let lines, down, up, comp, proc = null;
+      const PROC_COUNT = S.proc ? S.proc.count[small ? 1 : 0] : 0;
       try {
+        if (S.proc) proc = prog(H + `uniform float uTime, uPx, uSmall;
+uniform int uCount;
+uniform mat4 uMVP;
+uniform vec2 uShift;
+uniform vec3 uC0, uC1, uC2;
+out vec3 vCol;
+out float vA;
+float h1(float n) { return fract(sin(n * 12.9898 + 78.233) * 43758.5453); }
+vec3 ramp(float h) { return h < 0.5 ? mix(uC0, uC1, h * 2.0) : mix(uC1, uC2, h * 2.0 - 1.0); }
+vec4 place(vec3 p) { vec4 c = uMVP * vec4(p, 1.0); c.xy += uShift * c.w; return c; }
+` + S.proc.vs, H + (S.proc.prim === 'points' ? `in vec3 vCol;
+in float vA;
+uniform float uGain;
+out vec4 o;
+void main() { vec2 q = gl_PointCoord * 2.0 - 1.0; float d = dot(q, q); if (d > 1.0) discard; o = vec4(vCol * vA * exp(-d * 3.0) * uGain, 1.0); }` : `in vec3 vCol;
+in float vA;
+uniform float uGain;
+out vec4 o;
+void main() { o = vec4(vCol * vA * uGain, 1.0); }`));
         lines = prog(H + `uniform highp sampler2D uPos;
 uniform int uL, uHead;
 uniform mat4 uMVP;
@@ -234,9 +334,9 @@ void main() {
 
       gl.bindVertexArray(gl.createVertexArray());
 
-      // trail history: L samples × N trails, normalized xyz + generation in w
-      const ps = [], gen = new Float32Array(N), hist = new Float32Array(N * L * 4);
-      for (let s = 0; s < N; s++) {
+      // trail history: L samples × N trails, normalized xyz + generation in w (none for GPU-computed systems)
+      const ps = [], gen = new Float32Array(N), hist = new Float32Array(S.proc ? 4 : N * L * 4);
+      for (let s = 0; s < (S.proc ? 0 : N); s++) {
         const p = [0, 0, 0]; seed(p); ps.push(p);
         // flows start already spread across the field, so the first frame is full
         if (S.flow) { const pre = (Math.random() * 900) | 0; for (let i = 0; i < pre; i++) { sample(p); if (lost(p)) seed(p); } }
@@ -247,10 +347,12 @@ void main() {
       gl.bindTexture(gl.TEXTURE_2D, posTex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, L, N, 0, gl.RGBA, gl.FLOAT, hist);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, S.proc ? 1 : L, S.proc ? 1 : N, 0, gl.RGBA, gl.FLOAT, hist);
       const col = new Float32Array(N * 4);
       const step = () => {
-        head = (head + 1) % L; time += 1 / 60;
+        time += 1 / 60;
+        if (S.proc) return;
+        head = (head + 1) % L;
         for (let s = 0; s < N; s++) {
           const p = ps[s];
           if (--p.life < 0 || lost(p)) { seed(p); gen[s] = (gen[s] + 1) % 4096; }
@@ -300,14 +402,23 @@ void main() {
         gl.bindFramebuffer(gl.FRAMEBUFFER, msFb); gl.viewport(0, 0, W, Hh);
         gl.clearColor(0, 0, 0, 1); gl.clear(gl.COLOR_BUFFER_BIT);
         gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+        const gain = (hdr ? O.gain : O.gain * .55) * (small ? 1.5 : 1) * Math.min(1.4, Math.max(.75, W / 2200));
+        if (proc) {
+          const u = proc.u; gl.useProgram(proc.p);
+          gl.uniform1f(u.uTime, time); if (u.uPx) gl.uniform1f(u.uPx, Hh / 900); if (u.uSmall) gl.uniform1f(u.uSmall, small ? 1 : 0); if (u.uCount) gl.uniform1i(u.uCount, PROC_COUNT);
+          gl.uniformMatrix4fv(u.uMVP, false, view(w, h)); gl.uniform2fv(u.uShift, shift(w, h));
+          gl.uniform3fv(u.uC0, c0); gl.uniform3fv(u.uC1, c1); gl.uniform3fv(u.uC2, c2); gl.uniform1f(u.uGain, gain);
+          gl.drawArrays(S.proc.prim === 'points' ? gl.POINTS : gl.LINES, 0, PROC_COUNT * (S.proc.prim === 'points' ? 1 : 2));
+        } else {
         gl.useProgram(lines.p);
         gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, posTex);
         gl.uniform1i(lines.u.uPos, 0); gl.uniform1i(lines.u.uL, L); gl.uniform1i(lines.u.uHead, head);
         gl.uniformMatrix4fv(lines.u.uMVP, false, view(w, h)); gl.uniform2fv(lines.u.uShift, shift(w, h));
         gl.uniform1f(lines.u.uTail, O.tail); gl.uniform1f(lines.u.uDist, reach(w, h)); gl.uniform1f(lines.u.uFog, O.fog); gl.uniform1f(lines.u.uEdge, S.flow ? 1 : 0);
         gl.uniform3fv(lines.u.uC0, c0); gl.uniform3fv(lines.u.uC1, c1); gl.uniform3fv(lines.u.uC2, c2);
-        gl.uniform1f(lines.u.uGain, (hdr ? O.gain : O.gain * .55) * (small ? 1.5 : 1) * Math.min(1.4, Math.max(.75, W / 2200)));
+        gl.uniform1f(lines.u.uGain, gain);
         gl.drawArrays(gl.LINES, 0, N * (L - 1) * 2);
+        }
         gl.disable(gl.BLEND);
         gl.bindFramebuffer(gl.READ_FRAMEBUFFER, msFb); gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, scene.f);
         gl.blitFramebuffer(0, 0, W, Hh, 0, 0, W, Hh, gl.COLOR_BUFFER_BIT, gl.NEAREST);
@@ -345,13 +456,14 @@ void main() {
         while (acc >= 1 && n < 3) { step(); acc -= 1; n++; }
         if (n === 3) acc = 0;
         // the view drifts slowly round the shape (a flow sways instead) and leans toward the pointer
-        if (S.flow) cam.az = -1.5708 + Math.sin(time * .05) * .22; else cam.az += dt * .045;
+        if (front) cam.az = -1.5708 + Math.sin(time * .05) * (S.proc ? S.proc.swing : .22); else cam.az += dt * .045;
         cam.paz += (cam.tpaz - cam.paz) * Math.min(1, dt * 2.5); cam.pel += (cam.tpel - cam.pel) * Math.min(1, dt * 2.5);
         draw(now);
         raf = requestAnimationFrame(loop);
       };
       const start = () => { if (!raf && !reduce && visible && !document.hidden) { last = 0; raf = requestAnimationFrame(loop); } };
       resize();
+      if (reduce && S.proc) time = S.proc.still;
       if (reduce) draw(born + 1e5); else start();
       let rt;
       addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); if (reduce) draw(born + 1e5); }, 120); });
@@ -362,6 +474,7 @@ void main() {
 
     // ============================================================ canvas fallback
     function canvas2d() {
+      if (S.proc) return;
       const fresh = cv.cloneNode(); cv.replaceWith(fresh);
       const ctx = fresh.getContext('2d');
       const N = innerWidth < 760 ? 160 : 300, LEN = 160;
