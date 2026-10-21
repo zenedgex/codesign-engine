@@ -231,3 +231,8 @@ body.zx-home { background: var(--night); overflow-x: hidden }
 .zx-card__links a:hover { background: var(--tint); color: var(--green-deep) }
 .zx-cards--compact + section { padding-top: 56px }
 .zx-card--link p:last-child { color: var(--green-deep); font-weight: 550 }
+
+/* evidence tags: a tag inside running text makes its line taller instead of overlapping the line
+   above; in a proof row the tag sits on its own line under the text */
+.tag, .ev { display: inline-block; vertical-align: middle }
+.metric .tag, .metric .ev { display: table; margin-top: 10px }
