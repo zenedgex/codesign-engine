@@ -14,6 +14,20 @@ SITE = Path(__file__).resolve().parent.parent
 
 PROJECTS = [
     {
+        "id": "perch", "name": "Perch", "icon": "server",
+        "area": "LLM serving", "status": "Evaluation release",
+        "blurb": "Runs beneath unmodified vLLM and lets each GPU serve many models while holding first-token and per-token deadlines. Measured 10 models per GPU, no answers lost.",
+        "contact": ("perch/#contact", "Send a request log, get a capacity report"),
+        "pages": [("perch/", "Overview", "server")],
+    },
+    {
+        "id": "proprio", "name": "Proprio", "icon": "bot",
+        "area": "Robot inference", "status": "Technical preview",
+        "blurb": "Runs an unmodified vision-language-action robot policy faster and proves, tick by tick, that the actions are bit-identical to the policy as trained.",
+        "contact": ("proprio/#contact", "Send a checkpoint, get a certificate"),
+        "pages": [("proprio/", "Overview", "bot")],
+    },
+    {
         "id": "atelier-studio", "name": "Atelier Studio", "icon": "sparkles",
         "area": "Chip design", "status": "Technical preview",
         "blurb": "AI-powered chip design exploration. Design better chips, faster, with architecture and compiler optimized together for your workloads.",
@@ -28,13 +42,6 @@ PROJECTS = [
         "contact": ("ip/#contact", "Run your workload on Sutra"),
         "pages": [("ip/", "Overview", "cpu")],
     },
-    {
-        "id": "proprio", "name": "Proprio", "icon": "bot",
-        "area": "Robot inference", "status": "Technical preview",
-        "blurb": "Runs an unmodified vision-language-action robot policy faster and proves, tick by tick, that the actions are bit-identical to the policy as trained.",
-        "contact": ("proprio/#contact", "Send a checkpoint, get a certificate"),
-        "pages": [("proprio/", "Overview", "bot")],
-    },
 ]
 EMAIL = "hello@zenedgex.in"
 TABS = [("", "Home"), ("projects/", "Projects"), ("contact/", "Contact")]
@@ -44,6 +51,7 @@ ICONS = {
     "grid": '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
     "sparkles": '<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/>',
     "cpu": '<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+    "server": '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01M11 7.5h6M11 16.5h6"/>',
     "bot": '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/>',
     "chart": '<path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17V9"/>',
     "layers": '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>',

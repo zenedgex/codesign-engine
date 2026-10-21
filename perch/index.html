@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Perch runs beneath unmodified vLLM and lets each GPU serve many models while holding first-token and per-token deadlines. Measured: 3x fewer GPUs with no answers lost, 10 models per GPU at 98.1% of tokens on time.">
+<meta property="og:title" content="Perch: many more models per GPU, no lost answers">
+<meta property="og:description" content="Perch runs beneath unmodified vLLM and lets each GPU serve many models while holding first-token and per-token deadlines. Measured: 3x fewer GPUs with no answers lost, 10 models per GPU at 98.1% of tokens on time.">
+<meta property="og:image" content="https://zenedgex.in/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zenedgex.in/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>Perch: many more models per GPU · ZenEdgeX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Perch page: the site's light world and lime accent. Hero with a live GPU residency card, proof row,
+   the stack (vLLM as shipped beside Perch), how a model steps off and back, measured results, what is in
+   a release, trying it, status, contact. Every figure on this page is a measurement, labelled. */
+:root {
+  --void: #FFFFFF; --slab: #F6F7F3; --slab-2: #EFF1EB; --slab-3: #E7EAE2;
+  --line: #E2E5DD; --line-2: #CFD4C7;
+  --text: #12161C; --muted: #4F5866; --faint: #6B7380;
+  --leaf: #A9CC72; --lime: #D0E6A5; --green: #4A7A16; --green-deep: #3F6B12; --green-2: #6A9A2C; --ok: #7FC8A9; --amber: #B7791F;
+  --night: #0C0E0D; --night-2: #151915; --night-line: #262C26;
+  --display: 'Inter', 'Arial Black', Arial, sans-serif;
+  --body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box }
+html { background: var(--void); scroll-behavior: smooth; scroll-padding-top: 84px }
+html, body { margin: 0 }
+img { max-width: 100% }
+[hidden] { display: none !important }
+body { background: var(--void); color: var(--text); font: 400 17px/1.6 var(--body); padding-inline: 20px; padding-block: 0 72px; -webkit-font-smoothing: antialiased }
+.wrap { max-width: 1200px; margin-inline: auto }
+a { color: var(--green); text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 3px }
+h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance }
+h1 { font-size: clamp(46px, 7vw, 100px); line-height: .94; font-weight: 770; letter-spacing: -.028em }
+h2 { font-size: clamp(30px, 4vw, 54px); line-height: 1.03; font-weight: 720; letter-spacing: -.02em }
+h3 { font-size: 20px; font-weight: 650; line-height: 1.2 }
+p { margin: 0; max-width: 64ch }
+h1 em, h2 em { font-style: normal; background: linear-gradient(92deg, var(--green-deep), var(--green-2)); -webkit-background-clip: text; background-clip: text; color: transparent }
+.label { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px }
+.label::after { content: ""; flex: 0 0 40px; height: 1px; background: var(--line-2) }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: center; padding-block: 110px 40px }
+.hero > * { min-width: 0 }
+.copy { display: flex; flex-direction: column; gap: 26px }
+.kicker { font: 500 12.5px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 12px }
+.kicker::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg, var(--leaf), var(--lime)) }
+.sub { font: 500 clamp(18px, 1.7vw, 22px)/1.45 var(--body); max-width: 46ch }
+.chip { align-self: flex-start; font: 500 12.5px/1.3 var(--mono); color: var(--muted); border: 1px solid var(--line-2); background: var(--slab); padding: 9px 12px; border-radius: 999px }
+.chip b { color: var(--green); font-weight: 500 }
+.cta { display: flex; gap: 14px; flex-wrap: wrap }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 22px; border-radius: 4px; font: 600 15px/1 var(--body); text-decoration: none }
+.btn.primary { background: linear-gradient(92deg, var(--leaf), var(--lime)); color: #11160B; box-shadow: 0 10px 40px -12px rgba(169, 204, 114, .55) }
+.btn.line { color: var(--text); border: 1px solid var(--line-2); background: var(--slab) }
+
+/* Hero visual: two GPUs, ten models each; three are awake at a time, the rest parked in host memory.
+   The awake set moves as traffic moves. */
+.gpus { max-width: 520px; width: 100%; justify-self: end; border: 1px solid var(--line); border-radius: 14px; padding: 22px; background: radial-gradient(90% 90% at 70% 20%, rgba(169, 204, 114, .16), transparent 60%), var(--slab); display: grid; gap: 16px }
+.gpu { display: grid; gap: 8px }
+.gpu > span { font: 500 11.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between }
+.gpu > span b { color: var(--text); font-weight: 500; letter-spacing: 0; text-transform: none }
+.slots { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px }
+.slots i { aspect-ratio: 1 / 1.35; border-radius: 4px; border: 1px dashed var(--line-2); background: var(--slab-2); transition: background-color .45s var(--ease), border-color .45s var(--ease), box-shadow .45s var(--ease) }
+.slots i.on { border: 1px solid var(--green-2); background: linear-gradient(160deg, var(--lime), var(--leaf)); box-shadow: 0 4px 14px -6px rgba(74, 122, 22, .6) }
+.gpus .key { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--muted) }
+.gpus .key span { display: inline-flex; align-items: center; gap: 7px }
+.gpus .key i { width: 11px; height: 14px; border-radius: 3px; display: inline-block; border: 1px dashed var(--line-2); background: var(--slab-2) }
+.gpus .key i.on { border: 1px solid var(--green-2); background: linear-gradient(160deg, var(--lime), var(--leaf)) }
+.gpus .foot { font: 400 13px/1.45 var(--body); color: var(--muted) }
+.gpus .foot b { color: var(--green); font-weight: 600 }
+
+section { padding-block: 120px 0; display: flex; flex-direction: column; gap: 40px }
+.head { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 56px; align-items: end }
+.head > * { min-width: 0 }
+.head .body { color: var(--muted); font-size: 18px; display: flex; flex-direction: column; gap: 14px }
+.stack { display: flex; flex-direction: column; gap: 20px }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px }
+.card { background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 26px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.card p { color: var(--muted); font-size: 15px }
+.card code { font: 500 14px/1 var(--mono); color: var(--green-deep) }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px }
+th { text-align: left; font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); padding: 0 16px 14px 0 }
+td { padding: 15px 16px 15px 0; border-top: 1px solid var(--line); color: var(--muted); vertical-align: top }
+td:first-child { color: var(--text); white-space: nowrap }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono) }
+.tbl { overflow-x: auto; background: var(--slab); border: 1px solid var(--line); border-radius: 10px; padding: 24px 28px }
+.tbl table { min-width: 640px }
+tr.ours td { background: rgba(208, 230, 165, .18) }
+tr.ours td:first-child { color: var(--green-deep); font-weight: 600 }
+.proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
+.metric { padding: 30px 22px 30px 0; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.metric + .metric { padding-left: 22px; border-left: 1px solid var(--line) }
+.metric b { font: 680 clamp(30px, 3.3vw, 44px)/1 var(--display); letter-spacing: -.01em }
+.metric span { font-size: 14px; color: var(--muted); line-height: 1.45 }
+.jump { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px }
+.jump a { font: 500 13px/1 var(--body); color: var(--muted); text-decoration: none; border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 13px; background: var(--slab) }
+.jump a:hover { color: var(--text); border-color: var(--green) }
+.fine { font-size: 14px; color: var(--faint); max-width: 96ch }
+.tag { font: 500 11px/1 var(--mono); letter-spacing: .06em; padding: 5px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); white-space: nowrap }
+.tag.m { color: var(--green); border-color: color-mix(in srgb, var(--green) 35%, transparent) }
+.tag.d { color: var(--amber); border-color: rgba(183, 121, 31, .4) }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--slab) }
+.steps > div { padding: 26px 22px; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); min-width: 0 }
+.steps > div:first-child { border-left: none }
+.steps p { color: var(--muted); font-size: 15px }
+.steps .k { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; color: var(--green) }
+.st { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; padding: 6px 8px; border-radius: 4px; align-self: flex-start }
+.st.done { color: #0B2A1E; background: var(--ok) }
+.st.now { color: #11160B; background: var(--lime) }
+.st.next { color: var(--muted); border: 1px solid var(--line-2) }
+
+/* The stack: a dark panel holding two isometric layer stacks, drawn like a product diagram. */
+.layers-fig { margin: 0; border-radius: 16px; background: radial-gradient(70% 60% at 78% 55%, rgba(169, 204, 114, .10), transparent 70%), var(--night); border: 1px solid var(--night-line); padding: 40px 40px 34px; display: flex; flex-direction: column; gap: 22px; color: #EEF2EA }
+.layers-fig .fig-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap }
+.layers-fig .fig-head b { font: 600 clamp(22px, 2.4vw, 30px)/1.15 var(--mono); letter-spacing: -.01em }
+.layers-fig .fig-head span { display: block; margin-top: 8px; font: 500 clamp(14px, 1.4vw, 17px)/1.3 var(--mono); color: var(--leaf) }
+.layers-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px }
+.layers { display: block; width: 100%; height: auto; overflow: visible }
+.layers .st-title { font: 600 22px var(--mono); fill: #F2F5EE }
+.layers .st-kicker { font: 400 18px var(--mono); fill: #8C9688 }
+.layers .st-name { font: 600 15px var(--mono); fill: #EEF2EA }
+.layers .st-name.dim { fill: #C9D0C4 }
+.layers .st-detail { font: 400 12px var(--mono); fill: #8C9688 }
+.layers .st-detail.hi { fill: var(--leaf) }
+.layers .st-lead { stroke: #6E786E; stroke-width: 1 }
+.layers .st-lead.hi { stroke: var(--leaf) }
+.layers .st-cap { font: 400 15px var(--mono); fill: #8C9688 }
+.st-col { min-width: 0 }
+.st-compact { display: none; flex-direction: column; gap: 14px }
+.st-h { display: flex; flex-direction: column; gap: 4px }
+.st-h b { font: 600 18px/1.2 var(--mono); color: #F2F5EE }
+.st-h span { font: 400 14px/1.2 var(--mono); color: #8C9688 }
+.layers-mini { display: block; width: 100%; max-width: 360px; height: auto; margin-inline: auto }
+.layers-key { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; border-top: 1px solid var(--night-line); padding-top: 14px }
+.layers-key li { display: flex; flex-direction: column; gap: 2px; padding-left: 12px; border-left: 2px solid #3A423A }
+.layers-key li.hi { border-left-color: var(--leaf) }
+.layers-key b { font: 600 14.5px/1.3 var(--mono); color: #EEF2EA }
+.layers-key span { font: 400 13px/1.4 var(--mono); color: #8C9688 }
+.layers-key li.hi span { color: var(--leaf) }
+.st-c { font: 400 13.5px/1.55 var(--mono); color: #8C9688 }
+@media (max-width: 560px) { .st-col > .layers { display: none } .st-compact { display: flex } }
+.layers-fig figcaption { font-size: 13.5px; color: #8C9688; border-top: 1px solid var(--night-line); padding-top: 16px }
+
+pre.cmd { margin: 0; overflow-x: auto; background: var(--night); color: #DDE5D6; border-radius: 10px; padding: 20px 22px; font: 400 14px/1.65 var(--mono); border: 1px solid var(--night-line) }
+pre.cmd .c { color: #7E8A7B }
+.try { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 16px; align-items: start }
+.try > * { min-width: 0 }
+.close { margin-top: 120px; border: 1px solid var(--line); border-radius: 14px; padding: 64px 56px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--leaf) 28%, transparent), transparent 60%), var(--slab) }
+.close > * { min-width: 0 }
+.mail code { color: var(--text); background: var(--slab-2); border: 1px solid var(--line-2); padding: 12px 14px; border-radius: 4px; font: 400 15px/1 var(--mono); user-select: all; display: inline-block }
+footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--faint); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap }
+footer nav { display: flex; gap: 20px; flex-wrap: wrap }
+footer a { color: var(--muted); text-decoration: none }
+
+@media (max-width: 1100px) { .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+@media (max-width: 960px) {
+  .hero, .head, .close, .try { grid-template-columns: minmax(0, 1fr); gap: 32px }
+  .hero { padding-block: 64px 0 }
+  .gpus { justify-self: start; max-width: 460px }
+  .layers-grid { grid-template-columns: minmax(0, 1fr); gap: 36px }
+  .layers-fig { padding: 28px 20px 24px }
+  .proof, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .metric:nth-child(3) { padding-left: 0; border-left: none }
+  .metric:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .steps > div:nth-child(3) { border-left: none }
+  .steps > div:nth-child(n+3) { border-top: 1px solid var(--line) }
+  .close { padding: 36px 26px }
+  section { padding-block: 88px 0 }
+}
+@media (max-width: 560px) {
+  .proof, .steps, .grid4 { grid-template-columns: minmax(0, 1fr) }
+  .metric + .metric, .steps > div + div { padding-left: 0; border-left: none; border-top: 1px solid var(--line) }
+  .steps > div + div { padding-left: 22px }
+}
+@media (prefers-reduced-motion: reduce) { .slots i { transition: none } }
+</style>
+<link rel="stylesheet" href="../assets/zx.css">
+</head>
+<body>
+<!--zx:header-->
+<header class="zx-header">
+  <div class="zx-header__row">
+    <button class="zx-icon-btn zx-menu" type="button" aria-label="Open navigation" aria-controls="zx-side" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="zx-logo" href="../"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg><span>ZenEdgeX</span></a>
+    <div class="zx-header__end">
+      <button class="zx-search-btn" type="button" data-zx-search aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>⌘K</kbd></button>
+      <a class="zx-pill" href="../contact/">Contact us</a>
+    </div>
+  </div>
+</header>
+<nav class="zx-tabs" aria-label="Main"><div class="zx-tabs__in"><a href="../">Home</a><a href="../projects/" aria-current="page">Projects</a><a href="../contact/">Contact</a></div></nav>
+<!--/zx:header-->
+<div class="zx-shell">
+<!--zx:side-->
+<aside class="zx-side" id="zx-side" aria-label="Site">
+  <div class="zx-side__head"><a class="zx-logo" href="../"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="mkg-side" x1="10" y1="54" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6A9A2C"/><stop offset="1" stop-color="#A9CC72"/></linearGradient></defs><rect x="1" y="1" width="62" height="62" rx="15" fill="#F3F5EF"/><rect x="10.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26.9" y="10.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42" y="10" width="12" height="12" rx="2.5" fill="url(#mkg-side)"/><rect x="10.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="url(#mkg-side)"/><rect x="42.9" y="26.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="10" y="42" width="12" height="12" rx="2.5" fill="url(#mkg-side)"/><rect x="26.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/><rect x="42.9" y="42.9" width="10.2" height="10.2" rx="2" fill="none" stroke="#C3C9D1" stroke-width="1.8"/></svg><span>ZenEdgeX</span></a></div>
+  <nav class="zx-nav" aria-label="Pages">
+    <a class="zx-nav__link" href="../" data-zx-page="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span>Home</span></a>
+    <a class="zx-nav__link" href="../projects/" data-zx-page="Projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>All projects</span></a>
+    <p class="zx-nav__group">Perch</p>
+    <a class="zx-nav__link" href="../perch/" data-zx-page="Perch" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01M11 7.5h6M11 16.5h6"/></svg><span>Overview</span></a>
+    <p class="zx-nav__group">Proprio</p>
+    <a class="zx-nav__link" href="../proprio/" data-zx-page="Proprio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/></svg><span>Overview</span></a>
+    <p class="zx-nav__group">Atelier Studio</p>
+    <a class="zx-nav__link" href="../engine/" data-zx-page="Atelier Studio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><span>Overview</span></a>
+    <a class="zx-nav__link" href="../technology/" data-zx-page="Atelier Studio · Technology"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg><span>Technology</span></a>
+    <a class="zx-nav__link" href="../benchmarks/" data-zx-page="Atelier Studio · Benchmarks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17V9"/></svg><span>Benchmarks</span></a>
+    <a class="zx-nav__link" href="../demo/" data-zx-page="Atelier Studio · Live demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5.5 3.5-5.5 3.5z"/></svg><span>Live demo</span></a>
+    <p class="zx-nav__group">Sutra NPU IP</p>
+    <a class="zx-nav__link" href="../ip/" data-zx-page="Sutra NPU IP"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg><span>Overview</span></a>
+    <p class="zx-nav__group">Company</p>
+    <a class="zx-nav__link" href="../contact/" data-zx-page="Contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20.5l1.5-5A8 8 0 1 1 21 12z"/></svg><span>Contact</span></a>
+    <a class="zx-nav__link" href="mailto:hello@zenedgex.in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>hello@zenedgex.in</span><svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+  </nav>
+</aside>
+<!--/zx:side-->
+<div class="zx-scrim"></div>
+<main class="zx-main" id="zx-main">
+
+<div class="wrap" id="top">
+  <div class="hero">
+    <div class="copy">
+      <p class="kicker">Perch · multi-model LLM serving</p>
+      <h1>More models per GPU. <em>No lost answers.</em></h1>
+      <p class="sub">Perch runs beneath unmodified vLLM and lets each GPU serve many models while holding first-token and per-token deadlines. Your clients keep the same OpenAI-compatible API.</p>
+      <p class="chip"><b>Evaluation release 0.1.0</b> · unmodified vLLM 0.31 · 2× H200 NVL · every figure measured</p>
+      <div class="cta"><a class="btn primary" href="https://github.com/zenedgex/perch-releases/releases/latest">Download the evaluation <span>→</span></a><a class="btn line" href="#stack">See the stack</a></div>
+    </div>
+    <div class="gpus" aria-label="Two GPUs, ten models each; three are awake on each GPU at a time and the rest are parked in host memory">
+      <div class="gpu"><span>GPU 0 <b>10 models · 3 awake</b></span><div class="slots" data-gpu="0"></div></div>
+      <div class="gpu"><span>GPU 1 <b>10 models · 3 awake</b></span><div class="slots" data-gpu="1"></div></div>
+      <div class="key"><span><i class="on"></i>awake on the GPU</span><span><i></i>parked in host memory</span></div>
+      <p class="foot">Plain colocation fits 3 to 4 such 7B models on an 80 GB-class card. Perch served <b>10 per GPU</b>, moving weights in and out as traffic moved.</p>
+    </div>
+  </div>
+
+  <nav class="jump" aria-label="On this page"><a href="#stack">The stack</a><a href="#how">How</a><a href="#results">Results</a><a href="#release">The release</a><a href="#try">Try it</a><a href="#status">Status</a></nav>
+  <div class="proof" id="keys" style="margin-top:12px"><div class="metric"><b>3×</b><span>fewer GPUs: 6 models on 2 GPUs, 99.9 to 100% of tokens on time, no answers lost <span class="tag m">measured</span></span></div><div class="metric"><b>10×</b><span>fewer GPUs: 20 models on 2 GPUs, 98.1% of tokens on time, none cut off <span class="tag m">measured</span></span></div><div class="metric"><b>0.33 s</b><span>for a 7B model to leave the GPU, 0.29 s to come back <span class="tag m">measured</span></span></div><div class="metric"><b>0</b><span>answers cut off; stock vLLM sleep/wake on the same traffic cut off 183 of 840 <span class="tag m">measured</span></span></div></div>
+
+  <section id="stack">
+    <div class="head">
+      <div class="stack"><p class="label">What we are building</p><h2>A residency layer <em>beneath vLLM.</em></h2></div>
+      <div class="body"><p>Perch sits between your clients and unmodified vLLM. Clients keep calling the same OpenAI-compatible API; vLLM keeps running your models; Perch decides which models hold each GPU at any moment.</p><p>A plugin in each vLLM engine lets a model's weights step off the GPU and back in a fraction of a second. Requests that were in flight keep their state and resume token-identical.</p></div>
+    </div>
+    <figure class="layers-fig">
+      <div class="fig-head"><div><b>The Perch stack</b><span>Same API. Same vLLM. More models per GPU.</span></div></div>
+      <div class="layers-grid">
+<div class="st-col"><svg class="layers" viewBox="0 0 640 560" role="img" aria-labelledby="plain-t plain-d">
+<title id="plain-t">vLLM as shipped: One model per GPU</title>
+<desc id="plain-d">Your clients, OpenAI-compatible API; A router, One endpoint per model; vLLM, One engine, one model; GPU, Memory held by one model</desc>
+<defs><filter id="glow-plain" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="plain-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="plain-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="plain-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs>
+<text x="8" y="34" class="st-title">vLLM as shipped</text>
+<text x="8" y="62" class="st-kicker">One model per GPU</text>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="rgba(255,255,255,.04)" stroke="rgba(220,228,214,.32)" stroke-width="1.6" stroke-dasharray="5 5" opacity="1" vector-effect="non-scaling-stroke"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#plain-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="rgba(255,255,255,.04)" stroke="rgba(220,228,214,.32)" stroke-width="1.6" stroke-dasharray="5 5" opacity="1" vector-effect="non-scaling-stroke"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#plain-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
+<text x="8" y="205" class="st-name base">Your clients</text>
+<text x="8" y="224" class="st-detail base">OpenAI-compatible API</text>
+<line x1="125" y1="200" x2="268" y2="200" class="st-lead base"/>
+<text x="8" y="261" class="st-name dim">A router</text>
+<text x="8" y="280" class="st-detail dim">One endpoint per model</text>
+<line x1="89" y1="256" x2="268" y2="256" class="st-lead dim"/>
+<text x="8" y="317" class="st-name base">vLLM</text>
+<text x="8" y="336" class="st-detail base">One engine, one model</text>
+<line x1="52" y1="312" x2="268" y2="312" class="st-lead base"/>
+<text x="8" y="373" class="st-name dim">GPU</text>
+<text x="8" y="392" class="st-detail dim">Memory held by one model</text>
+<line x1="43" y1="368" x2="268" y2="368" class="st-lead dim"/>
+<text x="8" y="500" class="st-cap">Each model keeps a GPU whether it is busy</text>
+<text x="8" y="524" class="st-cap">or not. Long-tail catalogs pay for idle cards.</text>
+</svg><div class="st-compact"><p class="st-h"><b>vLLM as shipped</b><span>One model per GPU</span></p><svg class="layers-mini" viewBox="245 96 390 377" aria-hidden="true"><defs><filter id="glow-plain" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="plain-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="plain-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="plain-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="rgba(255,255,255,.04)" stroke="rgba(220,228,214,.32)" stroke-width="1.6" stroke-dasharray="5 5" opacity="1" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#plain-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="rgba(255,255,255,.04)" stroke="rgba(220,228,214,.32)" stroke-width="1.6" stroke-dasharray="5 5" opacity="1" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#plain-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/></svg><ol class="layers-key"><li class=""><b>Your clients</b><span>OpenAI-compatible API</span></li><li class=""><b>A router</b><span>One endpoint per model</span></li><li class=""><b>vLLM</b><span>One engine, one model</span></li><li class=""><b>GPU</b><span>Memory held by one model</span></li></ol><p class="st-c">Each model keeps a GPU whether it is busy or not. Long-tail catalogs pay for idle cards.</p></div></div>
+<div class="st-col"><svg class="layers" viewBox="0 0 640 560" role="img" aria-labelledby="perch-t perch-d">
+<title id="perch-t">With Perch: A residency layer</title>
+<desc id="perch-d">Your clients, OpenAI API, unchanged; Perch, Gateway, agent, scheduler; vLLM, Unmodified, perch-engine plugin; GPUs, Many models per card</desc>
+<defs><filter id="glow-perch" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="perch-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="perch-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="perch-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs>
+<text x="8" y="34" class="st-title">With Perch</text>
+<text x="8" y="62" class="st-kicker">A residency layer</text>
+<ellipse cx="440" cy="312" rx="250" ry="190" fill="url(#perch-halo)"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="#A9CC72" stroke="none" stroke-width="1.6" opacity="0.55" vector-effect="non-scaling-stroke" filter="url(#glow-perch)"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="url(#perch-hi)" stroke="rgba(208,230,165,.95)" stroke-width="1.6" opacity="0.88" vector-effect="non-scaling-stroke"/>
+<rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/>
+<text x="8" y="205" class="st-name base">Your clients</text>
+<text x="8" y="224" class="st-detail base">OpenAI API, unchanged</text>
+<line x1="125" y1="200" x2="268" y2="200" class="st-lead base"/>
+<text x="8" y="261" class="st-name hi">Perch</text>
+<text x="8" y="280" class="st-detail hi">Gateway, agent, scheduler</text>
+<line x1="62" y1="256" x2="268" y2="256" class="st-lead hi"/>
+<text x="8" y="317" class="st-name base">vLLM</text>
+<text x="8" y="336" class="st-detail base">Unmodified, perch-engine plugin</text>
+<line x1="52" y1="312" x2="268" y2="312" class="st-lead base"/>
+<text x="8" y="373" class="st-name base">GPUs</text>
+<text x="8" y="392" class="st-detail base">Many models per card</text>
+<line x1="52" y1="368" x2="268" y2="368" class="st-lead base"/>
+<text x="8" y="500" class="st-cap">Perch decides which models hold each GPU,</text>
+<text x="8" y="524" class="st-cap">moves weights in a fraction of a second,</text>
+<text x="8" y="548" class="st-cap">and keeps every paused answer.</text>
+</svg><div class="st-compact"><p class="st-h"><b>With Perch</b><span>A residency layer</span></p><svg class="layers-mini" viewBox="245 96 390 377" aria-hidden="true"><defs><filter id="glow-perch" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter><linearGradient id="perch-base" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8EDE2" stop-opacity=".42"/><stop offset="1" stop-color="#9DA897" stop-opacity=".18"/></linearGradient><linearGradient id="perch-hi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4F2C4"/><stop offset=".55" stop-color="#A9CC72"/><stop offset="1" stop-color="#4A7A16"/></linearGradient><radialGradient id="perch-halo"><stop offset="0" stop-color="#A9CC72" stop-opacity=".38"/><stop offset="1" stop-color="#A9CC72" stop-opacity="0"/></radialGradient></defs><ellipse cx="440" cy="312" rx="250" ry="190" fill="url(#perch-halo)"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 368) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 312) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="#A9CC72" stroke="none" stroke-width="1.6" opacity="0.55" vector-effect="non-scaling-stroke" filter="url(#glow-perch)"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 256) scale(1 .5) rotate(45)" fill="url(#perch-hi)" stroke="rgba(208,230,165,.95)" stroke-width="1.6" opacity="0.88" vector-effect="non-scaling-stroke"/><rect x="-128" y="-128" width="256" height="256" rx="26" transform="translate(440 200) scale(1 .5) rotate(45)" fill="url(#perch-base)" stroke="rgba(220,228,214,.45)" stroke-width="1.6" opacity="0.95" vector-effect="non-scaling-stroke"/></svg><ol class="layers-key"><li class=""><b>Your clients</b><span>OpenAI API, unchanged</span></li><li class="hi"><b>Perch</b><span>Gateway, agent, scheduler</span></li><li class=""><b>vLLM</b><span>Unmodified, perch-engine plugin</span></li><li class=""><b>GPUs</b><span>Many models per card</span></li></ol><p class="st-c">Perch decides which models hold each GPU, moves weights in a fraction of a second, and keeps every paused answer.</p></div></div>
+      </div>
+      <figcaption>Perch is the only new layer. vLLM is not forked: the perch-engine plugin registers through vLLM's own plugin interface. Clients never call the engines directly.</figcaption>
+    </figure>
+  </section>
+
+  <section id="how">
+    <div class="head">
+      <div class="stack"><p class="label">How</p><h2>Models step off the GPU <em>and come back in time.</em></h2></div>
+      <div class="body"><p>Long-tail catalogs leave most models idle most of the time, yet each one holds a GPU. Perch keeps only the models that are busy on the GPU and parks the rest in host memory, without losing a request.</p></div>
+    </div>
+    <div class="steps">
+      <div><span class="k">01 / PLACE</span><h3>Decide what is awake</h3><p>The agent on each node tracks every model's traffic and deadlines and decides which models hold GPU memory now.</p></div>
+      <div><span class="k">02 / PARK</span><h3>Step off in 0.33 s</h3><p>When another model needs the memory, a model's weights move to pinned host memory. Its KV pool stays on the GPU.</p></div>
+      <div><span class="k">03 / HOLD</span><h3>Keep paused requests</h3><p>Requests that were mid-answer pause with their state intact. Nothing is cut off and nothing is recomputed.</p></div>
+      <div><span class="k">04 / RESTORE</span><h3>Back in 0.29 s, on time</h3><p>Perch restores a parked model before its paused requests would miss their first-token or per-token deadline. The answer resumes token-identical.</p></div>
+    </div>
+  </section>
+
+  <section id="results">
+    <div class="head">
+      <div class="stack"><p class="label">Results</p><h2>Measured on <em>two H200 GPUs.</em></h2></div>
+      <div class="body"><p>2× NVIDIA H200 NVL, vLLM 0.31, Qwen2.5-7B models, a 4 s first-token and 100 ms per-token deadline, bursty long-tail traffic.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Setup</th><th class="n">Tokens on time</th><th>Answers lost</th><th class="n">GPUs vs one model per GPU</th></tr></thead><tbody>
+      <tr class="ours"><td>Perch, 6 models on 2 GPUs</td><td class="n">99.9–100%</td><td>0</td><td class="n"><b>3× fewer</b></td></tr>
+      <tr class="ours"><td>Perch, 20 models on 2 GPUs (10 per GPU)</td><td class="n">98.1%</td><td>0 cut off, 4 of 752 timed out</td><td class="n"><b>10× fewer</b></td></tr>
+      <tr><td>Stock vLLM sleep/wake, 6 models on 2 GPUs</td><td class="n">84.1%</td><td><span class="tag d">183 of 840 cut off</span></td><td class="n">–</td></tr>
+    </tbody></table></div>
+    <p class="fine"><span class="tag m">measured</span> Same traffic for every row. A 7B model leaves the GPU in about 0.33 s and comes back in about 0.29 s, and outputs are identical with and without being parked mid-answer. With the memory budget of an 80 GB-class card, plain colocation fits 3 to 4 such models per GPU; Perch served 10.</p>
+  </section>
+
+  <section id="release">
+    <div class="head">
+      <div class="stack"><p class="label">The release</p><h2>Four parts, <em>one per job.</em></h2></div>
+      <div class="body"><p>Linux binaries and compiled wheels for x86_64 and aarch64 (Grace). Perch is proprietary software, offered under an evaluation licence.</p></div>
+    </div>
+    <div class="grid4">
+      <div class="card"><code>perch-agent</code><h3>One per GPU node</h3><p>The scheduler and the OpenAI-compatible endpoint. Moves weights in and out, restores before deadlines, exports Prometheus metrics.</p></div>
+      <div class="card"><code>perch-engine</code><h3>The vLLM plugin</h3><p>Compiled, no fork of vLLM. Paused requests keep their state and resume token-identical.</p></div>
+      <div class="card"><code>perch-gateway</code><h3>Across nodes</h3><p>Routes clients to the right node, from a static list or Kubernetes pods.</p></div>
+      <div class="card"><code>perch-sim</code><h3>Before you buy GPUs</h3><p>Replays your own request log through the same scheduler to estimate how many models fit at your deadlines.</p></div>
+    </div>
+  </section>
+
+  <section id="try">
+    <div class="head">
+      <div class="stack"><p class="label">Try it</p><h2>Fifteen minutes <em>on one GPU node.</em></h2></div>
+      <div class="body"><p>Download the bundle for your CPU from the <a href="https://github.com/zenedgex/perch-releases/releases/latest">latest release</a>, install it into the Python that runs vLLM, start your engines with sleep mode, and point clients at the agent.</p></div>
+    </div>
+    <div class="try">
+<pre class="cmd"><span class="c"># install (per GPU node)</span>
+tar xzf perch-0.1.0-linux-x86_64.tar.gz &amp;&amp; cd perch-0.1.0
+sudo PYTHON=$(which python3) ./install.sh
+
+<span class="c"># one vLLM server per (GPU, model), with sleep mode</span>
+VLLM_SERVER_DEV_MODE=1 CUDA_VISIBLE_DEVICES=0 vllm serve Qwen/Qwen2.5-7B-Instruct \
+  --served-model-name qwen-7b --port 9001 --enable-sleep-mode --gpu-memory-utilization 0.14
+
+<span class="c"># the agent, then the usual OpenAI call</span>
+perch-agent --config agent.toml --park-all
+curl localhost:8080/v1/completions -H 'content-type: application/json' \
+  -d '{"model": "qwen-7b", "prompt": "Hello", "max_tokens": 32}'</pre>
+      <div class="tbl" style="padding:20px 22px"><table style="min-width:0"><thead><tr><th>You need</th><th></th></tr></thead><tbody>
+        <tr><td>OS / CPU</td><td>Linux, x86_64 or aarch64 (Grace)</td></tr>
+        <tr><td>GPU</td><td>NVIDIA, Ampere or newer</td></tr>
+        <tr><td>Engine</td><td>vLLM 0.31, Python 3.10 to 3.12</td></tr>
+        <tr><td>Host RAM</td><td>About 15 GB per parked 7B model</td></tr>
+      </tbody></table></div>
+    </div>
+    <p class="fine">Full guide: <a href="https://github.com/zenedgex/perch-releases/blob/main/INSTALL.md">INSTALL.md</a>. Checksums are in SHA256SUMS on the release.</p>
+  </section>
+
+  <section id="status">
+    <div class="head">
+      <div class="stack"><p class="label">Status</p><h2>Where Perch <em>stands today.</em></h2></div>
+      <div class="body"><p>In plain language, for teams deciding whether to try it.</p></div>
+    </div>
+    <div class="steps">
+      <div><span class="st done">done</span><h3>Many models per GPU</h3><p>10 Qwen2.5-7B models per H200 at 98.1% of tokens on time, no answers cut off.</p></div>
+      <div><span class="st done">done</span><h3>Evaluation release</h3><p>Version 0.1.0 for Linux x86_64 and aarch64, with the agent, plugin, gateway and simulator.</p></div>
+      <div><span class="st now">now</span><h3>Design partners</h3><p>Providers serving many fine-tuned or long-tail models: send a two-week request log and get a capacity report for your catalog.</p></div>
+      <div><span class="st next">limits</span><h3>Today's scope</h3><p>NVIDIA GPUs and vLLM only; engines run with vLLM's dev endpoints on; perch-sim over-estimates attainment by about 2 to 3 points.</p></div>
+    </div>
+  </section>
+
+  <div class="close" id="contact">
+    <div class="stack">
+      <p class="label">Your catalog</p>
+      <h2 style="font-size:clamp(30px,3.6vw,48px)">Send a request log, <em>get a capacity report.</em></h2>
+      <p style="color:var(--muted)">A two-week log of model id, timestamp, and prompt and output lengths, with no content. We return how many of your models fit per GPU at your deadlines, and how many GPUs you need.</p>
+    </div>
+    <div class="mail"><code>hello@zenedgex.in</code></div>
+  </div>
+
+  <!--zx:pager-->
+<nav class="zx-pager" aria-label="Pages"><a class="prev" href="../projects/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span><small>Previous</small><b>Projects</b></span></a><a class="next" href="../proprio/"><span><small>Next</small><b>Proprio</b></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></nav>
+<!--/zx:pager-->
+</div>
+
+</main>
+</div>
+<div class="zx-footer"><div class="zx-footer__in"><footer>
+    <span>© 2026 ZenEdgeX · Perch is an evaluation release</span>
+    <!--zx:footnav-->
+<nav aria-label="Footer"><a href="../projects/">Projects</a><a href="../contact/">Contact</a><a href="mailto:hello@zenedgex.in">hello@zenedgex.in</a></nav>
+<!--/zx:footnav-->
+  </footer></div></div>
+
+<script>
+(() => {
+  // the residency card: three models awake per GPU; the awake set shifts every few seconds as traffic would
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gpus = [...document.querySelectorAll('.slots')].map(el => {
+    const cells = Array.from({ length: 10 }, () => el.appendChild(document.createElement('i')));
+    return { cells, awake: el.dataset.gpu === '0' ? [0, 3, 7] : [1, 5, 8] };
+  });
+  const paint = () => gpus.forEach(g => g.cells.forEach((c, i) => c.classList.toggle('on', g.awake.includes(i))));
+  paint();
+  if (reduce) return;
+  setInterval(() => {
+    const g = gpus[Math.random() < .5 ? 0 : 1];
+    const out = g.awake[(Math.random() * 3) | 0];
+    const free = [...Array(10).keys()].filter(i => !g.awake.includes(i));
+    g.awake = g.awake.map(i => (i === out ? free[(Math.random() * free.length) | 0] : i));
+    paint();
+  }, 1600);
+})();
+</script>
+
+<script src="../assets/zx.js" defer></script>
+</body>
+</html>
