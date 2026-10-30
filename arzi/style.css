@@ -1,0 +1,36 @@
+:root {
+  --ink: #1b2b4b;
+  --saffron: #e28a26;
+  --paper: #f6f5f1;
+  --text: #10172a;
+  --muted: #596174;
+  --line: #e7e4db;
+  --card: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #0b111d; --text: #f1f3f8; --muted: #a8afbf; --line: #253047; --card: #141c2b; --ink: #d5dfee; }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font: 16px/1.65 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+header { background: #1b2b4b; color: #fff; padding: 28px 16px; }
+header .wrap { display: flex; align-items: center; gap: 12px; }
+.mark { width: 40px; height: 40px; border-radius: 12px; background: #fff; color: #1b2b4b; display: grid; place-items: center; font-weight: 800; font-size: 24px; position: relative; }
+.mark::after { content: ""; position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--saffron); }
+header a { color: #fff; text-decoration: none; font-weight: 800; font-size: 22px; }
+.wrap { max-width: 760px; margin: 0 auto; }
+main { padding: 32px 16px 64px; }
+h1 { font-size: 30px; line-height: 1.2; margin: 0 0 4px; }
+h2 { font-size: 20px; margin: 32px 0 8px; }
+.updated { color: var(--muted); margin: 0 0 24px; }
+a { color: var(--saffron); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin: 16px 0; }
+ul { padding-left: 20px; }
+li { margin: 4px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+footer { color: var(--muted); font-size: 14px; text-align: center; padding: 24px 16px 40px; }
